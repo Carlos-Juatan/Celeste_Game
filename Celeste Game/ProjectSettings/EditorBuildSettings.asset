@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Temp - Base V 1/Scenes/Base Scenes/Logo.unity
+    guid: 5081f5586d9fdae41bbaa97cc37eb35b
+  - enabled: 1
+    path: Assets/Temp - Base V 1/Scenes/Base Scenes/Persistent Scene.unity
+    guid: 6f3cc1726f49222419af19e9791a92a1
+  - enabled: 1
+    path: Assets/Temp - Base V 1/Scenes/UI/Main Menu.unity
+    guid: c08d7475d4eb6e04bbda3290c47b6ccf
+  - enabled: 1
+    path: Assets/Temp - Base V 1/Scenes/Base Scenes/Character.unity
+    guid: 11c7c6cbfa699384e876dadd08489ff8
+  - enabled: 1
+    path: Assets/Temp - Base V 1/Scenes/Testing/Carlos Testing.unity
+    guid: cc10a8a4eda169746bb2b4020c27aa88
+  m_configObjects: {}

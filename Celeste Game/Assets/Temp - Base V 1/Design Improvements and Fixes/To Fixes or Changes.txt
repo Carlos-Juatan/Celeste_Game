@@ -1,0 +1,22 @@
+=====   To Fixes   =====
+ 1 - Adicionar no timer 2 metodos para parar e continuar o Contador (Sem ser o regressivo)
+
+=====   Design Improvements   =====
+
+    --== Refatory ==--
+
+        1  - InitializeGame              ( V )
+
+        2  - FixeCameraResize            ( V )
+        3  - CompleteLevelManager        ( Mabe put in GameManager States Win and Lose )
+        4  - InputManager                ( Don't use a InputManagerEvents has Super Class, use a base creating new bases() for each input)
+        5  - InputManagerEvents          ( Change the input Events to a base, and create a new base on Manager for each input )
+        6  - LoadLevel                   ( Change To Suport many scenes to load and unload )
+        7  - SoundsManager               ( Create The base of a Sounds Manager end Put In UI options (Main Menu and Pause) )
+        
+        8  - UIButtonSelector            ( V )
+        9  - GameplayUIController        ( Add options like sounds and chage the variables to organize with [Header("")] and change the delegate to the state manager of the delegate )
+        10 - Timer                       ( Change to GameManager States get the update methods of the timer )
+        11 - LevelButton                 ( V )
+        12 - SelectLevel                 ( Mabe if can't create a button of a level 1 on start game )
+        13 - SimpleMainMenu              ( Mabe Refatory, and add a options menu )
