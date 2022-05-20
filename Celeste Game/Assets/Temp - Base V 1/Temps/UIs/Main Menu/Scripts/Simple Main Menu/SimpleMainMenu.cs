@@ -36,7 +36,9 @@ namespace GameSystems.SimpleUI.MainMenu
 		{
 			SystemDebug("["+this.name+"] Has initialized.");
 			
-			GetComponent<Canvas>().worldCamera = Camera.main;
+			Canvas canvas = GetComponent<Canvas>();
+			canvas.worldCamera = Camera.main;
+			canvas.sortingLayerName = "UI";
 			
 			// Buttons AddListeners.
 			play_BTN.onClick.AddListener(PlayPress);
@@ -53,11 +55,18 @@ namespace GameSystems.SimpleUI.MainMenu
 			// Others.
 			currentPainel = mainPanel;
 			//ButtonSelector.UIButtonSelector.instance.Select(play_BTN.gameObject);
-
-			GameManager.instance.SwitchState(GameManager.instance.MainMenuState);
+			
+			Color color;
+			if ( ColorUtility.TryParseHtmlString("#9D0D82", out color)){
+				Camera.main.backgroundColor = color;
+			}
 
 			try { this.GetComponent<LevelSelectorManager.SelectLevel>().Initialize(); }
 			catch {SystemDebug("["+this.name+"] SelectLevel Don't Found.");}
+
+#if UNITY_EDITOR
+			GameManager.instance.SwitchState(GameManager.instance.MainMenuState);
+#endif
 		}
 #endregion
 

@@ -175,6 +175,7 @@ MonoBehaviour:
   progressText: {fileID: 4230838462862959886}
   transitions: {fileID: 7438207466976119438}
   transitionTime: 1
+  _timeToShowTheLogo: 2
 --- !u!95 &7438207466976119438
 Animator:
   serializedVersion: 3
@@ -202,8 +203,8 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 474111478247420262}
   m_Enabled: 1
-  m_SortingLayerID: 739216747
-  m_SortingLayer: 0
+  m_SortingLayerID: 902221095
+  m_SortingLayer: 2
   m_SortingOrder: 50
 --- !u!1 &875011507332306102
 GameObject:

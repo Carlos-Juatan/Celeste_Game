@@ -116,23 +116,14 @@ namespace GameSystems.SimpleUI.GameplayUI
 		{
 			// Do Something.
 		}
-		void pauseQuitPress()
+		void QuitPress()
 		{
-			int id = 2;
+			int id = (int)SystemManager.LevelLoader.ScenesIndexes.MainMenu;
+			int[] unloadScenes = {GameManager.instance.Data.GameLevelIndex, (int)SystemManager.LevelLoader.ScenesIndexes.Character};
+			int[] loadScenes = {id};
+
 			var loadLvl = GameManager.instance.Data.LoadLevel;
-			if(loadLvl != null) loadLvl.LoadIndexLevel(GameManager.instance.Data.GameLevelIndex, id, GameManager.instance.MainMenuState);
-		}
-		void failQuitPress()
-		{
-			int id = 2;
-			var loadLvl = GameManager.instance.Data.LoadLevel;
-			if(loadLvl != null) loadLvl.LoadIndexLevel(GameManager.instance.Data.GameLevelIndex, id, GameManager.instance.MainMenuState);
-		}
-		void winQuitPress()
-		{
-			int id = 2;
-			var loadLvl = GameManager.instance.Data.LoadLevel;
-			if(loadLvl != null) loadLvl.LoadIndexLevel(GameManager.instance.Data.GameLevelIndex, id, GameManager.instance.MainMenuState);
+			if(loadLvl != null) loadLvl.LoadIndexLevel(unloadScenes, loadScenes, GameManager.instance.MainMenuState);
 		}
 #endregion
 
@@ -141,7 +132,10 @@ namespace GameSystems.SimpleUI.GameplayUI
 		{
 			SystemDebug("["+this.name+"] Has initialized.");
 			
-			GetComponent<Canvas>().worldCamera = Camera.main;
+			Canvas canvas = GetComponent<Canvas>();
+			canvas.worldCamera = Camera.main;
+			canvas.sortingLayerName = "UI";
+
 			timer = new Timer(timerType, timeText, startTime);
 			
 			// Buttons AddListeners.
@@ -150,17 +144,31 @@ namespace GameSystems.SimpleUI.GameplayUI
 			resume_Btn.onClick.AddListener(resumePress);
 			repeat_Btn.onClick.AddListener(repeatPress);
 			options_Btn.onClick.AddListener(optionsPres);
-			pauseQuit_Btn.onClick.AddListener(pauseQuitPress);
+			pauseQuit_Btn.onClick.AddListener(QuitPress);
 				// Win Page Buttons.
 			next_Btn.onClick.AddListener(nextPress);
-			winQuit_Btn.onClick.AddListener(winQuitPress);
+			winQuit_Btn.onClick.AddListener(QuitPress);
 				// Lose Page Buttons.
 			failRepeat_Btn.onClick.AddListener(repeatPress);
-			failQuit_Btn.onClick.AddListener(failQuitPress);
+			failQuit_Btn.onClick.AddListener(QuitPress);
 			
 			lastPanel = gameplayPanel;
+
+			Color color;
+			if ( ColorUtility.TryParseHtmlString("#000000", out color)){
+				Camera.main.backgroundColor = color;
+			}
 			
 #if UNITY_EDITOR
+			int allSceneCount = UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings;
+			UnityEngine.SceneManagement.Scene[] allScenes = UnityEngine.SceneManagement.SceneManager.GetAllScenes();
+
+			for(int i = GameManager.instance.Data.LevelScenestartBy; i < allSceneCount; i++){
+				foreach (var scene in allScenes){
+					if(scene.buildIndex == i){
+						GameManager.instance.Data.GameLevelIndex = i;
+			}}}
+
 			GameManager.instance.SwitchState(GameManager.instance.GameplayState);
 #endif
 		}

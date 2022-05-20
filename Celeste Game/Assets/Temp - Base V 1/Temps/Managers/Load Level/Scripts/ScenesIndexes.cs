@@ -5,6 +5,7 @@ namespace SystemManager.LevelLoader
 		Logo = 0,
 		PersistentScene = 1,
 		MainMenu = 2,
-		Level01 = 3
+		Character = 3,
+		Level01 = 4
 	}
 }

@@ -20,8 +20,8 @@ namespace SystemManager.GameManagement
 
         [Header("Load and Select level")]
         public int GameLevelIndex;
-        public int NoLevelScenesCount = 3;
-        public int LevelScenestartBy = 3;
+        public int NoLevelScenesCount = 4;
+        public int LevelScenestartBy = 4;
 
         // Components.
         SoundsManager _soundsManager;

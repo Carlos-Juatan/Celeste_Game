@@ -34,16 +34,16 @@ namespace SystemManager.LevelLoader
 		{
 			SystemDebug("["+this.name+":] Has Initialize.");
 			loadSteps = LoadSteps.FadeIn;
-			if (SceneManager.GetSceneByBuildIndex((int)SystemManager.LevelLoader.ScenesIndexes.Logo).isLoaded)
+			if (SceneManager.GetSceneByBuildIndex((int)ScenesIndexes.Logo).isLoaded)
 			{
-				SystemManager.InitializeSystem.InitializeGame reference = FindObjectOfType<SystemManager.InitializeSystem.InitializeGame>();
+				InitializeSystem.InitializeGame reference = FindObjectOfType<InitializeSystem.InitializeGame>();
 				reference.GetComponent<Canvas>().worldCamera = Camera.main;
 				Invoke("FinishingLogo", _timeToShowTheLogo);
 			}
 		}
 		
 		public void LoadMainMenu(){
-			SceneManager.LoadSceneAsync((int)SystemManager.LevelLoader.ScenesIndexes.MainMenu, LoadSceneMode.Additive);
+			SceneManager.LoadSceneAsync((int)ScenesIndexes.MainMenu, LoadSceneMode.Additive);
 		}
 		
 		public void ReloadLevel(GameBaseState state)
@@ -51,7 +51,10 @@ namespace SystemManager.LevelLoader
 			if(loadSteps == LoadSteps.FadeIn)
 			{
 				loadSteps = LoadSteps.StartLoad;
-				int level = GameManager.instance.Data.GameLevelIndex;
+				int[] level = new int[]{
+					GameManager.instance.Data.GameLevelIndex,
+					(int)ScenesIndexes.Character
+				};
 				StartCoroutine(LoadLevelAnimations(level, level, state));
 			}
 		}
@@ -61,25 +64,38 @@ namespace SystemManager.LevelLoader
 			if(loadSteps == LoadSteps.FadeIn)
 			{
 				loadSteps = LoadSteps.StartLoad;
-				int level = GameManager.instance.Data.GameLevelIndex;
+				int[] unloadLevel = new int[]{
+					GameManager.instance.Data.GameLevelIndex,
+					(int)ScenesIndexes.Character
+				};
+
+				int[] nextLevel = new int[]{
+					GameManager.instance.Data.GameLevelIndex + 1,
+					(int)ScenesIndexes.Character
+				};
 				
-				if(UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings > level + 1)
+				if(UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings > GameManager.instance.Data.GameLevelIndex + 1)
 				{
-					GameManager.instance.Data.GameLevelIndex = level +1;
-					StartCoroutine(LoadLevelAnimations(level, level +1, state));
+					//GameManager.instance.Data.GameLevelIndex += 1;
+					StartCoroutine(LoadLevelAnimations(unloadLevel, nextLevel, state));
 				}else
 				{
-					StartCoroutine(LoadLevelAnimations(level,
-					(int)SystemManager.LevelLoader.ScenesIndexes.MainMenu, GameManager.instance.MainMenuState));
+					int[] loadScene = new int[] { (int)ScenesIndexes.MainMenu };
+					StartCoroutine(LoadLevelAnimations(unloadLevel, loadScene, GameManager.instance.MainMenuState));
 				}
 			}
 		}
 		
-		public void LoadIndexLevel(int UnloadIndex, int sceneIndex, GameBaseState state)
+		public void LoadIndexLevel(int[] UnloadIndex, int[] sceneIndex, GameBaseState state)
 		{
 			if(loadSteps == LoadSteps.FadeIn)
 			{
-				GameManager.instance.Data.GameLevelIndex = sceneIndex;
+				int currentScene = 0;
+				foreach(int scene in sceneIndex){
+					if(scene != (int)ScenesIndexes.Character)
+						currentScene = scene;
+				}
+				GameManager.instance.Data.GameLevelIndex = currentScene;
 				loadSteps = LoadSteps.StartLoad;
 				StartCoroutine(LoadLevelAnimations(UnloadIndex, sceneIndex, state));
 			}
@@ -98,7 +114,7 @@ namespace SystemManager.LevelLoader
 			StartCoroutine(TriggerTrasitionAnimation(anim_End, 1f));
 		}
 		
-		void UnloadLogo() => SceneManager.UnloadSceneAsync((int)SystemManager.LevelLoader.ScenesIndexes.Logo);
+		void UnloadLogo() => SceneManager.UnloadSceneAsync((int)ScenesIndexes.Logo);
 
 		void SystemDebug(string msg) => GameDebug.Debug(SystemManager.DebugType.LoadLevelOnly, msg);
 #endregion
@@ -110,7 +126,7 @@ namespace SystemManager.LevelLoader
 			transitions.SetTrigger(animationCode);
 		}
 
-		IEnumerator LoadLevelAnimations(int UnloadIndex, int sceneIndex, GameBaseState state)
+		IEnumerator LoadLevelAnimations(int[] UnloadIndex, int[] sceneIndex, GameBaseState state)
 		{
 			GameManager.instance.SwitchState(GameManager.instance.LoadingState);
 			transitions.SetTrigger(anim_Start);
@@ -126,10 +142,21 @@ namespace SystemManager.LevelLoader
 		
 		List<AsyncOperation> loadOperation = new List<AsyncOperation>();
 
-		IEnumerator LoadAsynchronously(int UnloadIndex, int sceneIndex, GameBaseState state)
+		IEnumerator LoadAsynchronously(int[] UnloadIndex, int[] sceneIndex, GameBaseState state)
 		{
-			loadOperation.Add(SceneManager.UnloadSceneAsync(UnloadIndex));
-			loadOperation.Add(SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive));
+			// Add Scenes to Unload.
+			if(UnloadIndex != null){
+				if(UnloadIndex.Length >= 1){
+					foreach(int id in UnloadIndex){
+						loadOperation.Add(SceneManager.UnloadSceneAsync(id));
+			}}}
+
+			// Add Scenes to Load.
+			if(sceneIndex != null){
+				if(sceneIndex.Length >= 1){
+					foreach(int id in sceneIndex){
+						loadOperation.Add(SceneManager.LoadSceneAsync(id, LoadSceneMode.Additive));
+			}}}
 			
 			loadingScreen.SetActive(true);
 			

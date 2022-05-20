@@ -11,7 +11,6 @@ namespace GameSystems.SimpleUI.LevelSelectorManager
 	{
 		[SerializeField] Button level_Btn;
 		[SerializeField] TMP_Text lvlText;
-		[SerializeField] int MainMenuIndex = 2;
 		
 		int id = 0;
 		
@@ -27,9 +26,11 @@ namespace GameSystems.SimpleUI.LevelSelectorManager
 #region Private Methods.
 		void PressButton()
 		{
+			int[] unloadScenes = { (int)SystemManager.LevelLoader.ScenesIndexes.MainMenu };
+			int[] loadScenes = { id, (int)SystemManager.LevelLoader.ScenesIndexes.Character };
+
 			var loadLvl = GameManager.instance.Data.LoadLevel;
-			if(loadLvl != null) loadLvl.LoadIndexLevel(MainMenuIndex, id, GameManager.instance.GameplayState);
-			//loadLvl.SendMessage("LoadIndexLevel", id, GameState.Gameplay);
+			if(loadLvl != null) loadLvl.LoadIndexLevel(unloadScenes, loadScenes, GameManager.instance.GameplayState);
 		}
 #endregion
 	}

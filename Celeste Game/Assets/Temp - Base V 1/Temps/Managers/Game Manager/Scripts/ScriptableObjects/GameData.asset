@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GameData
   m_EditorClassIdentifier: 
   _debugType: 0
-  GameLevelIndex: 2
-  NoLevelScenesCount: 3
-  LevelScenestartBy: 3
+  GameLevelIndex: 4
+  NoLevelScenesCount: 4
+  LevelScenestartBy: 4
