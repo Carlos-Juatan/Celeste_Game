@@ -159,7 +159,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.09611962, g: 0.6363417, b: 0.754717, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -176,7 +176,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 11.243
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -328,7 +328,7 @@ PrefabInstance:
     - target: {fileID: 3541046508272774325, guid: d7c104ce3b43a1143b8f519640ad1a3e, type: 3}
       propertyPath: inputSystem
       value: 
-      objectReference: {fileID: 311379871967427871}
+      objectReference: {fileID: 0}
     - target: {fileID: 3541046508272774325, guid: d7c104ce3b43a1143b8f519640ad1a3e, type: 3}
       propertyPath: soundsManager
       value: 
@@ -444,17 +444,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f494d7cde3f7c341bec0a8bc4438b0d, type: 3}
---- !u!114 &311379871967427871 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4802827530732952329, guid: 3f494d7cde3f7c341bec0a8bc4438b0d, type: 3}
-  m_PrefabInstance: {fileID: 311379871967427870}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db0fbfe384e8597468150940a920e9c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5845493306488024731
 PrefabInstance:
   m_ObjectHideFlags: 0
