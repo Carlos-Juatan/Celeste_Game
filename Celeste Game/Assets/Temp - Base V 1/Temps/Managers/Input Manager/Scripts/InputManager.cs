@@ -12,7 +12,7 @@ namespace SystemManager.InputManagement
         public InputGameplayState _InputGameplayState = new InputGameplayState();
         public InputPauseState _InputPauseState = new InputPauseState();
 
-        void OnGUI() { if(_currentState != null) { _currentState.UpdateInputs(Event.current); } }
+        public void OnGUI() { if(_currentState != null) { _currentState.UpdateInputs(Event.current); } }
 
         public void SwitchState(InputBaseState newState)
         {

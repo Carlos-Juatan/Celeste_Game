@@ -7,6 +7,8 @@ using SystemManager.LevelLoader;
 using GameSystems.SimpleUI.GameplayUI;
 using GameSystems.SimpleUI.MainMenu;
 
+using GameAssets.Characters.Player;
+
 //using GameAssets.PlayerSystem;
 //using GameAssets.MapManagement.EventInteractions;
 
@@ -19,9 +21,9 @@ namespace SystemManager.GameManagement
         [SerializeField] DebugType _debugType;
 
         [Header("Load and Select level")]
-        public int GameLevelIndex;
-        public int NoLevelScenesCount = 4;
-        public int LevelScenestartBy = 4;
+        [SerializeField] int _gameLevelIndex;
+        [SerializeField] int _noLevelScenesCount = 4;
+        [SerializeField] int _levelScenestartBy = 4;
 
         // Components.
         SoundsManager _soundsManager;
@@ -30,8 +32,14 @@ namespace SystemManager.GameManagement
         Camera _mainCamera;
         GameplayUIController _gameplayUIController;
         SimpleMainMenu _simpleMainMenu;
+        PlayerController _playerController;
 
 #region Gets And Sets.
+        // Load and Select Level
+        public int GameLevelIndex     { get { return _gameLevelIndex; } set { _gameLevelIndex = value; } }
+        public int NoLevelScenesCount { get { return _noLevelScenesCount; } set { _noLevelScenesCount = value; } }
+        public int LevelScenestartBy  { get { return _levelScenestartBy; } set { _levelScenestartBy = value; } }
+
         // Components.
         public DebugType DebugType          { get { return _debugType; } }
         public SoundsManager SoundsManager  { get { return _soundsManager; } }
@@ -40,6 +48,7 @@ namespace SystemManager.GameManagement
         public Camera MainCamera            { get { return _mainCamera; } }
         public GameplayUIController GameplayUIController { get { return _gameplayUIController; } }
         public SimpleMainMenu SimpleMainMenu             { get { return _simpleMainMenu; } }
+        public PlayerController PlayerController         { get { return _playerController; } }
 #endregion
 
 #region Find Components.
@@ -61,6 +70,7 @@ namespace SystemManager.GameManagement
         // Responsable to find components on Gameplay scene start
         public void FindGameplayComponents()
         {
+            _playerController = FindObjectOfType<PlayerController>();
 			_gameplayUIController = FindObjectOfType<GameplayUIController>();
         }
 #endregion

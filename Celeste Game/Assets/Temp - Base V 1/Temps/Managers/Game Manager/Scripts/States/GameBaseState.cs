@@ -15,6 +15,9 @@ namespace SystemManager.GameManagement
 
 		public delegate void LateUpdateBase();
 		public event LateUpdateBase lateUpdateBase;
+
+		public delegate void OnGUIBase();
+		public event OnGUIBase onGUIBase;
 		
 #region Unity Methods.
 		public virtual void StartState() { startBase?.Invoke(); }
@@ -24,6 +27,8 @@ namespace SystemManager.GameManagement
 		public virtual void FixedUpdateState() { fixedUpdateBase?.Invoke(); }
 
 		public virtual void LateUpdateState() { lateUpdateBase?.Invoke(); }
+
+		public virtual void OnGUIState() { onGUIBase?.Invoke();}
 
 #endregion
 

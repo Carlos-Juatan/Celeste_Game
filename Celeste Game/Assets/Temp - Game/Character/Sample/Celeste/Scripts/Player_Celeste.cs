@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 namespace Celeste
 {
     //[Tracked]
-    public class Player : Actor
+    public class Player_Celeste : Actor
     {
 
 #region Constants

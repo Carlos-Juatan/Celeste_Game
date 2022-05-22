@@ -23,7 +23,7 @@ namespace SystemManager.InputManagement
                 // Check if have a path of the input Down.
                 if(Input.GetKeyDown(e.keyCode))
                     if(inputs.ContainsKey(e.keyCode))
-                        inputs[e.keyCode].UseInput(new InputUse());
+                        inputs[e.keyCode].UseInput(null);
             }
         }
 

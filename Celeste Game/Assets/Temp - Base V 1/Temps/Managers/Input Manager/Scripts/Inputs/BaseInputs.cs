@@ -13,11 +13,16 @@ namespace SystemManager.InputManagement
 
     public class InputUse
     {
-        public Vector2 vector2Value;
+        public Vector2Int vector2IntValue = new Vector2Int();
+
+        public void SetValue(int x, int y){
+            vector2IntValue.x = x;
+            vector2IntValue.y = y;
+        }
 
         public InputUse() { }
 
-        public InputUse(Vector2 vector2Value) { this.vector2Value = vector2Value; }
+        public InputUse(Vector2Int vector2IntValue) { this.vector2IntValue = vector2IntValue; }
     }
 
     public class BaseSimpleInput : BaseInputs
@@ -28,11 +33,11 @@ namespace SystemManager.InputManagement
         public override void UseInput(InputUse use) => inputBase?.Invoke();
     }
 
-    public class BaseVector2Input : BaseInputs
+    public class BaseVector2IntInput : BaseInputs
     {
-        protected delegate void Vector2InputBase(Vector2 vector2Value);
-		protected event Vector2InputBase vector2InputBase;
+        protected delegate void Vector2IntInputBase(Vector2Int vector2IntValue);
+		protected event Vector2IntInputBase vector2IntInputBase;
 
-		public override void UseInput(InputUse use) => vector2InputBase?.Invoke(use.vector2Value);
+		public override void UseInput(InputUse use) => vector2IntInputBase?.Invoke(use.vector2IntValue);
     }
 }

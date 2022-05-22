@@ -51,6 +51,8 @@ namespace SystemManager.GameManagement
 		void FixedUpdate() => _currentState.FixedUpdateState();
 
 		void LateUpdate() => _currentState.LateUpdateState();
+
+		void OnGUI() => _currentState.OnGUIState();
 #endregion
 
 #region Public Methods.
