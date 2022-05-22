@@ -42,6 +42,8 @@ namespace SystemManager.InputManagement
 
         public override void ExitState()
         {
+            _axisIntInput.ExitInput();
+
             foreach (var key in inputs.Keys){
                 inputs[key].ExitInput();
             }
