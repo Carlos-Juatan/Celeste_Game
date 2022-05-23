@@ -9,10 +9,15 @@ namespace GameAssets.Characters.Player
 #region Var
         [Header("Player Data"), SerializeField]
         PlayerData _data;
+
+        // Animations
+        Animator _animator => GetComponent<Animator>();
+        public static readonly int Anim_IsMoving = Animator.StringToHash("Is Moving");
 #endregion
 
 #region Getters and Setters
         public PlayerData Data { get { return _data; } }
+        public Animator Animator { get { return _animator; } }
 #endregion
 
 #region Initializing
@@ -33,10 +38,8 @@ namespace GameAssets.Characters.Player
             _data.CurrentState.UpdateStates();
 
             _data.AxisInput = input;
-
-            _data.IsMoving = _data.AxisInput.x != 0;
             
-            if(_data.IsMoving)
+            if(_data.AxisInput.x != 0)
                 Flip();
         }
 
@@ -56,6 +59,7 @@ namespace GameAssets.Characters.Player
 #region Physics Calculating.
         void FixedUpdate() {
             GroundCheck();
+            _data.CurrentState.FisicsCalculateStates();
         }
 
         void GroundCheck(){

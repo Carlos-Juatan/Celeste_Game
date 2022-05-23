@@ -46,7 +46,14 @@ namespace GameAssets.Characters.Player
 #endregion
 
 #region Physics Calculating States
-        public virtual void FisicsCalculateState(){}
+        public void FisicsCalculateStates(){
+            FisicsCalculateState();
+            if(_currentSubState != null){
+                _currentSubState.FisicsCalculateState();
+            }
+        }
+
+        protected virtual void FisicsCalculateState(){}
 #endregion
 
 #region Exiting States

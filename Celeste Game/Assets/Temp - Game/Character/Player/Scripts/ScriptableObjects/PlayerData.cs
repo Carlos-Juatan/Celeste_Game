@@ -49,6 +49,12 @@ namespace GameAssets.Characters.Player
         [Space(5)]
         [SerializeField] LayerMask _groundLayers;
 
+        [Header("Move")]
+        [SerializeField] float _maxMoveSpeed = 15f;
+        [SerializeField] float _moveAcceleration = 8f;
+        [SerializeField] float _moveReduce = 5f;
+        [SerializeField] float _airMult = .65f;
+
         // Inputs
         Vector2Int _axisInput;
 
@@ -60,10 +66,11 @@ namespace GameAssets.Characters.Player
         bool _isMoving;
         int _facingDirection;
 
-        // Components.
+        // Components
         PlayerBaseState _currentState;
         PlayerStateFactory _factory;
         SpriteRenderer _playerRenderer;
+        Rigidbody2D _rigidbody2D;
 #endregion
 
 #region Getters And Setters.
@@ -76,6 +83,12 @@ namespace GameAssets.Characters.Player
         public bool ShowPointsOnGizmos  { get { return _showPointsOnGizmos; } }
         public LayerMask GroundLayers   { get { return _groundLayers; } }
 
+        // Moving Inspector
+        public float MaxMoveSpeed     { get { return _maxMoveSpeed; } }
+        public float MoveAcceleration { get { return _moveAcceleration; } }
+        public float MoveReduce       { get { return _moveReduce; } }
+        public float AirMult          { get { return _airMult; } }
+
         // Inputs
         public Vector2Int AxisInput  { get { return _axisInput; } set { _axisInput = value; } }
 
@@ -87,16 +100,18 @@ namespace GameAssets.Characters.Player
         public bool IsMoving        { get { return _isMoving; } set { _isMoving = value; } }
         public int FacingDirection  { get { return _facingDirection; } set { _facingDirection = value; } }
 
-        // Components.
+        // Components
         public PlayerBaseState CurrentState  { get { return _currentState; } set { _currentState = value; } }
         public PlayerStateFactory Factory    { get { return _factory; } }
         public SpriteRenderer PlayerRenderer { get { return _playerRenderer; } set { _playerRenderer = value; } }
+        public Rigidbody2D Rigidbody2D       { get { return _rigidbody2D; } }
         
 #endregion
 
 #region Initialize and Find Components.
         public void Initialize(PlayerController currentPlayer){
             _factory = new PlayerStateFactory(currentPlayer);
+            _facingDirection = 1;
 
             FindComponents(currentPlayer);
         }
@@ -104,6 +119,7 @@ namespace GameAssets.Characters.Player
         // Responsable to find components on start scene
         void FindComponents(PlayerController currentPlayer){
             _playerRenderer = currentPlayer.GetComponentInChildren<SpriteRenderer>();
+            _rigidbody2D = currentPlayer.GetComponentInChildren<Rigidbody2D>();
         }
 #endregion
     }

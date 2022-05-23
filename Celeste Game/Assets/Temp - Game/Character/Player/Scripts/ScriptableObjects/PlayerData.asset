@@ -21,3 +21,7 @@ MonoBehaviour:
   _groundLayers:
     serializedVersion: 2
     m_Bits: 8
+  _maxMoveSpeed: 15
+  _moveAcceleration: 8
+  _moveReduce: 5
+  _airMult: 0.65

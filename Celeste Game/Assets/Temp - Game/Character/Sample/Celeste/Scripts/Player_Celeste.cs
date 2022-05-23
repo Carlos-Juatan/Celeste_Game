@@ -264,9 +264,9 @@ namespace Celeste
         private List<ChaserStateSound> activeSounds = new List<ChaserStateSound>();
         private FMOD.Studio.EventInstance idleSfx;
 
-        private readonly Hitbox normalHitbox = new Hitbox(8, 11, -4, -11);
-        private readonly Hitbox duckHitbox = new Hitbox(8, 6, -4, -6);
+        private readonly Hitbox normalHitbox  = new Hitbox(8, 11, -4, -11);
         private readonly Hitbox normalHurtbox = new Hitbox(8, 9, -4, -11);
+        private readonly Hitbox duckHitbox = new Hitbox(8, 6, -4, -6);
         private readonly Hitbox duckHurtbox = new Hitbox(8, 4, -4, -6);
         private readonly Hitbox starFlyHitbox = new Hitbox(8, 8, -4, -10);
         private readonly Hitbox starFlyHurtbox = new Hitbox(6, 6, -3, -9);

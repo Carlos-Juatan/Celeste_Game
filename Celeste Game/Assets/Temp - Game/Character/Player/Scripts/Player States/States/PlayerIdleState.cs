@@ -11,6 +11,7 @@ namespace GameAssets.Characters.Player
 #region Stating.
         protected override void EnterState(){
             // Set Idle Animation
+            
 
             // Reset the moviment.
 
@@ -21,7 +22,7 @@ namespace GameAssets.Characters.Player
 #region Updating.
         protected override void CheckSwitchStates(){
             // If player is moving swicth state to MoveState
-            if (Player.Data.IsMoving){
+            if (Player.Data.AxisInput.x != 0){
                 SwitchState(Player.Data.Factory.SelectState(PlayerStates.Move));
             }
         }
