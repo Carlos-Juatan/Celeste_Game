@@ -1,12 +1,24 @@
+using UnityEngine;
+
 namespace GameAssets.Characters.Player
 {
     public class PlayerBaseState
     {
 #region Var
+        // States
         bool _isRootState = false;
         PlayerController _player;
         PlayerBaseState _currentSuperState;
         PlayerBaseState _currentSubState;
+
+        // Movements
+        protected Vector2 _velocity;
+        protected Vector2 _moveDirectonForce;
+#endregion
+
+#region Getters and Setters
+        public void SerPlayerVelocity(int x, int y)     { this._velocity.x = x; this._velocity.y = y; }
+        public void SerMoveDirectonForce(int x, int y)  { this._moveDirectonForce.x = x; this._moveDirectonForce.y = y; }
 #endregion
 
 #region Getters and Setters
@@ -73,7 +85,7 @@ namespace GameAssets.Characters.Player
             ExitStates();
 
             // new state enters state
-            newState.EnterState();
+            newState.EnterStates();
 
             if(_isRootState){
                 // switch current state of context
@@ -93,5 +105,11 @@ namespace GameAssets.Characters.Player
             _currentSuperState = newSuperState;
         }
 #endregion
+
+#region External Events Inputs
+        // Called by InputManager envery time the Jump input has pressed or release
+        public virtual void JumpingInput(bool hasPressed){}
+#endregion
+
     }
 }

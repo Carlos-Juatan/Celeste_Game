@@ -7,6 +7,9 @@ namespace GameAssets.Characters.Player
 #region Constructor.
         public PlayerGroundedState(PlayerController currentPlayer) : base (currentPlayer){
             IsRootState = true;
+
+            // Reset Vertical Velocity
+            _velocity.y = 0;
         }
 #endregion
 
@@ -14,7 +17,9 @@ namespace GameAssets.Characters.Player
         protected override void EnterState(){
             HandleGravity();
 
-            Debug.Log("Player Grounded");
+            Player.Data.CurrentJumpCount = Player.Data.JumpCount;
+
+            //Debug.Log("Player Grounded");
         }
 
         public void HandleGravity(){}
@@ -32,12 +37,22 @@ namespace GameAssets.Characters.Player
 
 #region Updating.
         protected override void CheckSwitchStates(){
-            // if player is grounded and jump is pressed, switch to jump state
-            //if(Ctx.IsJumpPressed && !Ctx.RequireNewJumpPress){
-            //    SwitchState(Factory.Jump());
-            //} else if (!Ctx.CharacterController.isGrounded){
-            //    SwitchState(Factory.Fall());
-            //}
+            // if player isn't grounded , switch to fall state
+            if(!Player.Data.IsGrounded){
+                // Adding Coyote time
+                Player.Data.CurrentJumpCount--;
+                SwitchState(Player.Data.Factory.SelectState(PlayerStates.Fall));
+            }
+        }
+#endregion
+
+#region External Events Inputs
+        // Called by InputManager envery time the Jump input has pressed or release
+        public override void JumpingInput(bool hasPressed){
+            if(hasPressed && Player.Data.CurrentJumpCount > 0){
+                // Jump has pressed and can jump. Switch to JumpState
+                SwitchState(Player.Data.Factory.SelectState(PlayerStates.Jump));
+            }
         }
 #endregion
 

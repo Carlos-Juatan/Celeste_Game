@@ -5,7 +5,7 @@ namespace GameAssets.Characters.Player
     public class PlayerMoveState : PlayerBaseState
     {
 #region Var.
-        float _moveHSpeed;
+        
 #endregion
 
 #region Constructor.
@@ -19,7 +19,7 @@ namespace GameAssets.Characters.Player
             // Set Move Animation
             Player.Animator.SetBool(PlayerController.Anim_IsMoving, true);
 
-            _moveHSpeed = 0;
+            _velocity.x = 0;
         }
 #endregion
 
@@ -35,43 +35,44 @@ namespace GameAssets.Characters.Player
 #region Physics Calculating States
         protected override void FisicsCalculateState(){
 
-            //Running and Friction
+            //Running and with acceleration and friction
             float mult = Player.Data.IsGrounded ? 1 : Player.Data.AirMult;
             int moveDir = Player.Data.AxisInput.x;
 
             if(moveDir != 0){
-                if(moveDir > 0 && _moveHSpeed <= Player.Data.MaxMoveSpeed){
-                    _moveHSpeed += Player.Data.MoveAcceleration * mult;
-                    _moveHSpeed = Mathf.Min(_moveHSpeed, Player.Data.MaxMoveSpeed);
-                }
-                else if (moveDir < 0 && _moveHSpeed >= Player.Data.MaxMoveSpeed * -1){
-                    _moveHSpeed -= Player.Data.MoveAcceleration * mult;
-                    _moveHSpeed = Mathf.Max(_moveHSpeed, Player.Data.MaxMoveSpeed * -1);
-                }
+                // Set horizontal move speed
+                _velocity.x += moveDir * Player.Data.MoveAcceleration * mult;
+
+                // clamped by max frame movement
+                _velocity.x = Mathf.Clamp(_velocity.x, -Player.Data.MaxMoveSpeed, Player.Data.MaxMoveSpeed);
+
+                /* TarodevController script function
+                // Apply bonus at the apex of a jump
+                var apexBonus = Mathf.Sign(Input.X) * _apexBonus * _apexPoint;
+                _currentHorizontalSpeed += apexBonus * Time.deltaTime;
+                */
             }
             else{
-                if(_moveHSpeed == 0){
+                // No input. Let's slow the character down
+                _velocity.x = Mathf.MoveTowards(_velocity.x, 0, Player.Data.MoveReduce * mult);
+
+                if(_velocity.x == 0){
+                    // If move has stoped. Let's set the movement to false.
                     Player.Data.IsMoving = false;
 
-                    // Set Move Animation false
+                    // Set Move Animation to false
                     Player.Animator.SetBool(PlayerController.Anim_IsMoving, false);
-                }
-                else if(_moveHSpeed > 0){
-                    _moveHSpeed -= Player.Data.MoveReduce * mult;
-                    _moveHSpeed = Mathf.Max(0, _moveHSpeed);
-                }
-                else{
-                    _moveHSpeed += Player.Data.MoveReduce * mult;
-                    _moveHSpeed = Mathf.Min(0, _moveHSpeed);
                 }
             }
 
-            Player.Data.Rigidbody2D.velocity = new Vector2(_moveHSpeed, Player.Data.Rigidbody2D.velocity.y);
+            // Apply on Rigidbody the final velocity;
+            Player.Data.Rigidbody2D.velocity = new Vector2(_velocity.x, Player.Data.Rigidbody2D.velocity.y);
         }
 
         void MoveForceCalc(float force){
             
         }
 #endregion
+
     }
 }

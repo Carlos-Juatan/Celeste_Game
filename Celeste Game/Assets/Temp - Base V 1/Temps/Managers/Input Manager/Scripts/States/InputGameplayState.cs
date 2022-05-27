@@ -7,7 +7,8 @@ namespace SystemManager.InputManagement
     public class InputGameplayState : InputBaseState 
     {
         PosAxisIntInput _axisIntInput = new PosAxisIntInput();
-        InputUse axisUseInput = new InputUse();
+
+        InputUse _useInput = new InputUse();
 
         Dictionary<KeyCode, BaseInputs> inputs = new Dictionary<KeyCode, BaseInputs>(){
             {KeyCode.Escape, new PauseInput()},
@@ -26,17 +27,26 @@ namespace SystemManager.InputManagement
         public override void UpdateInputs(Event e)
         {
             // Send the Vertical and Horizontal axis.
-            axisUseInput.SetValue((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
-            _axisIntInput.UseInput(axisUseInput);
+            _useInput.SetValue((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
+            _axisIntInput.UseInput(_useInput);
 
             // Check if input type is Keyboard or Gamepad and update the input type
             //if (e.type == EventType.KeyDown){
             if(e.isKey || e.isMouse){
 
                 // Check if have a path of the input Down.
-                if(Input.GetKeyDown(e.keyCode))
-                    if(inputs.ContainsKey(e.keyCode))
-                        inputs[e.keyCode].UseInput(null);
+                if(Input.GetKeyDown(e.keyCode)){
+                    if(inputs.ContainsKey(e.keyCode)){
+                        _useInput.press = true;
+                        inputs[e.keyCode].UseInput(_useInput);
+                }}
+
+                // Check if have a path of the input up.
+                if(Input.GetKeyUp(e.keyCode)){
+                    if(inputs.ContainsKey(e.keyCode)){
+                        _useInput.press = false;
+                        inputs[e.keyCode].UseInput(_useInput);
+                }}
             }
         }
 

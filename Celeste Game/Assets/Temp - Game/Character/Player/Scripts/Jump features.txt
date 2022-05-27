@@ -1,0 +1,14 @@
+
+JUMP FEATURES CREATED
+1 - Apply jump velocity.
+2 - Variable jump height
+3 - Mult jumps with jump count.
+4 - Fall Acceleration
+
+TO MAKE.
+1 - Coyote time
+2 - Apex modifiers
+3 - Jump buffering
+4 - Clamped fall speed
+5 - Ledge detection
+6 - Jump velocity Acceleration and Jump height and reduce

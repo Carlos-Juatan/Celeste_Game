@@ -13,6 +13,7 @@ namespace SystemManager.InputManagement
 
     public class InputUse
     {
+        public bool press = false;
         public Vector2Int vector2IntValue = new Vector2Int();
 
         public void SetValue(int x, int y){
@@ -23,6 +24,8 @@ namespace SystemManager.InputManagement
         public InputUse() { }
 
         public InputUse(Vector2Int vector2IntValue) { this.vector2IntValue = vector2IntValue; }
+
+        public InputUse(bool input) { this.press = input; }
     }
 
     public class BaseSimpleInput : BaseInputs
@@ -31,6 +34,14 @@ namespace SystemManager.InputManagement
 		protected event InputBase inputBase;
 
         public override void UseInput(InputUse use) => inputBase?.Invoke();
+    }
+
+    public class BaseValueInput : BaseInputs
+    {
+        protected delegate void InputBase(bool value);
+		protected event InputBase inputBase;
+
+        public override void UseInput(InputUse use) => inputBase?.Invoke(use.press);
     }
 
     public class BaseVector2IntInput : BaseInputs

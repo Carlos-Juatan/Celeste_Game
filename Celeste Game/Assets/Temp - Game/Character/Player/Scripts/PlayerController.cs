@@ -13,6 +13,10 @@ namespace GameAssets.Characters.Player
         // Animations
         Animator _animator => GetComponent<Animator>();
         public static readonly int Anim_IsMoving = Animator.StringToHash("Is Moving");
+        public static readonly int Anim_IsGrounded = Animator.StringToHash("Is Grounded");
+        public static readonly int Anim_IsJumping = Animator.StringToHash("Is Jumping");
+        public static readonly int Anim_IsFalling = Animator.StringToHash("Is Falling");
+        public static readonly int Anim_Flip = Animator.StringToHash("Flip");
 #endregion
 
 #region Getters and Setters
@@ -21,10 +25,13 @@ namespace GameAssets.Characters.Player
 #endregion
 
 #region Initializing
+        // Defaut MonoBehaviour Function.
         void Awake(){
             _data.Initialize(this);
             _data.CurrentState = _data.Factory.SelectState(PlayerStates.Grounded);
             _data.CurrentState.EnterStates();
+            
+            _animator.SetBool(Anim_IsGrounded, true);
         }
 
         void Start() {
@@ -33,10 +40,15 @@ namespace GameAssets.Characters.Player
 #endregion
 
 #region Updating.
-        // Called every frame by AxisInput of the InputManager.
-        public void UpdateAxisInput(Vector2Int input){
+        // Called every frame by GameManager Gameplay State On Update Delegate..
+        public void UpdatePlayer(){
             _data.CurrentState.UpdateStates();
 
+            _animator.SetBool(Anim_IsJumping, _data.Rigidbody2D.velocity.y > 0.2f ? true : false);
+        }
+
+        // Called every frame by AxisInput of the InputManager.
+        public void UpdateAxisInput(Vector2Int input){
             _data.AxisInput = input;
             
             if(_data.AxisInput.x != 0)
@@ -46,18 +58,18 @@ namespace GameAssets.Characters.Player
         void Flip(){
             if(_data.FacingDirection != _data.AxisInput.x){
                 _data.FacingDirection = _data.AxisInput.x;
+                _animator.SetTrigger(Anim_Flip);
                 _data.PlayerRenderer.flipX = !_data.PlayerRenderer.flipX;
             }
         }
 
-        // Called by InputManager envery time the Jump input has pressed
-        public void JumpingInput(){
-            Debug.Log("Has Jump");
-        }
+        // Called by InputManager envery time the Jump input has pressed or release
+        public void JumpingInput(bool hasPressed) => _data.CurrentState.JumpingInput(hasPressed);
 #endregion
 
 #region Physics Calculating.
-        void FixedUpdate() {
+        // Called on fixed frames by GameManager Gameplay State On FixedUpdate Delegate..
+        public void FixedUpdatePlayer() {
             GroundCheck();
             _data.CurrentState.FisicsCalculateStates();
         }
@@ -78,6 +90,8 @@ namespace GameAssets.Characters.Player
             // send to animator the points ground check boolean
 
             _data.IsGrounded = (leftPoint || rightPoint);
+            _animator.SetBool(Anim_IsGrounded, _data.IsGrounded);
+            _animator.SetBool(Anim_IsFalling, _data.Rigidbody2D.velocity.y < 0 ? true : false);
         }
 #endregion
 

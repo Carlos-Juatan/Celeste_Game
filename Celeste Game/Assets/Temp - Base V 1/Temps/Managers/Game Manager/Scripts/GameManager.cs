@@ -42,6 +42,8 @@ namespace SystemManager.GameManagement
 
 			// Starting the begin state.
 			_currentState.EnterState();
+
+			Invoke("CheckIfIsOnLevelScene", 1);
 		}
 
 		void Start() => _currentState.StartState();
@@ -63,6 +65,22 @@ namespace SystemManager.GameManagement
 			GameDebug.Debug(DebugType.GameManagerOnly, "["+this.name+"] Change GameState for " + newState.GetType().Name);
 			_currentState.EnterState();
 			_currentState.StartState();
+		}
+#endregion
+
+#region Private Methods
+		void CheckIfIsOnLevelScene(){
+#if UNITY_EDITOR
+			int allSceneCount = UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings;
+			UnityEngine.SceneManagement.Scene[] allScenes = UnityEngine.SceneManagement.SceneManager.GetAllScenes();
+
+			for(int i = GameManager.instance.Data.LevelScenestartBy; i < allSceneCount; i++){
+				foreach (var scene in allScenes){
+					if(scene.buildIndex == i){
+						GameManager.instance.Data.GameLevelIndex = i;
+						GameManager.instance.SwitchState(GameManager.instance.GameplayState);
+			}}}
+#endif
 		}
 #endregion
 	}

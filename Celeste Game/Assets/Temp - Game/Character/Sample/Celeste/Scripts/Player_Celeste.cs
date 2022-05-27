@@ -539,9 +539,6 @@ namespace Celeste
 
 #endregion
 
-*/
-/*
-
 #region Rendering
 
         public override void Render()
@@ -616,9 +613,6 @@ namespace Celeste
         }
 
 #endregion
-
-*/
-/*
 
 #region Updating
 

@@ -14,8 +14,8 @@ namespace GameAssets.Characters.Player
             
 
             // Reset the moviment.
+            _velocity.x = 0;
 
-            Debug.Log("Player Idle");
         }
 #endregion
 

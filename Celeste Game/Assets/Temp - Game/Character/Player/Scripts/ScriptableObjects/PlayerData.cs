@@ -55,8 +55,19 @@ namespace GameAssets.Characters.Player
         [SerializeField] float _moveReduce = 5f;
         [SerializeField] float _airMult = .65f;
 
+        [Header("Jump")]
+        [SerializeField] float _maxJumpHeight = 30f;
+        [SerializeField] float _minJumpHeight = 30f;
+        [SerializeField] float _timeToTop = 0.5f;
+        [SerializeField] int _jumpCount = 1;
+
+        [Header("Fall")]
+        [SerializeField, Range(0, .5f)] float _fallMultiplier = 5f;
+        [SerializeField] float _jumpVelocityFalloff = 2f;
+
         // Inputs
         Vector2Int _axisInput;
+        bool _jumpInput;
 
         // Logics
         // Ground Check
@@ -66,6 +77,9 @@ namespace GameAssets.Characters.Player
         bool _isMoving;
         int _facingDirection;
 
+        // Jump
+        int _currentJumpCount;
+
         // Components
         PlayerBaseState _currentState;
         PlayerStateFactory _factory;
@@ -74,7 +88,7 @@ namespace GameAssets.Characters.Player
 #endregion
 
 #region Getters And Setters.
-        // Ground Check Inspector
+        // Ground Check
         public float PointsRadius       { get { return _pointsRadius; } }
         public Color LeftPointColor     { get { return _leftPointColor; } }
         public Vector2 LeftPointOffset  { get { return _leftPointOffset; } }
@@ -82,23 +96,30 @@ namespace GameAssets.Characters.Player
         public Vector2 RightPointOffset { get { return _rightPointOffset; } }
         public bool ShowPointsOnGizmos  { get { return _showPointsOnGizmos; } }
         public LayerMask GroundLayers   { get { return _groundLayers; } }
+        public bool IsGrounded          { get { return _isGrounded; } set { _isGrounded = value; } }
 
-        // Moving Inspector
+        // Inputs
+        public Vector2Int AxisInput { get { return _axisInput; } set { _axisInput = value; } }
+        public bool JumpInput       { get { return _jumpInput; } set { _jumpInput = value; } }
+
+        // Moving
         public float MaxMoveSpeed     { get { return _maxMoveSpeed; } }
         public float MoveAcceleration { get { return _moveAcceleration; } }
         public float MoveReduce       { get { return _moveReduce; } }
         public float AirMult          { get { return _airMult; } }
+        public bool IsMoving          { get { return _isMoving; } set { _isMoving = value; } }
+        public int FacingDirection    { get { return _facingDirection; } set { _facingDirection = value; } }
 
-        // Inputs
-        public Vector2Int AxisInput  { get { return _axisInput; } set { _axisInput = value; } }
-
-        // Logics
-        // Ground Check
-        public bool IsGrounded  { get { return _isGrounded; } set { _isGrounded = value; } }
-
-        // Moving
-        public bool IsMoving        { get { return _isMoving; } set { _isMoving = value; } }
-        public int FacingDirection  { get { return _facingDirection; } set { _facingDirection = value; } }
+        // Jump
+        public float MaxJumpHeight  { get { return _maxJumpHeight; } }
+        public float MinJumpHeight  { get { return _minJumpHeight; } }
+        public float TimeToTop      { get { return _timeToTop; } }
+        public int JumpCount        { get { return _jumpCount; } }
+        public int CurrentJumpCount { get { return _currentJumpCount; } set { _currentJumpCount = value; } }
+        
+        // Fall
+        public float FallMultiplier      { get { return _fallMultiplier; } }
+        public float JumpVelocityFalloff { get { return _jumpVelocityFalloff; } }
 
         // Components
         public PlayerBaseState CurrentState  { get { return _currentState; } set { _currentState = value; } }

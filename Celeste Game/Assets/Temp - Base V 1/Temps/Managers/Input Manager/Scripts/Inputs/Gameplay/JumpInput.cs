@@ -3,7 +3,7 @@ using SystemManager.GameManagement;
 
 namespace SystemManager.InputManagement
 {
-    public class JumpInput : BaseSimpleInput 
+    public class JumpInput : BaseValueInput 
     {
         public override void EnterInput()
         {

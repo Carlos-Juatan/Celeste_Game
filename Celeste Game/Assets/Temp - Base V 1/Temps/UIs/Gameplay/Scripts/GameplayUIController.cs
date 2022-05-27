@@ -158,19 +158,6 @@ namespace GameSystems.SimpleUI.GameplayUI
 			if ( ColorUtility.TryParseHtmlString("#000000", out color)){
 				Camera.main.backgroundColor = color;
 			}
-			
-#if UNITY_EDITOR
-			int allSceneCount = UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings;
-			UnityEngine.SceneManagement.Scene[] allScenes = UnityEngine.SceneManagement.SceneManager.GetAllScenes();
-
-			for(int i = GameManager.instance.Data.LevelScenestartBy; i < allSceneCount; i++){
-				foreach (var scene in allScenes){
-					if(scene.buildIndex == i){
-						GameManager.instance.Data.GameLevelIndex = i;
-			}}}
-
-			GameManager.instance.SwitchState(GameManager.instance.GameplayState);
-#endif
 		}
 
 		void SystemDebug(string msg) => GameDebug.Debug(SystemManager.DebugType.GameplayUIOnly, msg);
