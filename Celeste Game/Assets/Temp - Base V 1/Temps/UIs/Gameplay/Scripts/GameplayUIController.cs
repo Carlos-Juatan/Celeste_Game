@@ -49,24 +49,25 @@ namespace GameSystems.SimpleUI.GameplayUI
 
 #region External Reaction Methods.
 		// Called by Return Buttons "Escape" or UI Return Button.
-		public void ChangePauseStates()
+		public void ChangePauseStates(bool hasPress)
 		{
-			if(!hasFail && !hasWin)
-			{
-				hasPaused = !hasPaused;
-				gameplayPanel.SetActive(!hasPaused);
-				pausePainel.SetActive(hasPaused);
-				lastPanel = hasPaused ? pausePainel : gameplayPanel;
-				//GameBaseState status = hasPaused ? GameManager.instance.PauseState : GameManager.instance.GameplayState;
-				GameBaseState state;
-				if(hasPaused){
-					state = GameManager.instance.PauseState;
-				}else{
-					state = GameManager.instance.GameplayState;
-				}
-				GameManager.instance.SwitchState(state);
-				ButtonSelector.UIButtonSelector.instance.Select(hasPaused ? resume_Btn.gameObject : null);
-			}
+			if(hasPress){
+				if(!hasFail && !hasWin)
+				{
+					hasPaused = !hasPaused;
+					gameplayPanel.SetActive(!hasPaused);
+					pausePainel.SetActive(hasPaused);
+					lastPanel = hasPaused ? pausePainel : gameplayPanel;
+					//GameBaseState status = hasPaused ? GameManager.instance.PauseState : GameManager.instance.GameplayState;
+					GameBaseState state;
+					if(hasPaused){
+						state = GameManager.instance.PauseState;
+					}else{
+						state = GameManager.instance.GameplayState;
+					}
+					GameManager.instance.SwitchState(state);
+					ButtonSelector.UIButtonSelector.instance.Select(hasPaused ? resume_Btn.gameObject : null);
+			}}
 		}
 
 		// Called by GameManager Win State
@@ -99,8 +100,8 @@ namespace GameSystems.SimpleUI.GameplayUI
 #endregion
 
 #region Buttons Methods.
-		void pausePress() => ChangePauseStates();
-		void resumePress() => ChangePauseStates();
+		void pausePress() => ChangePauseStates(true);
+		void resumePress() => ChangePauseStates(true);
 
 		void repeatPress()
 		{

@@ -5,6 +5,9 @@ namespace SystemManager.InputManagement
 {
     public class InputMainMenuState : InputBaseState 
     {
+
+        InputUse _useInput = new InputUse();
+
         Dictionary<KeyCode, BaseInputs> inputs = new Dictionary<KeyCode, BaseInputs>(){
             {KeyCode.Escape, new ReturnMainMenuInput()}
         };
@@ -21,9 +24,11 @@ namespace SystemManager.InputManagement
         {
             if(e.isKey){
                 // Check if have a path of the input Down.
-                if(Input.GetKeyDown(e.keyCode))
-                    if(inputs.ContainsKey(e.keyCode))
-                        inputs[e.keyCode].UseInput(null);
+                if(Input.GetKeyDown(e.keyCode)){
+                    if(inputs.ContainsKey(e.keyCode)){
+                        _useInput.press = true;
+                        inputs[e.keyCode].UseInput(_useInput);
+                }}
             }
         }
 

@@ -22,12 +22,13 @@ namespace GameSystems.SimpleUI.MainMenu
 
 #region Unity hierarchically Methods.
         // Called by Input Event when press esc button
-		public void BackButton()
+		public void BackButton(bool hasPress)
 		{
-			if(canBack)
-			{
-				ChangePanel(mainPanel, currentPainel, lastMainButton);
-			}
+			if(hasPress){
+				if(canBack)
+				{
+					ChangePanel(mainPanel, currentPainel, lastMainButton);
+			}}
 		}
 #endregion
 
@@ -44,20 +45,17 @@ namespace GameSystems.SimpleUI.MainMenu
 			play_BTN.onClick.AddListener(PlayPress);
 			options_BTN.onClick.AddListener(OptionsPress);
 			quit_BTN.onClick.AddListener(QuitPress);
-			levelBack_BTN.onClick.AddListener(BackButton);
-			optionsBack_BTN.onClick.AddListener(BackButton);
 			DeletSave_Btn.onClick.AddListener(DeletSave);
-			
 			// AddListener With Parameters.
-			//levelBack_BTN.onClick.AddListener(delegate{BackButton(levelBack_BTN);});
-			//optionsBack_BTN.onClick.AddListener(delegate{BackButton(optionsBack_BTN);});
+			levelBack_BTN.onClick.AddListener(delegate{BackButton(true);});
+			optionsBack_BTN.onClick.AddListener(delegate{BackButton(true);});
 			
 			// Others.
 			currentPainel = mainPanel;
 			//ButtonSelector.UIButtonSelector.instance.Select(play_BTN.gameObject);
 			
 			Color color;
-			if ( ColorUtility.TryParseHtmlString("#9D0D82", out color)){
+			if ( ColorUtility.TryParseHtmlString("#43165C", out color)){
 				Camera.main.backgroundColor = color;
 			}
 

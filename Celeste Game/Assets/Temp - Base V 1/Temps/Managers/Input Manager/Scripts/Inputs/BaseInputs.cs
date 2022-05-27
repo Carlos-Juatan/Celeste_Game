@@ -28,14 +28,6 @@ namespace SystemManager.InputManagement
         public InputUse(bool input) { this.press = input; }
     }
 
-    public class BaseSimpleInput : BaseInputs
-    {
-        protected delegate void InputBase();
-		protected event InputBase inputBase;
-
-        public override void UseInput(InputUse use) => inputBase?.Invoke();
-    }
-
     public class BaseValueInput : BaseInputs
     {
         protected delegate void InputBase(bool value);

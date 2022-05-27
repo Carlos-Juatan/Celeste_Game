@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 9496aa91acf3cfb4f9646f8e86501b5c, type: 2}
+  _gameplaySnowParticle: {fileID: 0}
+  _mainMenuSnowParticle: {fileID: 0}
 --- !u!114 &3146179982413556139
 MonoBehaviour:
   m_ObjectHideFlags: 0

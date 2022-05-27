@@ -3,7 +3,7 @@ using SystemManager.GameManagement;
 
 namespace SystemManager.InputManagement
 {
-    public class ReturnPauseInput : BaseSimpleInput 
+    public class ReturnPauseInput : BaseValueInput 
     {
         public override void EnterInput()
         {

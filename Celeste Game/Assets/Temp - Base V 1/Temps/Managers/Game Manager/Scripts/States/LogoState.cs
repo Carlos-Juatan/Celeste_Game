@@ -7,12 +7,12 @@ namespace SystemManager.GameManagement
 	{
         public override void EnterState()
         {
-            
+            GameManager.instance.MainMenuSnowParticle.SetActive(true);
         }
 
 		public override void ExitState()
         {
-            
+            GameManager.instance.MainMenuSnowParticle.SetActive(false);
         }
     }
 }

@@ -58,9 +58,14 @@ namespace GameAssets.Characters.Player
         void Flip(){
             if(_data.FacingDirection != _data.AxisInput.x){
                 _data.FacingDirection = _data.AxisInput.x;
-                _animator.SetTrigger(Anim_Flip);
+                _animator.SetBool(Anim_Flip, true);
                 _data.PlayerRenderer.flipX = !_data.PlayerRenderer.flipX;
+                Invoke("SetFlipAnimationFalse", 0.1f);
             }
+        }
+
+        void SetFlipAnimationFalse(){
+                _animator.SetBool(Anim_Flip, false);
         }
 
         // Called by InputManager envery time the Jump input has pressed or release

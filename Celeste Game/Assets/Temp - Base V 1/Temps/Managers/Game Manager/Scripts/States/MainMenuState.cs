@@ -7,6 +7,8 @@ namespace SystemManager.GameManagement
 	{
         public override void EnterState()
         {
+            GameManager.instance.MainMenuSnowParticle.SetActive(true);
+
             GameManager.instance.Data.FindMainMenuComponents();
             InputManager inputManager = GameManager.instance.Data.InputManager;
             inputManager.SwitchState(inputManager._InputMainMenuState);
@@ -14,6 +16,8 @@ namespace SystemManager.GameManagement
         
 		public override void ExitState()
         {
+            GameManager.instance.MainMenuSnowParticle.SetActive(false);
+
             InputManager inputManager = GameManager.instance.Data.InputManager;
             inputManager.SwitchState(null);
         }

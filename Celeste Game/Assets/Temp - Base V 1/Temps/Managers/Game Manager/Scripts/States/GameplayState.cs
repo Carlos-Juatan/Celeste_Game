@@ -8,6 +8,8 @@ namespace SystemManager.GameManagement
         //Timer _timer;
         public override void EnterState()
         {
+            GameManager.instance.GameplaySnowParticle.SetActive(true);
+
             GameManager.instance.Data.FindGameplayComponents();
 
             InputManager inputManager = GameManager.instance.Data.InputManager;
@@ -19,6 +21,8 @@ namespace SystemManager.GameManagement
 
 		public override void ExitState()
         {
+            GameManager.instance.GameplaySnowParticle.SetActive(false);
+
             InputManager inputManager = GameManager.instance.Data.InputManager;
             inputManager.SwitchState(null);
 

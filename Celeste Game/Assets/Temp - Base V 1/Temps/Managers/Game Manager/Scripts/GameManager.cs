@@ -4,6 +4,7 @@ namespace SystemManager.GameManagement
 {
 	public class GameManager : MonoBehaviour
 	{
+#region Var.
 		public static GameManager instance { get; private set; }
 
 		[SerializeField] GameData _data;
@@ -17,6 +18,20 @@ namespace SystemManager.GameManagement
 		public PauseState PauseState { get; private set; }
 		public LoseState LoseState { get; private set; }
 		public WinState WinState { get; private set; }
+		
+        [Header("Visual Effects")]
+        [SerializeField] GameObject _gameplaySnowParticle;
+        [SerializeField] GameObject _mainMenuSnowParticle;
+
+#endregion
+
+#region Getters and Setters.
+
+        // Effects
+        public GameObject GameplaySnowParticle { get { return _gameplaySnowParticle; } }
+        public GameObject MainMenuSnowParticle { get { return _mainMenuSnowParticle; } }
+
+#endregion
 
 #region Unity Methods.
 		void Awake()
