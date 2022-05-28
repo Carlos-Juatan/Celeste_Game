@@ -39,7 +39,7 @@ namespace GameAssets.Characters.Player
         }
 #endregion
 
-#region Updating.
+#region Updating
         // Called every frame by GameManager Gameplay State On Update Delegate..
         public void UpdatePlayer(){
             _data.CurrentState.UpdateStates();
@@ -72,7 +72,7 @@ namespace GameAssets.Characters.Player
         public void JumpingInput(bool hasPressed) => _data.CurrentState.JumpingInput(hasPressed);
 #endregion
 
-#region Physics Calculating.
+#region Physics Calculatings
         // Called on fixed frames by GameManager Gameplay State On FixedUpdate Delegate..
         public void FixedUpdatePlayer() {
             GroundCheck();

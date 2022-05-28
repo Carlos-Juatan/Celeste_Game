@@ -49,27 +49,33 @@ namespace GameAssets.Characters.Player
         [Space(5)]
         [SerializeField] LayerMask _groundLayers;
 
+        [Header("Simulate Outside Forces")]
+        [SerializeField] Vector2 _simulateOutsideForce;
+
         [Header("Move")]
-        [SerializeField] float _maxMoveSpeed = 15f;
-        [SerializeField] float _moveAcceleration = 8f;
-        [SerializeField] float _moveReduce = 5f;
+        [SerializeField] float _maxMoveSpeed = 8f;
+        [SerializeField] float _moveAcceleration = 1f;
+        [SerializeField] float _moveReduce = 2f;
         [SerializeField] float _airMult = .65f;
 
         [Header("Jump")]
-        [SerializeField] float _maxJumpHeight = 30f;
-        [SerializeField] float _minJumpHeight = 30f;
-        [SerializeField] float _timeToTop = 0.5f;
+        [SerializeField] float _jumpTime = 0.35f;
+        [SerializeField] float _jumpForce = 12f;
+        [SerializeField] float _holdJumpTime = 0.05f;
+        [SerializeField] float _curtInertiaHightJump = 2f;
+        [SerializeField] float _curtInertiaLowJump = 3f;
         [SerializeField] int _jumpCount = 1;
 
         [Header("Fall")]
-        [SerializeField, Range(0, .5f)] float _fallMultiplier = 5f;
+        [SerializeField, Range(0, .5f)] float _fallMultiplier = 0.08f;
         [SerializeField] float _jumpVelocityFalloff = 2f;
 
         // Inputs
         Vector2Int _axisInput;
-        bool _jumpInput;
 
         // Logics
+        bool _hasSpawned = true;
+        
         // Ground Check
         bool _isGrounded;
 
@@ -88,6 +94,9 @@ namespace GameAssets.Characters.Player
 #endregion
 
 #region Getters And Setters.
+        // Logics
+        public bool HasSpawned { get { return _hasSpawned; } set { _hasSpawned = value; } }
+
         // Ground Check
         public float PointsRadius       { get { return _pointsRadius; } }
         public Color LeftPointColor     { get { return _leftPointColor; } }
@@ -100,7 +109,9 @@ namespace GameAssets.Characters.Player
 
         // Inputs
         public Vector2Int AxisInput { get { return _axisInput; } set { _axisInput = value; } }
-        public bool JumpInput       { get { return _jumpInput; } set { _jumpInput = value; } }
+
+        // Simulate Forces
+        public Vector2 SimulateOutsideForce { get { return _simulateOutsideForce; } set { _simulateOutsideForce = value; } }
 
         // Moving
         public float MaxMoveSpeed     { get { return _maxMoveSpeed; } }
@@ -111,11 +122,13 @@ namespace GameAssets.Characters.Player
         public int FacingDirection    { get { return _facingDirection; } set { _facingDirection = value; } }
 
         // Jump
-        public float MaxJumpHeight  { get { return _maxJumpHeight; } }
-        public float MinJumpHeight  { get { return _minJumpHeight; } }
-        public float TimeToTop      { get { return _timeToTop; } }
-        public int JumpCount        { get { return _jumpCount; } }
-        public int CurrentJumpCount { get { return _currentJumpCount; } set { _currentJumpCount = value; } }
+        public float JumpTime             { get { return _jumpTime; } }
+        public float JumpForce            { get { return _jumpForce; } }
+        public float HoldJumpTime         { get { return _holdJumpTime; } }
+        public float CurtInertiaHightJump { get { return _curtInertiaHightJump; } }
+        public float CurtInertiaLowJump   { get { return _curtInertiaLowJump; } }
+        public int JumpCount              { get { return _jumpCount; } }
+        public int CurrentJumpCount       { get { return _currentJumpCount; } set { _currentJumpCount = value; } }
         
         // Fall
         public float FallMultiplier      { get { return _fallMultiplier; } }
@@ -133,6 +146,7 @@ namespace GameAssets.Characters.Player
         public void Initialize(PlayerController currentPlayer){
             _factory = new PlayerStateFactory(currentPlayer);
             _facingDirection = 1;
+            _hasSpawned = true;
 
             FindComponents(currentPlayer);
         }

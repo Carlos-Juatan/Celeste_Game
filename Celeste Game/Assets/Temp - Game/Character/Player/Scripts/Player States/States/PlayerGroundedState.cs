@@ -4,44 +4,38 @@ namespace GameAssets.Characters.Player
 {
     public class PlayerGroundedState : PlayerBaseState, IRootState
     {
-#region Constructor.
+#region Constructor
         public PlayerGroundedState(PlayerController currentPlayer) : base (currentPlayer){
-            IsRootState = true;
-
-            // Reset Vertical Velocity
-            _velocity.y = 0;
+            _isRootState = true;
         }
 #endregion
 
-#region Stating.
+#region Stating
         protected override void EnterState(){
-            HandleGravity();
 
-            Player.Data.CurrentJumpCount = Player.Data.JumpCount;
+            _player.Data.CurrentJumpCount = _player.Data.JumpCount;
 
-            //Debug.Log("Player Grounded");
+            //Debug.Log("_player Grounded");
         }
-
-        public void HandleGravity(){}
 
         protected override void InitializeSubState(){
             // If player is moving switch sub state to PlayerMoveState else switch sub state to PlayerIdleState
-            if (Player.Data.IsMoving){
-                SetSubState(Player.Data.Factory.SelectState(PlayerStates.Move));
+            if (_player.Data.IsMoving){
+                SetSubState(_player.Data.Factory.SelectState(PlayerStates.Move));
             }
             else{
-                SetSubState(Player.Data.Factory.SelectState(PlayerStates.Idle));
+                SetSubState(_player.Data.Factory.SelectState(PlayerStates.Idle));
             }
         }
 #endregion
 
-#region Updating.
+#region Updating
         protected override void CheckSwitchStates(){
             // if player isn't grounded , switch to fall state
-            if(!Player.Data.IsGrounded){
+            if(!_player.Data.IsGrounded){
                 // Adding Coyote time
-                Player.Data.CurrentJumpCount--;
-                SwitchState(Player.Data.Factory.SelectState(PlayerStates.Fall));
+                _player.Data.CurrentJumpCount--;
+                SwitchState(_player.Data.Factory.SelectState(PlayerStates.Fall));
             }
         }
 #endregion
@@ -49,9 +43,9 @@ namespace GameAssets.Characters.Player
 #region External Events Inputs
         // Called by InputManager envery time the Jump input has pressed or release
         public override void JumpingInput(bool hasPressed){
-            if(hasPressed && Player.Data.CurrentJumpCount > 0){
+            if(hasPressed && _player.Data.CurrentJumpCount > 0){
                 // Jump has pressed and can jump. Switch to JumpState
-                SwitchState(Player.Data.Factory.SelectState(PlayerStates.Jump));
+                SwitchState(_player.Data.Factory.SelectState(PlayerStates.Jump));
             }
         }
 #endregion

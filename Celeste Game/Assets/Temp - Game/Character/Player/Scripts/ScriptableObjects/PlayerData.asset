@@ -21,13 +21,16 @@ MonoBehaviour:
   _groundLayers:
     serializedVersion: 2
     m_Bits: 8
+  _simulateOutsideForce: {x: 0, y: 0}
   _maxMoveSpeed: 8
-  _moveAcceleration: 1
+  _moveAcceleration: 2
   _moveReduce: 2
   _airMult: 0.65
-  _maxJumpHeight: 8
-  _minJumpHeight: 2
-  _timeToTop: 0.3
+  _jumpTime: 0.35
+  _jumpForce: 12
+  _holdJumpTime: 0.05
+  _curtInertiaHightJump: 2
+  _curtInertiaLowJump: 3
   _jumpCount: 1
-  _fallMultiplier: 0.1
+  _fallMultiplier: 0.08
   _jumpVelocityFalloff: 2

@@ -6,24 +6,10 @@ namespace GameAssets.Characters.Player
     {
 #region Var
         // States
-        bool _isRootState = false;
-        PlayerController _player;
+        protected bool _isRootState = false;
+        protected PlayerController _player;
         PlayerBaseState _currentSuperState;
         PlayerBaseState _currentSubState;
-
-        // Movements
-        protected Vector2 _velocity;
-        protected Vector2 _moveDirectonForce;
-#endregion
-
-#region Getters and Setters
-        public void SerPlayerVelocity(int x, int y)     { this._velocity.x = x; this._velocity.y = y; }
-        public void SerMoveDirectonForce(int x, int y)  { this._moveDirectonForce.x = x; this._moveDirectonForce.y = y; }
-#endregion
-
-#region Getters and Setters
-        protected bool IsRootState        { get { return _isRootState; } set { _isRootState = value; } }
-        protected PlayerController Player { get { return _player; } }
 #endregion
 
 #region Constructor

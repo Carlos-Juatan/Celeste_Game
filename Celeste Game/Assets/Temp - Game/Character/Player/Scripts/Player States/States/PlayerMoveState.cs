@@ -4,30 +4,29 @@ namespace GameAssets.Characters.Player
 {
     public class PlayerMoveState : PlayerBaseState
     {
-#region Var.
-        
+#region Var
+        float _horVelocity;
 #endregion
 
-#region Constructor.
+#region Constructor
         public PlayerMoveState(PlayerController currentPlayer) : base (currentPlayer){}
 #endregion
 
-#region Stating.
+#region Stating
         protected override void EnterState(){
-            Player.Data.IsMoving = true;
+            _player.Data.IsMoving = true;
+            _horVelocity = _player.Data.Rigidbody2D.velocity.x;
 
             // Set Move Animation
-            Player.Animator.SetBool(PlayerController.Anim_IsMoving, true);
-
-            _velocity.x = 0;
+            _player.Animator.SetBool(PlayerController.Anim_IsMoving, true);
         }
 #endregion
 
-#region Updating.
+#region Updating
         protected override void CheckSwitchStates(){
             // If player isn't moving swicth state to IdleState
-            if (!Player.Data.IsMoving){
-                SwitchState(Player.Data.Factory.SelectState(PlayerStates.Idle));
+            if (!_player.Data.IsMoving){
+                SwitchState(_player.Data.Factory.SelectState(PlayerStates.Idle));
             }
         }
 #endregion
@@ -36,15 +35,15 @@ namespace GameAssets.Characters.Player
         protected override void FisicsCalculateState(){
 
             //Running and with acceleration and friction
-            float mult = Player.Data.IsGrounded ? 1 : Player.Data.AirMult;
-            int moveDir = Player.Data.AxisInput.x;
+            float mult = _player.Data.IsGrounded ? 1 : _player.Data.AirMult;
+            int moveDir = _player.Data.AxisInput.x;
 
             if(moveDir != 0){
                 // Set horizontal move speed
-                _velocity.x += moveDir * Player.Data.MoveAcceleration * mult;
+                _horVelocity += moveDir * _player.Data.MoveAcceleration * mult;
 
                 // clamped by max frame movement
-                _velocity.x = Mathf.Clamp(_velocity.x, -Player.Data.MaxMoveSpeed, Player.Data.MaxMoveSpeed);
+                _horVelocity = Mathf.Clamp(_horVelocity, -_player.Data.MaxMoveSpeed, _player.Data.MaxMoveSpeed);
 
                 /* TarodevController script function
                 // Apply bonus at the apex of a jump
@@ -54,23 +53,19 @@ namespace GameAssets.Characters.Player
             }
             else{
                 // No input. Let's slow the character down
-                _velocity.x = Mathf.MoveTowards(_velocity.x, 0, Player.Data.MoveReduce * mult);
+                _horVelocity = Mathf.MoveTowards(_horVelocity, 0, _player.Data.MoveReduce * mult);
 
-                if(_velocity.x == 0){
+                if(_horVelocity == 0){
                     // If move has stoped. Let's set the movement to false.
-                    Player.Data.IsMoving = false;
+                    _player.Data.IsMoving = false;
 
                     // Set Move Animation to false
-                    Player.Animator.SetBool(PlayerController.Anim_IsMoving, false);
+                    _player.Animator.SetBool(PlayerController.Anim_IsMoving, false);
                 }
             }
 
             // Apply on Rigidbody the final velocity;
-            Player.Data.Rigidbody2D.velocity = new Vector2(_velocity.x, Player.Data.Rigidbody2D.velocity.y);
-        }
-
-        void MoveForceCalc(float force){
-            
+            _player.Data.Rigidbody2D.velocity = new Vector2(_horVelocity, _player.Data.Rigidbody2D.velocity.y);
         }
 #endregion
 

@@ -4,26 +4,22 @@ namespace GameAssets.Characters.Player
 {
     public class PlayerIdleState : PlayerBaseState
     {
-#region Constructor.
+#region Constructor
         public PlayerIdleState(PlayerController currentPlayer) : base (currentPlayer){}
 #endregion
 
-#region Stating.
+#region Stating
         protected override void EnterState(){
             // Set Idle Animation
-            
-
-            // Reset the moviment.
-            _velocity.x = 0;
 
         }
 #endregion
 
-#region Updating.
+#region Updating
         protected override void CheckSwitchStates(){
             // If player is moving swicth state to MoveState
-            if (Player.Data.AxisInput.x != 0){
-                SwitchState(Player.Data.Factory.SelectState(PlayerStates.Move));
+            if (_player.Data.AxisInput.x != 0){
+                SwitchState(_player.Data.Factory.SelectState(PlayerStates.Move));
             }
         }
 #endregion
