@@ -31,6 +31,9 @@ MonoBehaviour:
   _holdJumpTime: 0.05
   _curtInertiaHightJump: 2
   _curtInertiaLowJump: 3
+  _resetJumpInertia: 2.2
+  _coyoteTime: 0.2
+  _jumpInputBuffer: 0.3
   _jumpCount: 1
   _fallMultiplier: 0.08
   _jumpVelocityFalloff: 2

@@ -13,6 +13,11 @@ namespace GameAssets.Characters.Player
         bool _isJumping;
         bool _isHoldingJump;
         bool _jumpHasFinished;
+        bool _resetJumpTimer = false;
+#endregion
+
+#region Getters and Setters
+        public bool ResetJumpTimer { get { return _resetJumpTimer; } set { _resetJumpTimer = value; } }
 #endregion
 
 #region Constructor.
@@ -61,6 +66,18 @@ namespace GameAssets.Characters.Player
 
                 // Apply the force of the jump
                 _player.Data.Rigidbody2D.velocity = new Vector2(_player.Data.Rigidbody2D.velocity.x, _jumpForce);
+
+                if(_resetJumpTimer){
+                    _resetJumpTimer = false;
+                    _jumpHasFinished = true;
+                    _holdJumpTimer = 0f;
+
+                    CancelJump();
+                    
+                    // Set on Rigidbody velocity some inertia to stop the move slowly
+                    float jumpInertia = _player.Data.Rigidbody2D.velocity.y / _player.Data.ResetJumpInertia;
+                    _player.Data.Rigidbody2D.velocity = new Vector2(_player.Data.Rigidbody2D.velocity.x, jumpInertia);
+                }
             }
             else{
                 // If jump has finished.

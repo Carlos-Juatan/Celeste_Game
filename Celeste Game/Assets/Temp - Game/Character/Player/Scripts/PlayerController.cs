@@ -44,6 +44,9 @@ namespace GameAssets.Characters.Player
         public void UpdatePlayer(){
             _data.CurrentState.UpdateStates();
 
+            // Update the WasGrounded in the same frame that IsGrounded, but with a little delay after the states.
+            _data.WasGrounded = _data.IsGrounded;
+
             _animator.SetBool(Anim_IsJumping, _data.Rigidbody2D.velocity.y > 0.2f ? true : false);
         }
 

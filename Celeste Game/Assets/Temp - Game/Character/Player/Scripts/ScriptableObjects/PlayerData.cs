@@ -64,6 +64,9 @@ namespace GameAssets.Characters.Player
         [SerializeField] float _holdJumpTime = 0.05f;
         [SerializeField] float _curtInertiaHightJump = 2f;
         [SerializeField] float _curtInertiaLowJump = 3f;
+        [SerializeField] float _resetJumpInertia = 3f;
+        [SerializeField] float _coyoteTime = 0.2f;
+        [SerializeField] float _jumpInputBuffer = 0.2f;
         [SerializeField] int _jumpCount = 1;
 
         [Header("Fall")]
@@ -78,6 +81,7 @@ namespace GameAssets.Characters.Player
         
         // Ground Check
         bool _isGrounded;
+        bool _wasGrounded;
 
         // Moving
         bool _isMoving;
@@ -106,6 +110,7 @@ namespace GameAssets.Characters.Player
         public bool ShowPointsOnGizmos  { get { return _showPointsOnGizmos; } }
         public LayerMask GroundLayers   { get { return _groundLayers; } }
         public bool IsGrounded          { get { return _isGrounded; } set { _isGrounded = value; } }
+        public bool WasGrounded         { get { return _wasGrounded; } set { _wasGrounded = value; } }
 
         // Inputs
         public Vector2Int AxisInput { get { return _axisInput; } set { _axisInput = value; } }
@@ -127,6 +132,9 @@ namespace GameAssets.Characters.Player
         public float HoldJumpTime         { get { return _holdJumpTime; } }
         public float CurtInertiaHightJump { get { return _curtInertiaHightJump; } }
         public float CurtInertiaLowJump   { get { return _curtInertiaLowJump; } }
+        public float ResetJumpInertia     { get { return _resetJumpInertia; } }
+        public float CoyoteTime           { get { return _coyoteTime; } }
+        public float JumpInputBuffer      { get { return _jumpInputBuffer; } }
         public int JumpCount              { get { return _jumpCount; } }
         public int CurrentJumpCount       { get { return _currentJumpCount; } set { _currentJumpCount = value; } }
         
