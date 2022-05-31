@@ -95,6 +95,8 @@ namespace GameAssets.Characters.Player
         PlayerStateFactory _factory;
         SpriteRenderer _playerRenderer;
         Rigidbody2D _rigidbody2D;
+        PlayerPhysics _playerPhysics;
+        PlayerAnimations _playerAnimations;
 #endregion
 
 #region Getters And Setters.
@@ -143,10 +145,12 @@ namespace GameAssets.Characters.Player
         public float JumpVelocityFalloff { get { return _jumpVelocityFalloff; } }
 
         // Components
-        public PlayerBaseState CurrentState  { get { return _currentState; } set { _currentState = value; } }
-        public PlayerStateFactory Factory    { get { return _factory; } }
-        public SpriteRenderer PlayerRenderer { get { return _playerRenderer; } set { _playerRenderer = value; } }
-        public Rigidbody2D Rigidbody2D       { get { return _rigidbody2D; } }
+        public PlayerBaseState CurrentState      { get { return _currentState; } set { _currentState = value; } }
+        public PlayerStateFactory Factory        { get { return _factory; } }
+        public SpriteRenderer PlayerRenderer     { get { return _playerRenderer; } set { _playerRenderer = value; } }
+        public Rigidbody2D Rigidbody2D           { get { return _rigidbody2D; } }
+        public PlayerPhysics PlayerPhysics       { get { return _playerPhysics; } }
+        public PlayerAnimations PlayerAnimations { get { return _playerAnimations; } }
         
 #endregion
 
@@ -163,6 +167,8 @@ namespace GameAssets.Characters.Player
         void FindComponents(PlayerController currentPlayer){
             _playerRenderer = currentPlayer.GetComponentInChildren<SpriteRenderer>();
             _rigidbody2D = currentPlayer.GetComponentInChildren<Rigidbody2D>();
+            _playerPhysics = currentPlayer.GetComponent<PlayerPhysics>();
+            _playerAnimations = currentPlayer.GetComponent<PlayerAnimations>();
         }
 #endregion
     }

@@ -55,20 +55,13 @@ namespace GameAssets.Characters.Player
 #endregion
 
 #region Exiting States
-        public void ExitStates(){
-            ExitState();
-            if(_currentSubState != null){
-                _currentSubState.ExitStates();
-            }
-        }
-
         protected virtual void ExitState(){}
 #endregion
 
 #region Switching States
         protected void SwitchState(PlayerBaseState newState){
             // current state exits state
-            ExitStates();
+            ExitState();
 
             // new state enters state
             newState.EnterStates();

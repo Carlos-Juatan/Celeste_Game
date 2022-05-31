@@ -15,6 +15,9 @@ namespace GameAssets.Characters.Player
 
             _player.Data.CurrentJumpCount = _player.Data.JumpCount;
 
+            // Run the player Grounded animation and effects
+            _player.Data.PlayerAnimations.StartGrounded();
+
             //Debug.Log("_player Grounded");
         }
 
@@ -33,10 +36,17 @@ namespace GameAssets.Characters.Player
         protected override void CheckSwitchStates(){
             // if player isn't grounded , switch to fall state
             if(!_player.Data.IsGrounded){
-                // Adding Coyote time
-                _player.Data.CurrentJumpCount--;
                 SwitchState(_player.Data.Factory.SelectState(PlayerStates.Fall));
             }
+        }
+#endregion
+
+#region Exiting States
+        protected override void ExitState(){
+
+            // Ending the player grounded animation and effects
+            _player.Data.PlayerAnimations.EndGrounded();
+
         }
 #endregion
 

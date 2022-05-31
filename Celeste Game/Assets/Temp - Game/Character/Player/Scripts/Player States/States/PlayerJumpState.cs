@@ -29,6 +29,9 @@ namespace GameAssets.Characters.Player
 #region Stating.
         protected override void EnterState(){
             ExecuteJump();
+
+            // Run the player jump animation and effects
+            _player.Data.PlayerAnimations.StartJump();
         }
 
         protected override void InitializeSubState(){
@@ -51,7 +54,7 @@ namespace GameAssets.Characters.Player
         protected override void CheckSwitchStates(){
             // If Rigidbody Vertical velocity less equal than zero switch to fall state
             //if(_currentVelocity.y <= 0){ // Applaying vertical calculations as apex maybe
-            if(!_isJumping){
+            if(!_isJumping && _player.Data.Rigidbody2D.velocity.y < 0f){
                 SwitchState(_player.Data.Factory.SelectState(PlayerStates.Fall));
             }
         }
@@ -70,6 +73,7 @@ namespace GameAssets.Characters.Player
                 if(_resetJumpTimer){
                     _resetJumpTimer = false;
                     _jumpHasFinished = true;
+                    _isJumping = true;
                     _holdJumpTimer = 0f;
 
                     CancelJump();
@@ -104,6 +108,15 @@ namespace GameAssets.Characters.Player
                     _player.Data.Rigidbody2D.gravityScale = 1f;
                 }
             }
+        }
+#endregion
+
+#region Exiting States
+        protected override void ExitState(){
+
+            // Ending the player jump animation and effects
+            _player.Data.PlayerAnimations.EndJump();
+
         }
 #endregion
 

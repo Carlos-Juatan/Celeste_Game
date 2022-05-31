@@ -9,6 +9,7 @@ namespace GameAssets.Characters.Player
         float _coyoteTimer;
         float _jumpInputBuffer;
         bool _jumpInputHolding;
+        bool _fallingByPlatform;
 #endregion
 
 #region Constructor
@@ -21,9 +22,13 @@ namespace GameAssets.Characters.Player
         protected override void EnterState(){
 
             // Verify if in the last frame was on the ground
-            if(_player.Data.WasGrounded){
+            _fallingByPlatform = _player.Data.WasGrounded;
+            if(_fallingByPlatform){
                 _coyoteTimer = _player.Data.CoyoteTime;
             }
+
+            // Run the player Fall animation and effects
+            _player.Data.PlayerAnimations.StartFall();
 
             //Debug.Log("_player Fall");
         }
@@ -43,11 +48,17 @@ namespace GameAssets.Characters.Player
         protected override void UpdateState(){
             _coyoteTimer -= Time.deltaTime;
             _jumpInputBuffer -= Time.deltaTime;
+
+            if(_coyoteTimer < 0f && _fallingByPlatform){
+                _fallingByPlatform = false;
+                _player.Data.CurrentJumpCount--;
+            }
         }
 
         protected override void CheckSwitchStates(){
             // If is grounded change to Grounded State.
             if(_player.Data.IsGrounded){
+                _coyoteTimer = 0f;
 
                 // Verify if has pressed jump input before collider on the ground
                 if(_jumpInputBuffer > 0){
@@ -76,6 +87,15 @@ namespace GameAssets.Characters.Player
         }
 #endregion
 
+#region Exiting States
+        protected override void ExitState(){
+
+            // Ending the player Fall animation and effects
+            _player.Data.PlayerAnimations.EndFall();
+
+        }
+#endregion
+
 #region External Events Inputs
         // Called by InputManager envery time the Jump input has pressed or release
         public override void JumpingInput(bool hasPressed){
@@ -89,10 +109,11 @@ namespace GameAssets.Characters.Player
                 
                 // if player can jump, switch to jump state
                 if(_player.Data.CurrentJumpCount > 0 || _coyoteTimer > 0){
+                    // Reset Input buffer and coyote time if Coyote time has used
+                    _jumpInputBuffer = 0f;
+                    _coyoteTimer = 0f;
                     // Jump has pressed and can jump. Jump again.
                     SwitchState(_player.Data.Factory.SelectState(PlayerStates.Jump));
-                    // Reset Input buffer if Coyote time has used
-                    _jumpInputBuffer = 0f;
                 }
             }
         }

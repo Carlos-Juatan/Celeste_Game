@@ -17,8 +17,8 @@ namespace GameAssets.Characters.Player
             _player.Data.IsMoving = true;
             _horVelocity = _player.Data.Rigidbody2D.velocity.x;
 
-            // Set Move Animation
-            _player.Animator.SetBool(PlayerController.Anim_IsMoving, true);
+            // Run the player Move animation and effects
+            _player.Data.PlayerAnimations.StartMove();
         }
 #endregion
 
@@ -44,12 +44,6 @@ namespace GameAssets.Characters.Player
 
                 // clamped by max frame movement
                 _horVelocity = Mathf.Clamp(_horVelocity, -_player.Data.MaxMoveSpeed, _player.Data.MaxMoveSpeed);
-
-                /* TarodevController script function
-                // Apply bonus at the apex of a jump
-                var apexBonus = Mathf.Sign(Input.X) * _apexBonus * _apexPoint;
-                _currentHorizontalSpeed += apexBonus * Time.deltaTime;
-                */
             }
             else{
                 // No input. Let's slow the character down
@@ -58,14 +52,20 @@ namespace GameAssets.Characters.Player
                 if(_horVelocity == 0){
                     // If move has stoped. Let's set the movement to false.
                     _player.Data.IsMoving = false;
-
-                    // Set Move Animation to false
-                    _player.Animator.SetBool(PlayerController.Anim_IsMoving, false);
                 }
             }
 
             // Apply on Rigidbody the final velocity;
             _player.Data.Rigidbody2D.velocity = new Vector2(_horVelocity, _player.Data.Rigidbody2D.velocity.y);
+        }
+#endregion
+
+#region Exiting States
+        protected override void ExitState(){
+
+            // Ending the player Move animation and effects
+            _player.Data.PlayerAnimations.EndMove();
+
         }
 #endregion
 
