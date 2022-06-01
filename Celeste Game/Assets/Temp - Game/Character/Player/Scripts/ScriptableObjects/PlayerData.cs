@@ -81,6 +81,8 @@ namespace GameAssets.Characters.Player
         
         // Ground Check
         bool _isGrounded;
+        bool _leftEdgeGrounded;
+        bool _rightEdgeGrounded;
         bool _wasGrounded;
 
         // Moving
@@ -112,6 +114,8 @@ namespace GameAssets.Characters.Player
         public bool ShowPointsOnGizmos  { get { return _showPointsOnGizmos; } }
         public LayerMask GroundLayers   { get { return _groundLayers; } }
         public bool IsGrounded          { get { return _isGrounded; } set { _isGrounded = value; } }
+        public bool LeftEdgeGrounded   { get { return _leftEdgeGrounded; } set { _leftEdgeGrounded = value; } }
+        public bool RightEdgeGrounded  { get { return _rightEdgeGrounded; } set { _rightEdgeGrounded = value; } }
         public bool WasGrounded         { get { return _wasGrounded; } set { _wasGrounded = value; } }
 
         // Inputs

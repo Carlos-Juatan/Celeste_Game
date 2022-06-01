@@ -37,10 +37,10 @@ namespace GameAssets.Characters.Player
                 playerPos + _player.Data.RightPointOffset, _player.Data.PointsRadius, _player.Data.GroundLayers
             );
             
-            bool leftPoint = leftColliders.Length > 0;
-            bool rightPoint = rightColliders.Length > 0;
+            _player.Data.LeftEdgeGrounded = leftColliders.Length > 0;
+            _player.Data.RightEdgeGrounded = rightColliders.Length > 0;
 
-            _player.Data.IsGrounded = (leftPoint || rightPoint);
+            _player.Data.IsGrounded = (_player.Data.LeftEdgeGrounded || _player.Data.RightEdgeGrounded);
         }
 #endregion
 

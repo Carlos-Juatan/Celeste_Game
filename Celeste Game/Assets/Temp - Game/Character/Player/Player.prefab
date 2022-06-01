@@ -396,7 +396,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 8638093205285904001}
   _inpactDust_PS: {fileID: 6198199283847602742}
-  _clip_Flip: {fileID: 7400000, guid: 5ca3440f37b2b504688cbef57c6d619a, type: 2}
+  _timeToJumpSqueeze: 0.13
+  _timeToFallSqueeze: 0.1
+  _timeToNextIdle: 6
+  _IdleAChance: 5
+  _IdleBChance: 3
+  _IdleCChance: 1
 --- !u!1001 &7066165634392916392
 PrefabInstance:
   m_ObjectHideFlags: 0
