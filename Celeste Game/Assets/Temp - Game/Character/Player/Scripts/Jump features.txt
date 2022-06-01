@@ -11,4 +11,8 @@ JUMP FEATURES CREATED
 2 - Jump Input buffering
 
 TO MAKE.
-3 - Ledge detection
+1 - Ledge detection
+2 - Rundle idle animations.
+3 - Edge animations
+4 - Look Up and down animations
+5 - Squeeze Sprites animations
