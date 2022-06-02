@@ -1,18 +1,20 @@
 
 JUMP FEATURES CREATED
-1 - Apply jump velocity.
-2 - Variable jump height
-3 - Jump velocity Acceleration and Jump height and reduce
-4 - Mult jumps with jump count.
-5 - Fall Acceleration
-6 - Apex modifiers => [ Make as celeste has do it. ]
-7 - Clamped fall speed => Make sure later
-8 - Coyote time
-2 - Jump Input buffering
+01 - Apply jump velocity.
+02 - Variable jump height
+03 - Jump velocity Acceleration and Jump height and reduce
+04 - Mult jumps with jump count.
+05 - Fall Acceleration
+06 - Apex modifiers => [ Make as celeste has do it. ]
+07 - Clamped fall speed => Make sure later
+08 - Coyote time
+09 - Jump Input buffering
+10 - Rundle idle animations.
+11 - Edge animations
+12 - Look Up and down animations
+13 - Squeeze Sprites animations
 
 TO MAKE.
 1 - Ledge detection
-2 - Rundle idle animations.
-3 - Edge animations
-4 - Look Up and down animations
-5 - Squeeze Sprites animations
+2 - Mabe change the squeeze time to some constante time undo a crescent time like the sample print
+3 - See if have a durt run particle when player is walk

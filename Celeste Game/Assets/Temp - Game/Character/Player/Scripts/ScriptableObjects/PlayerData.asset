@@ -12,13 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d46227998efa646aeaa5f6bb719773, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  _pointsRadius: 0.15
-  _leftPointColor: {r: 1, g: 0, b: 0, a: 1}
-  _leftPointOffset: {x: -0.35, y: -2}
-  _rightPointColor: {r: 0, g: 0, b: 1, a: 1}
-  _rightPointOffset: {x: 0.35, y: -2}
-  _showPointsOnGizmos: 0
+  _groundPointsRadius: 0.15
+  _groundPointsOffset: {x: 0.35, y: -2}
+  _groundPointsColor: {r: 0, g: 1, b: 0, a: 1}
+  _showGroundPointsOnGizmos: 0
   _groundLayers:
+    serializedVersion: 2
+    m_Bits: 8
+  _roofPointsSize: {x: 0.46, y: 0.2}
+  _roofPointsOffset: {x: 0.26, y: -0.15}
+  _distanceForFrame: 0.125
+  _roofPointsColor: {r: 0, g: 0, b: 1, a: 1}
+  _showRoofPointsOnGizmos: 0
+  _roofLayers:
     serializedVersion: 2
     m_Bits: 8
   _simulateOutsideForce: {x: 0, y: 0}

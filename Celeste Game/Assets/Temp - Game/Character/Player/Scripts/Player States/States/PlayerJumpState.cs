@@ -62,6 +62,8 @@ namespace GameAssets.Characters.Player
 
 #region Physics Calculating States
         protected override void FisicsCalculateState(){
+
+            // Applying jump
             if(_jumpTimer > 0){
 
                 // Slow down the force of the jump.
@@ -70,7 +72,8 @@ namespace GameAssets.Characters.Player
                 // Apply the force of the jump
                 _player.Data.Rigidbody2D.velocity = new Vector2(_player.Data.Rigidbody2D.velocity.x, _jumpForce);
 
-                if(_resetJumpTimer){
+    // Detect if reset jump or if collide with a edge or in the middle of the roof and if can't do a corner correction cancel the jump
+                if(_resetJumpTimer || !_player.Data.PlayerPhysics.RoofEdgeDetection()){
                     _resetJumpTimer = false;
                     _jumpHasFinished = true;
                     _isJumping = true;

@@ -37,17 +37,19 @@ namespace GameAssets.Characters.Player
 #region Var.
         [Header("Ground Check")]
         [Range(0, 1)]
-        [SerializeField] float _pointsRadius;
-        [Space(5)]
-        [SerializeField] Color _leftPointColor = Color.red;
-        [SerializeField] Vector2 _leftPointOffset;
-        [Space(5)]
-        [SerializeField] Color _rightPointColor = Color.blue;
-        [SerializeField] Vector2 _rightPointOffset;
-        [Space(5)]
-        [SerializeField] bool _showPointsOnGizmos;
-        [Space(5)]
+        [SerializeField] float _groundPointsRadius; // 0.15f
+        [SerializeField] Vector2 _groundPointsOffset; // x = 0.35, y = -2
+        [SerializeField] Color _groundPointsColor = Color.green;
+        [SerializeField] bool _showGroundPointsOnGizmos;
         [SerializeField] LayerMask _groundLayers;
+
+        [Header("Roof Edge Correction")]
+        [SerializeField] Vector2 _roofPointsSize; // x = 0.46, y = 0.2
+        [SerializeField] Vector2 _roofPointsOffset; // x = 0.26, y = -0.15
+        [SerializeField] float _distanceForFrame = 0.125f;
+        [SerializeField] Color _roofPointsColor = Color.blue;
+        [SerializeField] bool _showRoofPointsOnGizmos;
+        [SerializeField] LayerMask _roofLayers;
 
         [Header("Simulate Outside Forces")]
         [SerializeField] Vector2 _simulateOutsideForce;
@@ -85,6 +87,10 @@ namespace GameAssets.Characters.Player
         bool _rightEdgeGrounded;
         bool _wasGrounded;
 
+        // Ground Check
+        //bool _leftEdgeRoof;
+        //bool _rightEdgeRoof;
+
         // Moving
         bool _isMoving;
         int _facingDirection;
@@ -106,17 +112,23 @@ namespace GameAssets.Characters.Player
         public bool HasSpawned { get { return _hasSpawned; } set { _hasSpawned = value; } }
 
         // Ground Check
-        public float PointsRadius       { get { return _pointsRadius; } }
-        public Color LeftPointColor     { get { return _leftPointColor; } }
-        public Vector2 LeftPointOffset  { get { return _leftPointOffset; } }
-        public Color RightPointColor    { get { return _rightPointColor; } }
-        public Vector2 RightPointOffset { get { return _rightPointOffset; } }
-        public bool ShowPointsOnGizmos  { get { return _showPointsOnGizmos; } }
-        public LayerMask GroundLayers   { get { return _groundLayers; } }
-        public bool IsGrounded          { get { return _isGrounded; } set { _isGrounded = value; } }
-        public bool LeftEdgeGrounded   { get { return _leftEdgeGrounded; } set { _leftEdgeGrounded = value; } }
-        public bool RightEdgeGrounded  { get { return _rightEdgeGrounded; } set { _rightEdgeGrounded = value; } }
-        public bool WasGrounded         { get { return _wasGrounded; } set { _wasGrounded = value; } }
+        public float GroundPointsRadius       { get { return _groundPointsRadius; } }
+        public Color GroundPointsColor        { get { return _groundPointsColor; } }
+        public Vector2 GroundPointsOffset     { get { return _groundPointsOffset; } }
+        public bool ShowGroundPointsOnGizmos  { get { return _showGroundPointsOnGizmos; } }
+        public LayerMask GroundLayers         { get { return _groundLayers; } }
+        public bool IsGrounded                { get { return _isGrounded; } set { _isGrounded = value; } }
+        public bool LeftEdgeGrounded          { get { return _leftEdgeGrounded; } set { _leftEdgeGrounded = value; } }
+        public bool RightEdgeGrounded         { get { return _rightEdgeGrounded; } set { _rightEdgeGrounded = value; } }
+        public bool WasGrounded               { get { return _wasGrounded; } set { _wasGrounded = value; } }
+
+        // Roof Edge Correction
+        public Vector2 RoofPointsSize      { get { return _roofPointsSize; } }
+        public Vector2 RoofPointsOffset    { get { return _roofPointsOffset; } }
+        public float DistanceForFrame      { get { return _distanceForFrame; } }
+        public Color RoofPointsColor       { get { return _roofPointsColor; } }
+        public bool ShowRoofPointsOnGizmos { get { return _showRoofPointsOnGizmos; } }
+        public LayerMask RoofLayers        { get { return _roofLayers; } }
 
         // Inputs
         public Vector2Int AxisInput { get { return _axisInput; } set { _axisInput = value; } }

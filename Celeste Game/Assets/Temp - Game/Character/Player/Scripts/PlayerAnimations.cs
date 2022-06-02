@@ -175,6 +175,7 @@ namespace GameAssets.Characters.Player
             _animator.Play(_hash_Jump);
             _currentClipHash = _hash_Jump;
             _inpactDust_PS.Play();
+            StopCoroutine("SpriteFlipFlopSqueeze");
             StartCoroutine(SpriteFlipFlopSqueeze(.6f, 1.4f, _timeToJumpSqueeze));
         }
 
@@ -199,6 +200,7 @@ namespace GameAssets.Characters.Player
         // Called when the Fall state ends
         public void EndFall(){
             _inpactDust_PS.Play();
+            StopCoroutine("SpriteFlipFlopSqueeze");
             StartCoroutine(SpriteFlipFlopSqueeze(1.5f, .5f, _timeToFallSqueeze, true));
         }
     #endregion
@@ -278,7 +280,8 @@ namespace GameAssets.Characters.Player
         // Deform the sprite to make more fluid motions to the animations
         IEnumerator SpriteFlipFlopSqueeze(float sizeX, float sizeY, float timer, bool reposition = false){
             Vector3 originalSize = Vector3.one;
-            Vector3 originalPos = _playerSpriteTransform.localPosition;
+            Vector3 originalPos = Vector3.zero;
+            originalPos.z = -2;
             Vector3 newSize = new Vector3(sizeX, sizeY, originalSize.z);
             Vector3 newPos = originalPos + (Vector3.up * -sizeY);
             float t = 0f;
@@ -286,19 +289,28 @@ namespace GameAssets.Characters.Player
             // Squeezing the sprite
             while(t <= 1f){
                 t += Time.deltaTime / timer;
-                _playerSpriteTransform.localScale = Vector3.Lerp(originalSize, newSize, t);
-                if(reposition)
+
+                // if need reposition it's fall, or is jump and cancel the jump sneeze if rigidbody's y velocity is equal or less than 0
+                if(reposition){
                     _playerSpriteTransform.localPosition = Vector3.Lerp(originalPos, newPos, t);
+                }else if(_player.Data.Rigidbody2D.velocity.y < 0){
+                    break;
+                }
+
+                _playerSpriteTransform.localScale = Vector3.Lerp(originalSize, newSize, t);
                 yield return null;
             }
+
+            Vector3 currentSize = _playerSpriteTransform.localScale;
+            Vector3 currentPos = _playerSpriteTransform.localPosition;
 
             // Come back to original size
             t = 0f;
             while(t <= 1f){
                 t += Time.deltaTime / timer;
-                _playerSpriteTransform.localScale = Vector3.Lerp(newSize, originalSize, t);
+                _playerSpriteTransform.localScale = Vector3.Lerp(currentSize, originalSize, t);
                 if(reposition)
-                    _playerSpriteTransform.localPosition = Vector3.Lerp(newPos, originalPos, t);
+                    _playerSpriteTransform.localPosition = Vector3.Lerp(currentPos, originalPos, t);
                 yield return null;
             }
         }
