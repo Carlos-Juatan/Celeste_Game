@@ -15,7 +15,6 @@ namespace GameAssets.Characters.Player
 
         [Header("Hair Setup")]
         [SerializeField] float _lerpSpeed = 20f;
-        [SerializeField] float _horizontalGroundedMult = 1.2f;
         [SerializeField] Vector2 _partsOffset;
         [SerializeField] Vector2 _idleOffset;
 
@@ -61,17 +60,11 @@ namespace GameAssets.Characters.Player
         void CalculateHairOffset(){
 
             // Horizontal Offset
-            if(_player.Data.Rigidbody2D.velocity.x != 0f){
-
+            if(_player.Data.AxisInput.x != 0){
                 _partsCurrentOffset.x = _partsOffset.x * Mathf.Clamp01(Mathf.Abs(_player.Data.Rigidbody2D.velocity.x)) * _facingMult;
 
-
-                if(_player.Data.IsGrounded){
-                    _partsCurrentOffset.x /= _horizontalGroundedMult;
-                }
-
             }else{
-                _partsCurrentOffset.x = _idleOffset.x;
+                _partsCurrentOffset.x = Mathf.MoveTowards(_partsCurrentOffset.x, _idleOffset.x, Time.deltaTime);
             }
 
             // Vertical Offset
