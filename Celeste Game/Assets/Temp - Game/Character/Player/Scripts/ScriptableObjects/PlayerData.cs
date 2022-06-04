@@ -51,6 +51,21 @@ namespace GameAssets.Characters.Player
         [SerializeField] bool _showRoofPointsOnGizmos;
         [SerializeField] LayerMask _roofLayers;
 
+        [Header("Wall Slider Check")]
+        [SerializeField] Vector2 _sideSliderPointSize;
+        [SerializeField] Vector2 _sideSliderPointOffset;
+        [SerializeField] float _playerYCenterOffset;
+        [SerializeField] Color _sideSliderPointsColor = Color.yellow;
+        [SerializeField] bool _showSideSliderPointsOnGizmos;
+        [SerializeField] LayerMask _wallSliderLayers;
+
+        [Header("Wall Jump Check")]
+        [SerializeField] Vector2 _sideJumpPointSize;
+        [SerializeField] Vector2 _sideJumpPointOffset;
+        [SerializeField] Color _sideJumoPointsColor = new Color(0.6F, 0.3F, 0.08F);
+        [SerializeField] bool _showSideJumpPointsOnGizmos;
+        [SerializeField] LayerMask _walJumplLayers;
+
         [Header("Simulate Outside Forces")]
         [SerializeField] Vector2 _simulateOutsideForce;
 
@@ -87,9 +102,16 @@ namespace GameAssets.Characters.Player
         bool _rightEdgeGrounded;
         bool _wasGrounded;
 
-        // Ground Check
+        // Roof Check
         //bool _leftEdgeRoof;
         //bool _rightEdgeRoof;
+
+        // Wall Slider Check
+        bool _upSizeSlideWall;
+        bool _downSizeSlideWall;
+
+        // Wall Jump Check
+        bool _canWallJump;
 
         // Moving
         bool _isMoving;
@@ -129,6 +151,24 @@ namespace GameAssets.Characters.Player
         public Color RoofPointsColor       { get { return _roofPointsColor; } }
         public bool ShowRoofPointsOnGizmos { get { return _showRoofPointsOnGizmos; } }
         public LayerMask RoofLayers        { get { return _roofLayers; } }
+
+        // Wall Slider Check
+        public Vector2 SideSliderPointSize       { get { return _sideSliderPointSize; } }
+        public Vector2 SideSliderPointOffset     { get { return _sideSliderPointOffset; } }
+        public float PlayerYCenterOffset         { get { return _playerYCenterOffset; } }
+        public Color SideSliderPointsColor       { get { return _sideSliderPointsColor; } }
+        public bool ShowSideSliderPointsOnGizmos { get { return _showSideSliderPointsOnGizmos; } }
+        public LayerMask WallSliderLayers        { get { return _wallSliderLayers; } }
+        public bool UpSizeSlideWall              { get { return _upSizeSlideWall; } }
+        public bool DownSizeSlideWall            { get { return _downSizeSlideWall; } }
+
+        // Wall Jump Check
+        public Vector2 SideJumpPointSize       { get { return _sideJumpPointSize; } }
+        public Vector2 SideJumpPointOffset     { get { return _sideJumpPointOffset; } }
+        public Color SideJumoPointsColor       { get { return _sideJumoPointsColor; } }
+        public bool ShowSideJumpPointsOnGizmos { get { return _showSideJumpPointsOnGizmos; } }
+        public LayerMask WalJumplLayers        { get { return _walJumplLayers; } }
+        public bool CanWallJump                { get { return _canWallJump; } }
 
         // Inputs
         public Vector2Int AxisInput { get { return _axisInput; } set { _axisInput = value; } }

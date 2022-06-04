@@ -8,41 +8,83 @@ namespace GameAssets.Characters.Player
         [Header("PlayerController refence")]
         [SerializeField] PlayerController _player;
 
-        // Ground Check points
-        Vector2 _rightPointOffset {
-            get{
-                Vector2 value = _player.Data.GroundPointsOffset;
-                value.x += transform.position.x;
-                value.y += transform.position.y;
-                return value;
-            }
-        }
+    #region Ground Check points
+        Vector2 _rightPointOffset { get{
+            Vector2 value = _player.Data.GroundPointsOffset;
+            value.x += transform.position.x;
+            value.y += transform.position.y;
+            return value;
+        }}
 
-        Vector2 _leftPointOffset{
-            get{
-                Vector2 value = _rightPointOffset;
-                value.x = transform.position.x - _player.Data.GroundPointsOffset.x;
-                return value;
-            }
-        }
+        Vector2 _leftPointOffset{ get{
+            Vector2 value = _rightPointOffset;
+            value.x = transform.position.x - _player.Data.GroundPointsOffset.x;
+            return value;
+        }}
+    #endregion
 
-        // Roof Edge Check points
-        Vector2 _rightRoofPos {
-            get{
-                Vector2 value = _player.Data.RoofPointsOffset;
-                value.x += transform.position.x;
-                value.y += transform.position.y;
-                return value;
-            }
-        }
+    #region Roof Edge Check points
+        Vector2 _rightRoofPos { get{
+            Vector2 value = _player.Data.RoofPointsOffset;
+            value.x += transform.position.x;
+            value.y += transform.position.y;
+            return value;
+        }}
 
-        Vector2 _leftRoofPos{
-            get{
-                Vector2 value = _rightRoofPos;
-                value.x = transform.position.x - _player.Data.RoofPointsOffset.x;
-                return value;
-            }
-        }
+        Vector2 _leftRoofPos{ get{
+            Vector2 value = _rightRoofPos;
+            value.x = transform.position.x - _player.Data.RoofPointsOffset.x;
+            return value;
+        }}
+    #endregion
+
+    #region Wall Slider Check
+        // Up right
+        Vector2 _rightUpSliderPos { get{
+            Vector2 value = _player.Data.SideSliderPointOffset;
+            value.x += transform.position.x;
+            value.y += transform.position.y - _player.Data.PlayerYCenterOffset;
+            return value;
+        }}
+
+        // Up left
+        Vector2 _leftUpSliderPos{ get{
+            Vector2 value = _rightUpSliderPos;
+            value.x = transform.position.x - _player.Data.SideSliderPointOffset.x;
+            return value;
+        }}
+
+        // Down Right
+        Vector2 _rightDownSliderPos{ get{
+            Vector2 value = _rightUpSliderPos;
+            value.y = transform.position.y - _player.Data.PlayerYCenterOffset - _player.Data.SideSliderPointOffset.y;
+            return value;
+        }}
+
+        // Down left
+        Vector2 _leftDownSliderPos{ get{
+            Vector2 value = _leftUpSliderPos;
+            value.y = transform.position.y - _player.Data.PlayerYCenterOffset - _player.Data.SideSliderPointOffset.y;
+            return value;
+        }}
+    #endregion
+
+    #region  Wall Jump Check
+        // Right
+        Vector2 _rightWallJumpPos { get{
+            Vector2 value = _player.Data.SideJumpPointOffset;
+            value.x += transform.position.x;
+            value.y += transform.position.y;
+            return value;
+        }}
+
+        // Left
+        Vector2 _leftWallJumpPos{ get{
+            Vector2 value = _rightWallJumpPos;
+            value.x = transform.position.x - _player.Data.SideJumpPointOffset.x;
+            return value;
+        }}
+    #endregion
 #endregion
 
 #region Updating
@@ -126,13 +168,24 @@ namespace GameAssets.Characters.Player
             transform.Translate(translateAmount, 0, 0);
         }
     #endregion
+
+    #region Wall Slider Check
+        public void WallSliderCheckDetection(){
+
+        }
+    #endregion
+
+    #region Wall Jump Check
+        public void WallJumpCheckDetection(){
+            
+        }
+    #endregion
+
 #endregion
 
 #region On Draw Gizmos
 #if UNITY_EDITOR
         void OnDrawGizmos() {
-
-            Vector2 playerPos  = new Vector2(transform.position.x, transform.position.y);
             
             // Draw the ground check points
             if(_player.Data.ShowGroundPointsOnGizmos){
@@ -154,6 +207,30 @@ namespace GameAssets.Characters.Player
                 // Draw Cubes on the roof check points
                 Gizmos.DrawCube(_rightRoofPos, _player.Data.RoofPointsSize);
                 Gizmos.DrawCube(_leftRoofPos, _player.Data.RoofPointsSize);
+            }
+
+            // Draw the Wall Jump detection points.
+            if(_player.Data.ShowSideJumpPointsOnGizmos){
+
+                // Wall Jump check color
+                Gizmos.color = _player.Data.SideJumoPointsColor;
+
+                // Draw Cubes on the roof check points
+                Gizmos.DrawCube(_rightWallJumpPos, _player.Data.SideJumpPointSize);
+                Gizmos.DrawCube(_leftWallJumpPos, _player.Data.SideJumpPointSize);
+            }
+
+            // Draw the Wall Slider detection points.
+            if(_player.Data.ShowSideSliderPointsOnGizmos){
+
+                // Wall Jump check color
+                Gizmos.color = _player.Data.SideSliderPointsColor;
+
+                // Draw Cubes on the roof check points
+                Gizmos.DrawCube(_rightUpSliderPos, _player.Data.SideSliderPointSize);
+                Gizmos.DrawCube(_leftUpSliderPos, _player.Data.SideSliderPointSize);
+                Gizmos.DrawCube(_rightDownSliderPos, _player.Data.SideSliderPointSize);
+                Gizmos.DrawCube(_leftDownSliderPos, _player.Data.SideSliderPointSize);
             }
         }
 #endif

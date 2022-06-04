@@ -27,6 +27,21 @@ MonoBehaviour:
   _roofLayers:
     serializedVersion: 2
     m_Bits: 8
+  _sideSliderPointSize: {x: 0.125, y: 0.75}
+  _sideSliderPointOffset: {x: 0.5625, y: -0.4}
+  _playerYCenterOffset: 1.12
+  _sideSliderPointsColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _showSideSliderPointsOnGizmos: 0
+  _wallSliderLayers:
+    serializedVersion: 2
+    m_Bits: 8
+  _sideJumpPointSize: {x: 0.375, y: 1.5}
+  _sideJumpPointOffset: {x: 0.6875, y: -1.12}
+  _sideJumoPointsColor: {r: 0.6, g: 0.29803923, b: 0.078431375, a: 1}
+  _showSideJumpPointsOnGizmos: 0
+  _walJumplLayers:
+    serializedVersion: 2
+    m_Bits: 8
   _simulateOutsideForce: {x: 0, y: 0}
   _maxMoveSpeed: 8
   _moveAcceleration: 2
