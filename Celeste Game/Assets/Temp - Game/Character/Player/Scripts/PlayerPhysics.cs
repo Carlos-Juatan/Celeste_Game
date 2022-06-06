@@ -170,8 +170,38 @@ namespace GameAssets.Characters.Player
     #endregion
 
     #region Wall Slider Check
-        public void WallSliderCheckDetection(){
+        public bool WallSliderCheckDetection(){
 
+            // Point to check the Wall slider
+            Collider2D rightUpWallSlider = Physics2D.OverlapBox(
+                _rightUpSliderPos, _player.Data.SideSliderPointSize, 0, _player.Data.WallSliderLayers);
+
+            Collider2D leftUpWallSlider = Physics2D.OverlapBox(
+                _leftUpSliderPos, _player.Data.SideSliderPointSize, 0, _player.Data.WallSliderLayers);
+
+            Collider2D rightDownWallSlider = Physics2D.OverlapBox(
+                _rightDownSliderPos, _player.Data.SideSliderPointSize, 0, _player.Data.WallSliderLayers);
+
+            Collider2D leftDownWallSlider = Physics2D.OverlapBox(
+                _leftDownSliderPos, _player.Data.SideSliderPointSize, 0, _player.Data.WallSliderLayers);
+
+            // Set Values
+            _player.Data.UpSizeSlideWall = rightUpWallSlider != null || leftUpWallSlider != null;
+            _player.Data.DownSizeSlideWall = rightDownWallSlider != null || leftDownWallSlider != null;
+
+
+            if((rightUpWallSlider != null || rightDownWallSlider != null) && _player.Data.AxisInput.x == 1){
+                // if the right up or down have collider with something and the directional is right start the wall slider
+                return true;
+
+            }else if((leftUpWallSlider != null || leftDownWallSlider != null) && _player.Data.AxisInput.x == -1){
+                // else if the left up or down have collider with something and the directional is left start the wall slider
+                return true;
+                
+            }else{
+                // Else cancel the wall slider
+                return false;
+            }
         }
     #endregion
 

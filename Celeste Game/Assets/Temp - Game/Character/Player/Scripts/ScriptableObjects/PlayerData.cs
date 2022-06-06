@@ -9,7 +9,8 @@ namespace GameAssets.Characters.Player
         Move,
         Grounded,
         Jump,
-        Fall
+        Fall,
+        WallSlider
     }
 
     public class PlayerStateFactory
@@ -19,11 +20,12 @@ namespace GameAssets.Characters.Player
 
         public PlayerStateFactory(PlayerController currentPlayer){
             _player = currentPlayer;
-            _states[PlayerStates.Grounded]  = new PlayerGroundedState(_player);
-            _states[PlayerStates.Idle]      = new PlayerIdleState(_player);
-            _states[PlayerStates.Move]      = new PlayerMoveState(_player);
-            _states[PlayerStates.Jump]      = new PlayerJumpState(_player);
-            _states[PlayerStates.Fall]      = new PlayerFallState(_player);
+            _states[PlayerStates.Grounded]   = new PlayerGroundedState(_player);
+            _states[PlayerStates.Idle]       = new PlayerIdleState(_player);
+            _states[PlayerStates.Move]       = new PlayerMoveState(_player);
+            _states[PlayerStates.Jump]       = new PlayerJumpState(_player);
+            _states[PlayerStates.Fall]       = new PlayerFallState(_player);
+            _states[PlayerStates.WallSlider] = new PlayerWallSlider(_player);
         }
 
         public PlayerBaseState SelectState(PlayerStates newState){ return _states[newState]; }
@@ -58,6 +60,7 @@ namespace GameAssets.Characters.Player
         [SerializeField] Color _sideSliderPointsColor = Color.yellow;
         [SerializeField] bool _showSideSliderPointsOnGizmos;
         [SerializeField] LayerMask _wallSliderLayers;
+        [SerializeField] float _wallSliderVelocity;
 
         [Header("Wall Jump Check")]
         [SerializeField] Vector2 _sideJumpPointSize;
@@ -159,8 +162,9 @@ namespace GameAssets.Characters.Player
         public Color SideSliderPointsColor       { get { return _sideSliderPointsColor; } }
         public bool ShowSideSliderPointsOnGizmos { get { return _showSideSliderPointsOnGizmos; } }
         public LayerMask WallSliderLayers        { get { return _wallSliderLayers; } }
-        public bool UpSizeSlideWall              { get { return _upSizeSlideWall; } }
-        public bool DownSizeSlideWall            { get { return _downSizeSlideWall; } }
+        public float WallSliderVelocity          { get { return _wallSliderVelocity; } }
+        public bool UpSizeSlideWall              { get { return _upSizeSlideWall; } set { _upSizeSlideWall = value; } }
+        public bool DownSizeSlideWall            { get { return _downSizeSlideWall; } set { _downSizeSlideWall = value; } }
 
         // Wall Jump Check
         public Vector2 SideJumpPointSize       { get { return _sideJumpPointSize; } }
