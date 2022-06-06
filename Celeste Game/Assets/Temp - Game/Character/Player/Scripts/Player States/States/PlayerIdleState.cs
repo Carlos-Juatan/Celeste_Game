@@ -10,7 +10,9 @@ namespace GameAssets.Characters.Player
 
 #region Stating
         protected override void EnterState(){
-            // Set Idle Animation
+
+            // Run the player Idle animation and effects
+            _player.Data.PlayerAnimations.StartIdle();
 
         }
 #endregion
@@ -23,5 +25,15 @@ namespace GameAssets.Characters.Player
             }
         }
 #endregion
+
+#region Exiting States
+        protected override void ExitState(){
+
+            // Ending the player Move animation and effects
+            _player.Data.PlayerAnimations.EndIdle();
+
+        }
+#endregion
+
     }
 }

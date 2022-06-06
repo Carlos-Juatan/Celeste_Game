@@ -36,8 +36,13 @@ namespace GameAssets.Characters.Player
         float _animationStartFrame = 0.0f;
         int _currentClipHash;
 
+        // Idle Animations
         bool _isIdle = true;
         float _currentIdleTimer;
+
+        // Walk Animations
+        bool _isWalkToWall = false;
+        bool _canChangeWalk = false;
 
         // Wall Slider Animatins
         bool _onWallSlider = false;
@@ -91,7 +96,7 @@ namespace GameAssets.Characters.Player
             CheckWallSliderAnimation();
         }
 
-        // Play flip Animation
+    #region Play flip Animation
         void Flip(){
             if(_player.Data.AxisInput.x != 0){
                 if(_player.Data.FacingDirection != _player.Data.AxisInput.x){
@@ -108,6 +113,7 @@ namespace GameAssets.Characters.Player
                         //_animationStartFrame = 0.0f;
                         StartCoroutine(WaitAnimationsFinishing());
         }}}}
+    #endregion
 
     #region Random Idle, edge falling and Duck animations
         // Play all animation how chan run on idle state, like crouch, look up, edge, random idles animations
@@ -175,12 +181,23 @@ namespace GameAssets.Characters.Player
 
     #region Walk and push animations
         void CheckPushAnimation(){
-            if(_player.Data.IsGrounded && _player.Data.IsMoving){
-                if(_player.Data.WallSliderInteratc){
-                    _animator.Play(_hash_Push);
 
-                }else{
-                    _animator.Play(_hash_Move);
+            if(_player.Data.IsGrounded && _player.Data.AxisInput.x != 0){
+
+                if(_isWalkToWall != _player.Data.WallSliderInteratc){
+                    _isWalkToWall = !_isWalkToWall;
+                    _canChangeWalk = true;
+                }
+
+                if(_canChangeWalk){
+                    _canChangeWalk = false;
+
+                    if(!_player.Data.WallSliderInteratc){
+                        _animator.Play(_hash_Move);
+
+                    }else{
+                        _animator.Play(_hash_Push);
+                    }
                 }
             }
         }
@@ -227,7 +244,7 @@ namespace GameAssets.Characters.Player
             if(_player.Data.IsMoving){
                 StartMove();
             }else{
-                EndMove();
+                StartIdle();
             }
         }
 
@@ -278,19 +295,35 @@ namespace GameAssets.Characters.Player
         public void StartMove(){
             if(_player.Data.IsGrounded){
                 if(_player.Data.FacingDirection == _player.Data.AxisInput.x){
-                    _animator.Play(_hash_Move);
+                    if(!_player.Data.WallSliderInteratc){
+                            _animator.Play(_hash_Move);
+
+                        }else{
+                            _animator.Play(_hash_Push);
+                        }
                 }
                 _currentClipHash = _hash_Move;
-                _isIdle = false;
             }
         }
 
         // Called when the Move state ends
-        public void EndMove(){
+        public void EndMove(){}
+    #endregion
+
+    #region Is Idle
+        // Called when the Idle state starts
+        public void StartIdle(){
             if(_player.Data.IsGrounded){
+                _animator.Play(_hash_Idle);
+                _currentClipHash = _hash_Idle;
                 _isIdle = true;
                 _currentIdleTimer = _timeToNextIdle;
             }
+        }
+
+        // Called when the Idle state ends
+        public void EndIdle(){
+            _isIdle = false;
         }
     #endregion
 
