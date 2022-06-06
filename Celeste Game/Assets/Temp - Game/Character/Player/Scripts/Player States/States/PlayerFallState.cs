@@ -10,7 +10,6 @@ namespace GameAssets.Characters.Player
         float _jumpInputBuffer;
         bool _jumpInputHolding;
         bool _fallingByPlatform;
-        bool _wallSlider;
 #endregion
 
 #region Constructor
@@ -76,7 +75,7 @@ namespace GameAssets.Characters.Player
                 }
             }else{
                 // Wall Slider
-                if(_wallSlider){
+                if(_player.Data.WallSliderInteratc){
                     SwitchState(_player.Data.Factory.SelectState(PlayerStates.WallSlider));
                 }
             }
@@ -85,9 +84,6 @@ namespace GameAssets.Characters.Player
 
 #region Physics Calculating States
         protected override void FisicsCalculateState(){
-
-            // Verifying wall slider
-            _wallSlider = _player.Data.PlayerPhysics.WallSliderCheckDetection();
 
             // Fall faster and allow small jumps. _jumpVelocityFalloff is the point at which we start adding extra gravity. Using 0 causes floating
             if (_player.Data.Rigidbody2D.velocity.y < _player.Data.JumpVelocityFalloff){
@@ -100,8 +96,8 @@ namespace GameAssets.Characters.Player
 #region Exiting States
         protected override void ExitState(){
 
-            if(!_wallSlider){
-                // Ending the player Fall animation and effects
+            if(!_player.Data.WallSliderInteratc){
+                // Ending the player Fall animation and effects if don't start wall slider.
                 _player.Data.PlayerAnimations.EndFall();
             }
 

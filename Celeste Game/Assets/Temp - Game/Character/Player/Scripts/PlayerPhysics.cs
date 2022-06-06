@@ -186,8 +186,8 @@ namespace GameAssets.Characters.Player
                 _leftDownSliderPos, _player.Data.SideSliderPointSize, 0, _player.Data.WallSliderLayers);
 
             // Set Values
-            _player.Data.UpSizeSlideWall = rightUpWallSlider != null || leftUpWallSlider != null;
-            _player.Data.DownSizeSlideWall = rightDownWallSlider != null || leftDownWallSlider != null;
+            _player.Data.UpSideSlideWall = rightUpWallSlider != null || leftUpWallSlider != null;
+            _player.Data.DownSideSlideWall = rightDownWallSlider != null || leftDownWallSlider != null;
 
 
             if((rightUpWallSlider != null || rightDownWallSlider != null) && _player.Data.AxisInput.x == 1){

@@ -110,8 +110,9 @@ namespace GameAssets.Characters.Player
         //bool _rightEdgeRoof;
 
         // Wall Slider Check
-        bool _upSizeSlideWall;
-        bool _downSizeSlideWall;
+        bool _wallSliderInteratc;
+        bool _upSideSlideWall;
+        bool _downSideSlideWall;
 
         // Wall Jump Check
         bool _canWallJump;
@@ -163,8 +164,9 @@ namespace GameAssets.Characters.Player
         public bool ShowSideSliderPointsOnGizmos { get { return _showSideSliderPointsOnGizmos; } }
         public LayerMask WallSliderLayers        { get { return _wallSliderLayers; } }
         public float WallSliderVelocity          { get { return _wallSliderVelocity; } }
-        public bool UpSizeSlideWall              { get { return _upSizeSlideWall; } set { _upSizeSlideWall = value; } }
-        public bool DownSizeSlideWall            { get { return _downSizeSlideWall; } set { _downSizeSlideWall = value; } }
+        public bool WallSliderInteratc              { get { return _wallSliderInteratc; } set { _wallSliderInteratc = value; } }
+        public bool UpSideSlideWall              { get { return _upSideSlideWall; } set { _upSideSlideWall = value; } }
+        public bool DownSideSlideWall            { get { return _downSideSlideWall; } set { _downSideSlideWall = value; } }
 
         // Wall Jump Check
         public Vector2 SideJumpPointSize       { get { return _sideJumpPointSize; } }

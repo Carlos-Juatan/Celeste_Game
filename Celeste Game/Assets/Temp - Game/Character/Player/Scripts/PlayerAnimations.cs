@@ -11,6 +11,8 @@ namespace GameAssets.Characters.Player
 
         [Header("Particles")]
         [SerializeField] ParticleSystem _inpactDust_PS;
+        [SerializeField] ParticleSystem _wallSliderDust_PS;
+        [SerializeField] ParticleSystem _upWallSliderDust_PS;
 
         //[Header("Animation Clips")]
         //[SerializeField] AnimationClip _clip_Flip;
@@ -34,9 +36,13 @@ namespace GameAssets.Characters.Player
         float _animationStartFrame = 0.0f;
         int _currentClipHash;
 
-        // Idle Animatins
         bool _isIdle = true;
         float _currentIdleTimer;
+
+        // Wall Slider Animatins
+        bool _onWallSlider = false;
+        bool _lastWallUpCheck = false;
+        bool _canChageWallEffects = false;
 
         readonly int _hash_Idle = Animator.StringToHash("Idle");
         readonly int _hash_IdleA = Animator.StringToHash("IdleA");
@@ -77,6 +83,12 @@ namespace GameAssets.Characters.Player
 
             // Idle animations
             IdleAnimations();
+
+            // Push or walk animation
+            CheckPushAnimation();
+
+            // Wall Slider animations
+            CheckWallSliderAnimation();
         }
 
         // Play flip Animation
@@ -86,12 +98,18 @@ namespace GameAssets.Characters.Player
                     _player.Data.FacingDirection = _player.Data.AxisInput.x;
                     _player.Data.PlayerRenderer.flipX = !_player.Data.PlayerRenderer.flipX;
 
+                    // Wall Slider Particles
+                    Vector2 particlePos = _wallSliderDust_PS.transform.localPosition;
+                    particlePos.x = _player.Data.FacingDirection == 1 ? Mathf.Abs(particlePos.x) : (particlePos.x * -1);
+                    _wallSliderDust_PS.transform.localPosition = particlePos;
+
                     if(_player.Data.IsGrounded){
                         _animator.Play(_hash_Flip);
                         //_animationStartFrame = 0.0f;
                         StartCoroutine(WaitAnimationsFinishing());
         }}}}
 
+    #region Random Idle, edge falling and Duck animations
         // Play all animation how chan run on idle state, like crouch, look up, edge, random idles animations
         void IdleAnimations(){
             if(_isIdle){
@@ -153,6 +171,51 @@ namespace GameAssets.Characters.Player
 
             return _hash_Idle;
         }
+    #endregion
+
+    #region Walk and push animations
+        void CheckPushAnimation(){
+            if(_player.Data.IsGrounded && _player.Data.IsMoving){
+                if(_player.Data.WallSliderInteratc){
+                    _animator.Play(_hash_Push);
+
+                }else{
+                    _animator.Play(_hash_Move);
+                }
+            }
+        }
+    #endregion
+
+    #region Wall slider animations
+        void CheckWallSliderAnimation(){
+            if(_onWallSlider){
+
+                if(_lastWallUpCheck != (_player.Data.UpSideSlideWall && !_player.Data.DownSideSlideWall)){
+                    _lastWallUpCheck = (_player.Data.UpSideSlideWall && !_player.Data.DownSideSlideWall);
+                    _canChageWallEffects = true;
+                }
+                
+                if(_canChageWallEffects){
+                    _canChageWallEffects = false;
+
+                    if(_player.Data.UpSideSlideWall && !_player.Data.DownSideSlideWall){
+                        _animator.Play(_hash_Dangling);
+                        _wallSliderDust_PS.Stop();
+                        _upWallSliderDust_PS.Play();
+
+                    }else{
+                        _animator.Play(_hash_WallSlider);
+                        _upWallSliderDust_PS.Stop();
+                        _wallSliderDust_PS.Play();
+                    }
+                }
+            }else{
+                _wallSliderDust_PS.Stop();
+                _upWallSliderDust_PS.Stop();
+
+            }
+        }
+    #endregion
 
 #endregion
 
@@ -234,13 +297,18 @@ namespace GameAssets.Characters.Player
     #region Wall Slider
         // Called when the Wall Slider state starts
         public void StartWallSlider(){
+            _wallSliderDust_PS.Play();
             _currentClipHash = _hash_WallSlider;
             _animator.Play(_hash_WallSlider);
             StopCoroutine("SpriteFlipFlopSqueeze");
+            _onWallSlider = true;
         }
 
         // Called when the Wall Slider state ends
-        public void EndWallSlider(){}
+        public void EndWallSlider(){
+            _wallSliderDust_PS.Stop();
+            _onWallSlider = false;
+        }
     #endregion
 
 #endregion

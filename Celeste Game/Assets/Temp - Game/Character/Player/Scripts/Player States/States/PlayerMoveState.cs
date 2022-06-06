@@ -34,6 +34,9 @@ namespace GameAssets.Characters.Player
 #region Physics Calculating States
         protected override void FisicsCalculateState(){
 
+            // Detect Wall
+            _player.Data.WallSliderInteratc = _player.Data.PlayerPhysics.WallSliderCheckDetection();
+
             //Running and with acceleration and friction
             float mult = _player.Data.IsGrounded ? 1 : _player.Data.AirMult;
             int moveDir = _player.Data.AxisInput.x;
@@ -62,6 +65,9 @@ namespace GameAssets.Characters.Player
 
 #region Exiting States
         protected override void ExitState(){
+
+            // Set Wall slide false because have no horizontal inputs any more
+            _player.Data.WallSliderInteratc = false;
 
             // Ending the player Move animation and effects
             _player.Data.PlayerAnimations.EndMove();

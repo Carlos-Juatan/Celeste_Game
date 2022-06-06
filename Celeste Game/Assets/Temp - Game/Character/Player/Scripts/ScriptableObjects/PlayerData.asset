@@ -28,7 +28,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   _sideSliderPointSize: {x: 0.125, y: 0.75}
-  _sideSliderPointOffset: {x: 0.5625, y: -0.4}
+  _sideSliderPointOffset: {x: 0.5625, y: 0.4}
   _playerYCenterOffset: 1.12
   _sideSliderPointsColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _showSideSliderPointsOnGizmos: 0
