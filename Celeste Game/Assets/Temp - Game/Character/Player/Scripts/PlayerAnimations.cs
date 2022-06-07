@@ -100,7 +100,6 @@ namespace GameAssets.Characters.Player
         void Flip(){
             if(_player.Data.OnWallJump){
                     _player.Data.PlayerRenderer.flipX = _player.Data.FacingDirection == 1 ? false : true;
-
                     // Flip Particles
                     FlipParticles();
 
@@ -193,7 +192,8 @@ namespace GameAssets.Characters.Player
     #region Walk and push animations
         void CheckPushAnimation(){
 
-            if(_player.Data.IsGrounded && _player.Data.WasGrounded && _player.Data.AxisInput.x != 0){
+            if(_player.Data.IsGrounded && _player.Data.WasGrounded && _player.Data.AxisInput.x != 0f && !_waitingAnimationEnd){
+                Debug.Log("Vai Se Fooooooooooooooooooooooooo");
 
                 if(_isWalkToWall != _player.Data.WallSliderInteratc){
                     _isWalkToWall = !_isWalkToWall;
