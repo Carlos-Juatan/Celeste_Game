@@ -130,16 +130,16 @@ namespace GameAssets.Characters.Player
             // If the left and the right have collisions with something cancel the jump
             if(leftEdgeRoof != null && rightEdgeRoof != null){
                 return false;
-            }
-            else{
+            
             // Else if have just 1 o any collisions continue the jump and make a correction case need it
+            }else{
 
+                // if need correction because the right roof corner
                 if(rightEdgeRoof != null && leftEdgeRoof == null){
-                    // if need correction because the right roof corner
                     RoofEdgeCorrection(_rightRoofPos, -1);
 
+                // else if need correction because the left roof corner
                 }else if(leftEdgeRoof != null && rightEdgeRoof == null){
-                    // if need correction because the left roof corner
                     RoofEdgeCorrection(_leftRoofPos, 1);
                 }
 
@@ -206,8 +206,28 @@ namespace GameAssets.Characters.Player
     #endregion
 
     #region Wall Jump Check
-        public void WallJumpCheckDetection(){
-            
+        public bool WallJumpCheckDetection(){
+
+            // Point to check the Wall to Jump
+            Collider2D rightWallJump = Physics2D.OverlapBox(
+                _rightWallJumpPos, _player.Data.SideJumpPointSize, 0, _player.Data.WalJumplLayers);
+
+            Collider2D leftWallJump = Physics2D.OverlapBox(
+                _leftWallJumpPos, _player.Data.SideJumpPointSize, 0, _player.Data.WalJumplLayers);
+
+            _player.Data.RightWallJump = rightWallJump != null ? true : false;
+            _player.Data.LeftWallJump = leftWallJump != null ? true : false;
+
+            // If the left and the right haven't collisions with anything disable the wall jump
+            if(!_player.Data.RightWallJump && !_player.Data.LeftWallJump){
+                //_player.Data.CanWallJump = false;
+                return false;
+
+            // Else if have just 1 o any collisions enable the wall jump
+            }else{
+                //_player.Data.CanWallJump = true;
+                return true;
+            }
         }
     #endregion
 

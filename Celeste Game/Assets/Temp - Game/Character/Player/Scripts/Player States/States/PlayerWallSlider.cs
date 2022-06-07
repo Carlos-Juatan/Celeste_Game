@@ -76,5 +76,19 @@ namespace GameAssets.Characters.Player
         }
 #endregion
 
+#region External Events Inputs
+        // Called by InputManager envery time the Jump input has pressed or release
+        public override void JumpingInput(bool hasPressed){
+
+            // if jump is pressed
+            if(hasPressed){
+                // If can wall jump switch to wall jump
+                if(_player.Data.PlayerPhysics.WallJumpCheckDetection()){
+                    SwitchState(_player.Data.Factory.SelectState(PlayerStates.WallJump));
+                }
+            }
+        }
+#endregion
+
     }
 }

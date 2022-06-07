@@ -35,7 +35,6 @@ MonoBehaviour:
   _wallSliderLayers:
     serializedVersion: 2
     m_Bits: 8
-  _wallSliderVelocity: 4
   _sideJumpPointSize: {x: 0.375, y: 1.5}
   _sideJumpPointOffset: {x: 0.6875, y: -1.12}
   _sideJumoPointsColor: {r: 0.6, g: 0.29803923, b: 0.078431375, a: 1}
@@ -55,7 +54,10 @@ MonoBehaviour:
   _curtInertiaLowJump: 3
   _resetJumpInertia: 2.2
   _coyoteTime: 0.2
-  _jumpInputBuffer: 0.3
+  _jumpInputBuffer: 0.2
   _jumpCount: 1
   _fallMultiplier: 0.08
   _jumpVelocityFalloff: 2
+  _wallSliderVelocity: 4
+  _wallJumpForce: 10
+  _wallJumpTime: 0.3

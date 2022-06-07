@@ -129,10 +129,18 @@ namespace GameAssets.Characters.Player
             if(!hasPressed){
                 // If jump input release cancel the jump.
                 CancelJump();
-            }
-            else if(_player.Data.CurrentJumpCount > 0){
-                // If jump input is pressed start a new jump
-                ExecuteJump();
+
+            // Else if jump input is pressed
+            }else{
+
+                // If can wall jump switch to wall jump
+                if(_player.Data.PlayerPhysics.WallJumpCheckDetection()){
+                    SwitchState(_player.Data.Factory.SelectState(PlayerStates.WallJump));
+
+                // Else if can jump start a new jump
+                }else if(_player.Data.CurrentJumpCount > 0){
+                    ExecuteJump();
+                }
             }
         }
 #endregion

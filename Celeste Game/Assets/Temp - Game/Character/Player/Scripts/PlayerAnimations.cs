@@ -98,21 +98,32 @@ namespace GameAssets.Characters.Player
 
     #region Play flip Animation
         void Flip(){
-            if(_player.Data.AxisInput.x != 0){
+            if(_player.Data.OnWallJump){
+                    _player.Data.PlayerRenderer.flipX = _player.Data.FacingDirection == 1 ? false : true;
+
+                    // Flip Particles
+                    FlipParticles();
+
+            }else if(_player.Data.AxisInput.x != 0){
                 if(_player.Data.FacingDirection != _player.Data.AxisInput.x){
                     _player.Data.FacingDirection = _player.Data.AxisInput.x;
                     _player.Data.PlayerRenderer.flipX = !_player.Data.PlayerRenderer.flipX;
 
-                    // Wall Slider Particles
-                    Vector2 particlePos = _wallSliderDust_PS.transform.localPosition;
-                    particlePos.x = _player.Data.FacingDirection == 1 ? Mathf.Abs(particlePos.x) : (particlePos.x * -1);
-                    _wallSliderDust_PS.transform.localPosition = particlePos;
+                    // Flip Particles
+                    FlipParticles();
 
                     if(_player.Data.IsGrounded){
                         _animator.Play(_hash_Flip);
                         //_animationStartFrame = 0.0f;
                         StartCoroutine(WaitAnimationsFinishing());
         }}}}
+
+        void FlipParticles(){
+            // Wall Slider Particles
+            Vector2 particlePos = _wallSliderDust_PS.transform.localPosition;
+            particlePos.x = _player.Data.FacingDirection == 1 ? Mathf.Abs(particlePos.x) : (particlePos.x * -1);
+            _wallSliderDust_PS.transform.localPosition = particlePos;
+        }
     #endregion
 
     #region Random Idle, edge falling and Duck animations
@@ -182,7 +193,7 @@ namespace GameAssets.Characters.Player
     #region Walk and push animations
         void CheckPushAnimation(){
 
-            if(_player.Data.IsGrounded && _player.Data.AxisInput.x != 0){
+            if(_player.Data.IsGrounded && _player.Data.WasGrounded && _player.Data.AxisInput.x != 0){
 
                 if(_isWalkToWall != _player.Data.WallSliderInteratc){
                     _isWalkToWall = !_isWalkToWall;

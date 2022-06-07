@@ -112,16 +112,22 @@ namespace GameAssets.Characters.Player
 
             // if jump is pressed
             if(hasPressed){
-                // Update Jump Input buffer
-                _jumpInputBuffer = _player.Data.JumpInputBuffer;
-                
-                // if player can jump, switch to jump state
-                if(_player.Data.CurrentJumpCount > 0 || _coyoteTimer > 0){
+
+                // If can wall jump switch to wall jump
+                if(_player.Data.PlayerPhysics.WallJumpCheckDetection()){
+                    SwitchState(_player.Data.Factory.SelectState(PlayerStates.WallJump));
+
+                // Else if player can jump, switch to jump state
+                }else if(_player.Data.CurrentJumpCount > 0 || _coyoteTimer > 0){
                     // Reset Input buffer and coyote time if Coyote time has used
                     _jumpInputBuffer = 0f;
                     _coyoteTimer = 0f;
                     // Jump has pressed and can jump. Jump again.
                     SwitchState(_player.Data.Factory.SelectState(PlayerStates.Jump));
+
+                }else{
+                    // Update Jump Input buffer
+                    _jumpInputBuffer = _player.Data.JumpInputBuffer;
                 }
             }
         }

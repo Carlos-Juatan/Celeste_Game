@@ -10,7 +10,8 @@ namespace GameAssets.Characters.Player
         Grounded,
         Jump,
         Fall,
-        WallSlider
+        WallSlider,
+        WallJump
     }
 
     public class PlayerStateFactory
@@ -26,6 +27,7 @@ namespace GameAssets.Characters.Player
             _states[PlayerStates.Jump]       = new PlayerJumpState(_player);
             _states[PlayerStates.Fall]       = new PlayerFallState(_player);
             _states[PlayerStates.WallSlider] = new PlayerWallSlider(_player);
+            _states[PlayerStates.WallJump]   = new PlayerWallJumpState(_player);
         }
 
         public PlayerBaseState SelectState(PlayerStates newState){ return _states[newState]; }
@@ -60,7 +62,6 @@ namespace GameAssets.Characters.Player
         [SerializeField] Color _sideSliderPointsColor = Color.yellow;
         [SerializeField] bool _showSideSliderPointsOnGizmos;
         [SerializeField] LayerMask _wallSliderLayers;
-        [SerializeField] float _wallSliderVelocity;
 
         [Header("Wall Jump Check")]
         [SerializeField] Vector2 _sideJumpPointSize;
@@ -93,6 +94,13 @@ namespace GameAssets.Characters.Player
         [SerializeField, Range(0, .5f)] float _fallMultiplier = 0.08f;
         [SerializeField] float _jumpVelocityFalloff = 2f;
 
+        [Header("Wall Slider")]
+        [SerializeField] float _wallSliderVelocity;
+
+        [Header("Wall Jump")]
+        [SerializeField] float _wallJumpForce = 4f;
+        [SerializeField] float _wallJumpTime = 0.2f;
+
         // Inputs
         Vector2Int _axisInput;
 
@@ -109,20 +117,23 @@ namespace GameAssets.Characters.Player
         //bool _leftEdgeRoof;
         //bool _rightEdgeRoof;
 
-        // Wall Slider Check
-        bool _wallSliderInteratc;
-        bool _upSideSlideWall;
-        bool _downSideSlideWall;
-
-        // Wall Jump Check
-        bool _canWallJump;
-
         // Moving
         bool _isMoving;
         int _facingDirection;
 
         // Jump
         int _currentJumpCount;
+
+        // Wall Slider
+        bool _wallSliderInteratc;
+        bool _upSideSlideWall;
+        bool _downSideSlideWall;
+
+        // Wall Jump
+        bool _onWallJump;
+        bool _canWallJump;
+        bool _leftWallJump;
+        bool _rightWallJump;
 
         // Components
         PlayerBaseState _currentState;
@@ -134,19 +145,22 @@ namespace GameAssets.Characters.Player
 #endregion
 
 #region Getters And Setters.
+        // Inputs
+        public Vector2Int AxisInput { get { return _axisInput; } set { _axisInput = value; } }
+
         // Logics
         public bool HasSpawned { get { return _hasSpawned; } set { _hasSpawned = value; } }
 
         // Ground Check
-        public float GroundPointsRadius       { get { return _groundPointsRadius; } }
-        public Color GroundPointsColor        { get { return _groundPointsColor; } }
-        public Vector2 GroundPointsOffset     { get { return _groundPointsOffset; } }
-        public bool ShowGroundPointsOnGizmos  { get { return _showGroundPointsOnGizmos; } }
-        public LayerMask GroundLayers         { get { return _groundLayers; } }
-        public bool IsGrounded                { get { return _isGrounded; } set { _isGrounded = value; } }
-        public bool LeftEdgeGrounded          { get { return _leftEdgeGrounded; } set { _leftEdgeGrounded = value; } }
-        public bool RightEdgeGrounded         { get { return _rightEdgeGrounded; } set { _rightEdgeGrounded = value; } }
-        public bool WasGrounded               { get { return _wasGrounded; } set { _wasGrounded = value; } }
+        public float GroundPointsRadius      { get { return _groundPointsRadius; } }
+        public Color GroundPointsColor       { get { return _groundPointsColor; } }
+        public Vector2 GroundPointsOffset    { get { return _groundPointsOffset; } }
+        public bool ShowGroundPointsOnGizmos { get { return _showGroundPointsOnGizmos; } }
+        public LayerMask GroundLayers        { get { return _groundLayers; } }
+        public bool IsGrounded               { get { return _isGrounded; } set { _isGrounded = value; } }
+        public bool LeftEdgeGrounded         { get { return _leftEdgeGrounded; } set { _leftEdgeGrounded = value; } }
+        public bool RightEdgeGrounded        { get { return _rightEdgeGrounded; } set { _rightEdgeGrounded = value; } }
+        public bool WasGrounded              { get { return _wasGrounded; } set { _wasGrounded = value; } }
 
         // Roof Edge Correction
         public Vector2 RoofPointsSize      { get { return _roofPointsSize; } }
@@ -164,7 +178,7 @@ namespace GameAssets.Characters.Player
         public bool ShowSideSliderPointsOnGizmos { get { return _showSideSliderPointsOnGizmos; } }
         public LayerMask WallSliderLayers        { get { return _wallSliderLayers; } }
         public float WallSliderVelocity          { get { return _wallSliderVelocity; } }
-        public bool WallSliderInteratc              { get { return _wallSliderInteratc; } set { _wallSliderInteratc = value; } }
+        public bool WallSliderInteratc           { get { return _wallSliderInteratc; } set { _wallSliderInteratc = value; } }
         public bool UpSideSlideWall              { get { return _upSideSlideWall; } set { _upSideSlideWall = value; } }
         public bool DownSideSlideWall            { get { return _downSideSlideWall; } set { _downSideSlideWall = value; } }
 
@@ -174,10 +188,12 @@ namespace GameAssets.Characters.Player
         public Color SideJumoPointsColor       { get { return _sideJumoPointsColor; } }
         public bool ShowSideJumpPointsOnGizmos { get { return _showSideJumpPointsOnGizmos; } }
         public LayerMask WalJumplLayers        { get { return _walJumplLayers; } }
-        public bool CanWallJump                { get { return _canWallJump; } }
-
-        // Inputs
-        public Vector2Int AxisInput { get { return _axisInput; } set { _axisInput = value; } }
+        public float WallJumpForce             { get { return _wallJumpForce; } }
+        public float WallJumpTime              { get { return _wallJumpTime; } }
+        public bool OnWallJump                { get { return _onWallJump; } set { _onWallJump = value; } }
+        public bool CanWallJump                { get { return _canWallJump; } set { _canWallJump = value; } }
+        public bool LeftWallJump               { get { return _leftWallJump; } set { _leftWallJump = value;} }
+        public bool RightWallJump              { get { return _rightWallJump; } set { _rightWallJump = value;} }
 
         // Simulate Forces
         public Vector2 SimulateOutsideForce { get { return _simulateOutsideForce; } set { _simulateOutsideForce = value; } }
