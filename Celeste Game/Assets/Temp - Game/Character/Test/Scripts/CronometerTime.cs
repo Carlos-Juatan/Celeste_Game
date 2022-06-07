@@ -19,14 +19,9 @@ namespace GameAssets.Characters.Player
 
         void Update() {
             
-            if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)){
+            if(Input.GetButtonDown("Jump")){
                 _currentTimer = 0f;
                 _StopTimer = false;
-            }
-
-            if(Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)){
-                _StopTimer = true;
-                _updateLastTime = true;
             }
 
             SetText(_currenttimeText, "Current Time", _currentTimer, null);
@@ -37,10 +32,15 @@ namespace GameAssets.Characters.Player
                     SetText(_lasttimeText, "Last Time", 0f, _allTimes);
                     _updateLastTime = false;
                 }
-                
+
             }else{
                 _currentTimer += Time.deltaTime;
             }
+        }
+
+        public void StopCounter(){
+            _StopTimer = true;
+            _updateLastTime = true;
         }
 
         void SetText(TMP_Text text, string msg, float fistTime, List<float> times = null){
@@ -53,8 +53,10 @@ namespace GameAssets.Characters.Player
 
             if(times != null){
                 foreach (float time in times){
-                    setText += "\n";
-                    setText += time.ToString();
+                    if(time > 0f){
+                        setText += "\n";
+                        setText += time.ToString();
+                    }
                 }
             }
 
