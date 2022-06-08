@@ -43,7 +43,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   _simulateOutsideForce: {x: 0, y: 0}
-  _maxMoveSpeed: 11
+  _maxMoveSpeed: 12
   _moveAcceleration: 2
   _moveReduce: 4
   _airMult: 0.65

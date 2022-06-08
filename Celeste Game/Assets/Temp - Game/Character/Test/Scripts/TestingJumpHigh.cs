@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameAssets.Characters.Player
+namespace GameAssets.Characters.Player.Testing
 {
-    public class TestingJumpHight : MonoBehaviour
+    public class TestingJumpHigh : MonoBehaviour
     {
 #region References
         [SerializeField] CronometerTime _cronometerTime;
+        [SerializeField] Animator _anim;
 #endregion
 
 
@@ -27,6 +28,10 @@ namespace GameAssets.Characters.Player
 
 #endregion
 
+#region Start
+        //void Start() => Time.timeScale = 0.1f;
+#endregion
+
 #region Update.
         // Update is called once per frame
         void Update(){
@@ -34,11 +39,21 @@ namespace GameAssets.Characters.Player
 
                 if(Input.GetButtonDown("Jump")){
                     ExecuteJump();
+                    _anim.SetBool("Jump", true);
                 }
 
                 if(_justOnceTime && (Input.GetButtonUp("Jump") || _currentTimer <= 0f)){
                     CancelJump();
+                    _anim.SetBool("Jump", false);
                 }
+        }
+#endregion
+
+#region OnTriggerEnter
+        void OnTriggerEnter2D(Collider2D other){
+            if(other.gameObject.CompareTag("Player")){
+                _cronometerTime.SetTarget(true);
+            }
         }
 #endregion
 
@@ -68,7 +83,9 @@ namespace GameAssets.Characters.Player
                 rb2D.velocity = new Vector2(rb2D.velocity.x, _vertVelocity);
             }
 
-            
+            if(rb2D.velocity.y < 0f && _canGrounded){
+                _cronometerTime.SetHightTime();
+            }
 
             if(rb2D.velocity.y < 0f && _canGrounded && transform.localPosition.y <= -0.985013f){
                 // Stop the counter of the mechanics

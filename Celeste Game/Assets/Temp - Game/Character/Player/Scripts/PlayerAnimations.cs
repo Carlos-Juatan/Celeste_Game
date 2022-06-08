@@ -193,7 +193,6 @@ namespace GameAssets.Characters.Player
         void CheckPushAnimation(){
 
             if(_player.Data.IsGrounded && _player.Data.WasGrounded && _player.Data.AxisInput.x != 0f && !_waitingAnimationEnd){
-                Debug.Log("Vai Se Fooooooooooooooooooooooooo");
 
                 if(_isWalkToWall != _player.Data.WallSliderInteratc){
                     _isWalkToWall = !_isWalkToWall;
@@ -413,7 +412,7 @@ namespace GameAssets.Characters.Player
             Vector3 originalPos = Vector3.zero;
             originalPos.z = -2;
             Vector3 newSize = new Vector3(sizeX, sizeY, originalSize.z);
-            Vector3 newPos = originalPos + (Vector3.up * -sizeY);
+            Vector3 newPos = originalPos + (Vector3.up * -(sizeY * 2));
             float t = 0f;
 
             // Squeezing the sprite
