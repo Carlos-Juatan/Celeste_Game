@@ -8,6 +8,7 @@ namespace GameAssets.Characters.Player.Testing
     {
 #region References
         Rigidbody2D rb2D => GetComponent<Rigidbody2D>();
+        [SerializeField] Animator _anim;
 #endregion
 
 #region Var
@@ -16,6 +17,7 @@ namespace GameAssets.Characters.Player.Testing
 
         [Header("Jump Reduce")]
         [SerializeField] float _reduceMultiplier = 2f;
+        [SerializeField] float _releaseReduceMult = 8f;
         [SerializeField] float _maxReduceSpeed = 28f;
 
         [Header("Fall")]
@@ -23,6 +25,7 @@ namespace GameAssets.Characters.Player.Testing
         [SerializeField] float _maxFallSpeed = 30f;
 
         Vector2 _currentVelocity;
+        float _currentReduce;
         bool _jumpOn = false;
 #endregion
 
@@ -33,9 +36,10 @@ namespace GameAssets.Characters.Player.Testing
 #region Update.
         // Update is called once per frame
         void Update(){
-                if(Input.GetButtonDown("Jump")){
+                if(Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.Alpha0)){
                     _jumpOn = true;
                     ExecuteJump();
+                    _anim.SetBool("Jump", true);
                 }
 
                 // Canceling the up jump
@@ -43,8 +47,9 @@ namespace GameAssets.Characters.Player.Testing
                     _jumpOn = false;
                 }
 
-                if(Input.GetButtonUp("Jump")){
-                    //CancelJump();
+                if(Input.GetButtonUp("Jump") || Input.GetKeyUp(KeyCode.Alpha0)){
+                    CancelJump();
+                    _anim.SetBool("Jump", false);
                 }
         }
 #endregion
@@ -63,6 +68,7 @@ namespace GameAssets.Characters.Player.Testing
         // Execute the Jump
         void ExecuteJump(){
             _currentVelocity.y = _jumpSpeed;
+            _currentReduce = _reduceMultiplier;
         }
 
         // Update The Jump
@@ -80,12 +86,14 @@ namespace GameAssets.Characters.Player.Testing
 
         void HundleGravity(){
             // If vertical velocity more than max fall velocity add volocity
-            _currentVelocity.y -= _reduceMultiplier;
+            _currentVelocity.y -= _currentReduce;
             _currentVelocity.y = Mathf.Max(_currentVelocity.y, -_maxReduceSpeed);
         }
 
         // cancel the Jump
-        void CancelJump(){}
+        void CancelJump(){
+            _currentReduce = _releaseReduceMult;
+        }
 #endregion
 
 #region Jump Of

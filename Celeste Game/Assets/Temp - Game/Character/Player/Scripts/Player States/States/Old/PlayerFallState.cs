@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GameAssets.Characters.Player
+namespace GameAssets.Characters.Player.Old
 {
     public class PlayerFallState : PlayerBaseState, IRootState
     {
