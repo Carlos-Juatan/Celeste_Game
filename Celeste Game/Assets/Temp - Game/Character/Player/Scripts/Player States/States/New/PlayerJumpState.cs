@@ -7,20 +7,23 @@ namespace GameAssets.Characters.Player
 
 #region Var
         [Header("Jump Up")]
-        [SerializeField] float _jumpSpeed = 28f;
+        [SerializeField] float _jumpSpeed = 26f; // 12 frames = 28f | 10 frames = 26f
 
         [Header("Jump Reduce")]
-        [SerializeField] float _reduceMultiplier = 2f;
-        [SerializeField] float _releaseReduceMult = 8f;
-        [SerializeField] float _maxReduceSpeed = 28f;
+        [SerializeField] float _reduceMultiplier = 1.8f; // 12 frames = 2f | 10 frames = 1.8f
+        [SerializeField] float _releaseReduceMult = 8f; // 12 frames = 8f | 10 frames = 26f
+        [SerializeField] float _maxReduceSpeed = 26f; // 12 frames = 28f | 10 frames = 26f
+        [SerializeField] float _minStayTime = 0.05f;
 
         Vector2 _currentVelocity;
         float _currentReduce;
-        bool _resetJumpTimer = false;
+        float _minStayTimer;
+        //bool _resetJumpTimer = false;
+        bool _holdingJumpBonus;
 #endregion
 
 #region Getters and Setters
-        public bool ResetJumpTimer { get { return _resetJumpTimer; } set { _resetJumpTimer = value; } }
+        //public bool ResetJumpTimer { get { return _resetJumpTimer; } set { _resetJumpTimer = value; } }
 #endregion
 
 #region Constructor.
@@ -49,13 +52,21 @@ namespace GameAssets.Characters.Player
 #endregion
 
 #region Updating.
-        protected override void UpdateState(){}
+        protected override void UpdateState(){
+            _minStayTimer -= Time.deltaTime;
+        }
 
         protected override void CheckSwitchStates(){
             // If Rigidbody Vertical velocity less equal than zero switch to fall state
             //if(_currentVelocity.y <= 0){ // Applaying vertical calculations as apex maybe
-            if(_player.Data.Rigidbody2D.velocity.y < 0f){
+            if(_player.Data.Rigidbody2D.velocity.y < 0f && _minStayTimer <= 0f){
                 SwitchState(_player.Data.Factory.SelectState(PlayerStates.Fall));
+                
+
+                // Verify if jump input stay pressed on switch to jump state
+                PlayerFallState fallState = _player.Data.Factory.SelectState(PlayerStates.Fall) as PlayerFallState;
+                fallState.HoldingJumpBonus = _holdingJumpBonus;
+                SwitchState(fallState);
             }
         }
 #endregion
@@ -78,12 +89,9 @@ namespace GameAssets.Characters.Player
 #region External Events Inputs
         // Called by InputManager envery time the Jump input has pressed or release
         public override void JumpingInput(bool hasPressed){
-            if(!hasPressed){
-                // If jump input release cancel the jump.
-                CancelJump();
 
-            // Else if jump input is pressed
-            }else{
+            // If Input jump has pressed
+            if(hasPressed){
 
                 // If can wall jump switch to wall jump
                 if(_player.Data.PlayerPhysics.WallJumpCheckDetection()){
@@ -92,7 +100,14 @@ namespace GameAssets.Characters.Player
                 // Else if can jump start a new jump
                 }else if(_player.Data.CurrentJumpCount > 0){
                     StatJump();
+                    _holdingJumpBonus = true;
                 }
+
+            // Else if jump input is release
+            }else{
+                // If jump input release cancel the jump.
+                CancelJump();
+                _holdingJumpBonus = false;
             }
         }
 #endregion
@@ -102,6 +117,7 @@ namespace GameAssets.Characters.Player
         void StatJump(){
             _currentVelocity.y = _jumpSpeed;
             _currentReduce = _reduceMultiplier;
+            _minStayTimer = _minStayTime;
         }
 
         void ExecuteJump(){

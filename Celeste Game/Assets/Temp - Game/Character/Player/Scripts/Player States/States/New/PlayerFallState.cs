@@ -6,10 +6,19 @@ namespace GameAssets.Characters.Player
     {
 #region Var
         [Header("Fall")]
-        [SerializeField] float _fallMultiplier = 2f;
-        [SerializeField] float _maxFallSpeed = 30f;
+        [SerializeField] float _fallMultiplier = 3f; // 12 frames = 3f | 10 frames = 2f
+        [SerializeField] float _maxFallSpeed = 20f; // 12 frames = 20f | 10 frames = 14f
+        [SerializeField] float _holdingBonusTime = 0.1f;
         
         Vector2 _currentVelocity;
+        float _currentFallMult;
+        float _holdingBonusTimer;
+        bool _holdingJumpBonus;
+        bool _jumpInputBuffer;
+#endregion
+
+#region Getters and Setters
+        public bool HoldingJumpBonus { get { return _holdingJumpBonus; } set { _holdingJumpBonus = value; } }
 #endregion
 
 #region Constructor
@@ -23,6 +32,13 @@ namespace GameAssets.Characters.Player
 
             // Starting Current Velocity
             _currentVelocity = Vector2.zero;
+
+            if(_holdingJumpBonus){
+                _holdingBonusTimer = _holdingBonusTime;
+            
+            }else{
+                _holdingBonusTimer = 0f;
+            }
 
             // Run the player Fall animation and effects
             _player.Data.PlayerAnimations.StartFall();
@@ -40,7 +56,13 @@ namespace GameAssets.Characters.Player
 #endregion
 
 #region Updating
-        protected override void UpdateState(){}
+        protected override void UpdateState(){
+            _holdingBonusTimer -= Time.deltaTime;
+
+            if(_holdingBonusTimer <= 0f){
+                _holdingJumpBonus = false;
+            }
+        }
 
         protected override void CheckSwitchStates(){
             // If is grounded change to Grounded State.
@@ -55,7 +77,6 @@ namespace GameAssets.Characters.Player
 
                 // else Switch to ground state
                 }else{
-                    Debug.Log(_currentVelocity);
                     SwitchState(_player.Data.Factory.SelectState(PlayerStates.Grounded));
                 }
 
@@ -79,8 +100,14 @@ namespace GameAssets.Characters.Player
             _currentVelocity.y -= _fallMultiplier;
             _currentVelocity.y = Mathf.Max(_currentVelocity.y, -_maxFallSpeed);
 
+            // Applying the Holding jump bonus on higher of the jump for some time
+            Vector2 jumpHalfGravityBonus = _currentVelocity;
+            if(_holdingJumpBonus){
+                jumpHalfGravityBonus.y /= 2f;
+            }
+
             // Applying Final Velocity
-            _player.Data.Rigidbody2D.velocity = _currentVelocity;
+            _player.Data.Rigidbody2D.velocity = jumpHalfGravityBonus;
         }
 #endregion
 
@@ -97,7 +124,20 @@ namespace GameAssets.Characters.Player
 
 #region External Events Inputs
         // Called by InputManager envery time the Jump input has pressed or release
-        public override void JumpingInput(bool hasPressed){}
+        public override void JumpingInput(bool hasPressed){
+
+            // If Input jump has pressed
+            if(hasPressed){
+                // Applying the higher half gravity bonus for a little time
+                _jumpInputBuffer = true;
+
+            // Else if jump input is release
+            }else{
+                // If jump input release cancel the jump half gravity bonus
+                _jumpInputBuffer = false;
+                _holdingJumpBonus = false;
+            }
+        }
 #endregion
 
     }
