@@ -354,6 +354,21 @@ namespace GameAssets.Characters.Player
         }
     #endregion
 
+    #region Wall Jump
+        // Called when the wall jump state starts
+        public void StartWallJump(){
+            _animator.Play(_hash_Jump);
+            _currentClipHash = _hash_Jump;
+            //_inpactDust_PS.Play(); ======================== Particles of the Wall Jump
+            StopCoroutine("SpriteFlipFlopSqueeze");
+            StartCoroutine(SpriteFlipFlopSqueeze(.6f, 1.4f, _timeToJumpSqueeze));
+        }
+
+        // Called when the wall jump state ends
+        public void EndWallJump(){
+        }
+    #endregion
+
 #endregion
 
 #region Compare Animation

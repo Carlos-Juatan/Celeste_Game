@@ -82,7 +82,7 @@ namespace GameAssets.Characters.Player
 
                     // Verify if jump input stay pressed on switch to jump state
                     PlayerJumpState jumpState = _player.Data.Factory.SelectState(PlayerStates.Jump) as PlayerJumpState;
-                    jumpState.ResetJumpTimer = !_jumpInputHolding;
+                    jumpState.CancelJumpOrder = !_jumpInputHolding;
                     SwitchState(jumpState);
 
                 }else{

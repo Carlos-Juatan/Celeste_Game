@@ -6,10 +6,15 @@ namespace GameAssets.Characters.Player
     {
 
 #region Var
-    float _currentTimer;
+        //Vector2 _currentVelocity;
+        //float _currentReduce;
+        float _minStayTimer;
+        //bool _cancelJumpOrder = false;
+        bool _holdingJumpBonus;
 #endregion
 
 #region Getters and Setters
+        //public bool CancelJumpOrder { get { return _cancelJumpOrder; } set { _cancelJumpOrder = value; } }
 #endregion
 
 #region Constructor.
@@ -20,10 +25,10 @@ namespace GameAssets.Characters.Player
 
 #region Stating.
         protected override void EnterState(){
-            ExecuteJump();
+            StartWallJump();
 
             // Set Wall Jump animation, maybe the same jump animation in this case
-            _player.Data.PlayerAnimations.StartJump();
+            _player.Data.PlayerAnimations.StartWallJump();
         }
 
         // Don't Starts with a sub-state because, the player can't control the movement of the wall jump for a little time.
@@ -32,68 +37,78 @@ namespace GameAssets.Characters.Player
 
 #region Updating.
         protected override void UpdateState(){
-            _currentTimer -= Time.deltaTime;
+            _minStayTimer -= Time.deltaTime;
         }
 
         protected override void CheckSwitchStates(){
-            // If Rigidbody Vertical velocity less equal than zero switch to fall state
-            if(_player.Data.Rigidbody2D.velocity.y < 0f || _currentTimer <= 0f){
-                CancelJump();
-                SwitchState(_player.Data.Factory.SelectState(PlayerStates.Fall));
+            // If Rigidbody Vertical velocity less than zero switch to fall state
+            //(If commpare equal zero, the corner correction don't works right)
+            if(_player.Data.Rigidbody2D.velocity.y < 0f && _minStayTimer <= 0f){
+                
+                // Verify if jump input stay pressed on switch to jump state
+                PlayerFallState fallState = _player.Data.Factory.SelectState(PlayerStates.Fall) as PlayerFallState;
+                fallState.HoldingJumpBonus = _holdingJumpBonus;
+                SwitchState(fallState);
             }
         }
 #endregion
 
 #region Physics Calculating States
-        protected override void FisicsCalculateState(){}
+        protected override void FisicsCalculateState(){
+
+            // If collider with a roof, and can't make the corner correction, cancel the jump
+            if((/*_cancelJumpOrder &&*/ _minStayTimer <= 0f) || !_player.Data.PlayerPhysics.RoofEdgeDetection()){
+                CancelWallJump();
+            }
+
+            // Run Jump
+            ExecuteWallJump();
+        }
 #endregion
 
 #region Exiting States
-        protected override void ExitState(){}
+        protected override void ExitState(){
+            // Finish the Wall Jump animation
+            _player.Data.PlayerAnimations.EndWallJump();
+        }
 #endregion
 
 #region External Events Inputs
         // Called by InputManager envery time the Jump input has pressed or release
         public override void JumpingInput(bool hasPressed){
-            if(!hasPressed){
+
+            // If jump input is pressed
+            if(hasPressed){
+
+                // If can wall jump Execute a new wall jump
+                if(_player.Data.PlayerPhysics.WallJumpCheckDetection()){
+                    _holdingJumpBonus = true;
+                    StartWallJump();
+
+                // Else if can jump Switch to the jump state
+                }else if(_player.Data.CurrentJumpCount > 0){
+                    SwitchState(_player.Data.Factory.SelectState(PlayerStates.Jump));
+                }
+
+            }else{
                 // If jump input release cancel the jump.
-                //CancelJump();
-            }
-            else if(_player.Data.CurrentJumpCount > 0){
-                // If jump input is pressed start a new jump
-                ExecuteJump();
+                CancelWallJump();
             }
         }
 #endregion
 
 #region Jump
-        // Execute a new jump
-        void ExecuteJump(){
-            
-            if(_player.Data.RightWallJump){
-                _player.Data.FacingDirection = -1;
+        void StartWallJump(){
 
-            }else if(_player.Data.LeftWallJump){
-                _player.Data.FacingDirection = 1;
-            }
-            _player.Data.OnWallJump = true;
-
-            Vector2 force = Vector2.zero;
-            force.x = _player.Data.WallJumpForce * _player.Data.FacingDirection;
-            force.y = _player.Data.WallJumpForce;
-
-            _player.Data.Rigidbody2D.velocity = Vector2.zero;
-
-            _player.Data.Rigidbody2D.AddForce(force, ForceMode2D.Impulse);
-
-            _currentTimer = _player.Data.WallJumpTime;
         }
 
-        void CancelJump(){
+        // Execute a new jump
+        void ExecuteWallJump(){
+        
+        }
 
-            _player.Data.OnWallJump = false;
+        void CancelWallJump(){
 
-            _player.Data.Rigidbody2D.velocity = Vector2.zero;
         }
 
 #endregion

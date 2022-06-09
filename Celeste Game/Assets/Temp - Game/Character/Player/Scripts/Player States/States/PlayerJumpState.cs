@@ -9,12 +9,12 @@ namespace GameAssets.Characters.Player
         Vector2 _currentVelocity;
         float _currentReduce;
         float _minStayTimer;
-        bool _resetJumpTimer = false;
+        bool _cancelJumpOrder = false;
         bool _holdingJumpBonus;
 #endregion
 
 #region Getters and Setters
-        public bool ResetJumpTimer { get { return _resetJumpTimer; } set { _resetJumpTimer = value; } }
+        public bool CancelJumpOrder { get { return _cancelJumpOrder; } set { _cancelJumpOrder = value; } }
 #endregion
 
 #region Constructor.
@@ -48,11 +48,9 @@ namespace GameAssets.Characters.Player
         }
 
         protected override void CheckSwitchStates(){
-            // If Rigidbody Vertical velocity less equal than zero switch to fall state
-            //if(_currentVelocity.y <= 0){ // Applaying vertical calculations as apex maybe
+            // If Rigidbody Vertical velocity less than zero switch to fall state
+            //(If commpare equal zero, the corner correction don't works right)
             if(_player.Data.Rigidbody2D.velocity.y < 0f && _minStayTimer <= 0f){
-                SwitchState(_player.Data.Factory.SelectState(PlayerStates.Fall));
-                
 
                 // Verify if jump input stay pressed on switch to jump state
                 PlayerFallState fallState = _player.Data.Factory.SelectState(PlayerStates.Fall) as PlayerFallState;
@@ -66,7 +64,10 @@ namespace GameAssets.Characters.Player
         protected override void FisicsCalculateState(){
 
             // If collider with a roof, and can't make the corner correction, cancel the jump
-            if((_resetJumpTimer && _minStayTimer <= 0f) || !_player.Data.PlayerPhysics.RoofEdgeDetection()){
+            bool collideWithRoof = _player.Data.PlayerPhysics.RoofEdgeDetection();
+
+            // Cancel the jump if have a orer to cancel and have pass the min time to stay on jump or if collider with a roof
+            if((_cancelJumpOrder && _minStayTimer <= 0f) || !collideWithRoof){
                 CancelJump();
 
                 // Se Bateu a cabeça, talvez corrija a coroutine de modificação da queda, pra nn atravessar o chao.
@@ -79,10 +80,8 @@ namespace GameAssets.Characters.Player
 
 #region Exiting States
         protected override void ExitState(){
-
             // Ending the player jump animation and effects
             _player.Data.PlayerAnimations.EndJump();
-
         }
 #endregion
 
@@ -99,15 +98,15 @@ namespace GameAssets.Characters.Player
 
                 // Else if can jump start a new jump
                 }else if(_player.Data.CurrentJumpCount > 0){
-                    StatJump();
                     _holdingJumpBonus = true;
+                    StatJump();
                 }
 
             // Else if jump input is release
             }else{
                 // If jump input release cancel the jump.
-                CancelJump();
                 _holdingJumpBonus = false;
+                _cancelJumpOrder = true;
             }
         }
 #endregion
@@ -115,6 +114,15 @@ namespace GameAssets.Characters.Player
 #region Jump
         // Execute a new jump
         void StatJump(){
+
+            // If on the same frame has start a new jump was on ground
+            if(_player.Data.WasGrounded){
+
+                // If start a new jump without a order of cancel the jump active the possible hold input bonus 
+                if(!_cancelJumpOrder){
+                    _holdingJumpBonus = true;
+            }}
+            
             _player.Data.CurrentJumpCount--;
             _currentVelocity.y = _player.Data.JumpSpeed;
             _currentReduce = _player.Data.ReduceMultiplier;
@@ -139,8 +147,7 @@ namespace GameAssets.Characters.Player
         }
 
         void CancelJump(){
-            _resetJumpTimer = false;
-            _holdingJumpBonus = false;
+            _cancelJumpOrder = false;
             _currentReduce = _player.Data.ReleaseReduceMult;
         }
 

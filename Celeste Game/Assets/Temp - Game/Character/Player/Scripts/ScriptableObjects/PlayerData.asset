@@ -55,7 +55,7 @@ MonoBehaviour:
   _coyoteTime: 0.2
   _jumpInputBuffer: 0.2
   _jumpCount: 1
-  _holdingBonusTime: 0.1
+  _holdingBonusTime: 0.2
   _fallMultiplier: 3
   _maxFallSpeed: 20
   _wallSliderVelocity: 4
