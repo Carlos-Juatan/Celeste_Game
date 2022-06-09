@@ -49,6 +49,9 @@ namespace GameAssets.Characters.Player
         bool _lastWallUpCheck = false;
         bool _canChageWallEffects = false;
 
+        // Wall Jump Animations
+        bool _onWallJump = false;
+
         readonly int _hash_Idle = Animator.StringToHash("Idle");
         readonly int _hash_IdleA = Animator.StringToHash("IdleA");
         readonly int _hash_IdleB = Animator.StringToHash("IdleB");
@@ -98,12 +101,7 @@ namespace GameAssets.Characters.Player
 
     #region Play flip Animation
         void Flip(){
-            if(_player.Data.OnWallJump){
-                    _player.Data.PlayerRenderer.flipX = _player.Data.FacingDirection == 1 ? false : true;
-                    // Flip Particles
-                    FlipParticles();
-
-            }else if(_player.Data.AxisInput.x != 0){
+            if(_player.Data.AxisInput.x != 0 && !_onWallJump){
                 if(_player.Data.FacingDirection != _player.Data.AxisInput.x){
                     _player.Data.FacingDirection = _player.Data.AxisInput.x;
                     _player.Data.PlayerRenderer.flipX = !_player.Data.PlayerRenderer.flipX;
@@ -356,16 +354,35 @@ namespace GameAssets.Characters.Player
 
     #region Wall Jump
         // Called when the wall jump state starts
-        public void StartWallJump(){
+        public void StartWallJump(int jumpDirection){
             _animator.Play(_hash_Jump);
             _currentClipHash = _hash_Jump;
             //_inpactDust_PS.Play(); ======================== Particles of the Wall Jump
+
+            // Flip Particles And Sprite
+            int dir = _player.Data.PlayerRenderer.flipX ? -1 : 1;
+            if(jumpDirection != dir){
+                _player.Data.PlayerRenderer.flipX = !_player.Data.PlayerRenderer.flipX;
+                FlipParticles();
+            }
+            _onWallJump = true;
+
             StopCoroutine("SpriteFlipFlopSqueeze");
             StartCoroutine(SpriteFlipFlopSqueeze(.6f, 1.4f, _timeToJumpSqueeze));
         }
 
         // Called when the wall jump state ends
-        public void EndWallJump(){
+        public void EndWallJump(int jumpDirection){
+            // Flip Particles And Sprite
+            int dir = _player.Data.PlayerRenderer.flipX ? -1 : 1;
+            if(_player.Data.AxisInput.x == 0){
+                _player.Data.FacingDirection = dir;
+            
+            } else if(_player.Data.FacingDirection != dir){
+                _player.Data.PlayerRenderer.flipX = !_player.Data.PlayerRenderer.flipX;
+                FlipParticles();
+            }
+            _onWallJump = false;
         }
     #endregion
 

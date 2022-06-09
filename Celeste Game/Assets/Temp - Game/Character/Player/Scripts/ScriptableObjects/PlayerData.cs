@@ -98,8 +98,11 @@ namespace GameAssets.Characters.Player
         [SerializeField] float _wallSliderVelocity;
 
         [Header("Wall Jump")]
-        [SerializeField] float _wallJumpForce = 4f;
-        [SerializeField] float _wallJumpTime = 0.2f;
+        [SerializeField] float _wallJumpSpeed = 26f;
+        [SerializeField] float _maxDistance = 14f;
+        [SerializeField] float _reduceWallJumpMultiplier = 1.8f;
+        [SerializeField] float _releaseWallJumpReduceMult = 4f;
+        [SerializeField] float _minWallJumpStayTime = 0.1f;
 
         // Inputs
         Vector2Int _axisInput;
@@ -130,8 +133,6 @@ namespace GameAssets.Characters.Player
         bool _downSideSlideWall;
 
         // Wall Jump
-        bool _onWallJump;
-        bool _canWallJump;
         bool _leftWallJump;
         bool _rightWallJump;
 
@@ -188,12 +189,13 @@ namespace GameAssets.Characters.Player
         public Color SideJumoPointsColor       { get { return _sideJumoPointsColor; } }
         public bool ShowSideJumpPointsOnGizmos { get { return _showSideJumpPointsOnGizmos; } }
         public LayerMask WalJumplLayers        { get { return _walJumplLayers; } }
-        public float WallJumpForce             { get { return _wallJumpForce; } }
-        public float WallJumpTime              { get { return _wallJumpTime; } }
-        public bool OnWallJump                { get { return _onWallJump; } set { _onWallJump = value; } }
-        public bool CanWallJump                { get { return _canWallJump; } set { _canWallJump = value; } }
         public bool LeftWallJump               { get { return _leftWallJump; } set { _leftWallJump = value;} }
         public bool RightWallJump              { get { return _rightWallJump; } set { _rightWallJump = value;} }
+        public float WallJumpSpeed             { get { return _wallJumpSpeed; } }
+        public float MaxDistance               { get { return _maxDistance; } } 
+        public float ReduceWallJumpMultiplier  { get { return _reduceWallJumpMultiplier; } }
+        public float ReleaseWallJumpReduceMult { get { return _releaseWallJumpReduceMult; } }
+        public float MinWallJumpStayTime       { get { return _minWallJumpStayTime; } }
 
         // Simulate Forces
         public Vector2 SimulateOutsideForce { get { return _simulateOutsideForce; } set { _simulateOutsideForce = value; } }

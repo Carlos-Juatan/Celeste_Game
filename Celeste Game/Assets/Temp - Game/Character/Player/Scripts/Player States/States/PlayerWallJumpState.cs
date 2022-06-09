@@ -6,17 +6,17 @@ namespace GameAssets.Characters.Player
     {
 
 #region Var
-        [Header("Wall Jump")]
-        [SerializeField] float JumpSpeed = 26f;
-        [SerializeField] float MaxDistance = 10f;
-        [SerializeField] float ReduceMultiplier = 1.8f;
-        [SerializeField] float ReleaseReduceMult = 4f;
-        [SerializeField] float MinStayTime = 0.1f;
+        //[Header("Wall Jump")]
+        //[SerializeField] float _player.Data.WallJumpSpeed = 26f;
+        //[SerializeField] float _player.Data.MaxDistance = 14f;
+        //[SerializeField] float _player.Data.ReduceWallJumpMultiplier = 1.8f;
+        //[SerializeField] float _player.Data.ReleaseWallJumpReduceMult = 4f;
+        //[SerializeField] float _player.Data.MinWallJumpStayTime = 0.1f;
 
         Vector2 _currentVelocity;
         float _currentReduce;
         float _minStayTimer;
-        float _inpulseDirection;
+        float _hForce;
         int _jumpDirection;
         bool _cancelJumpOrder = false;
         bool _holdingJumpBonus;
@@ -37,7 +37,7 @@ namespace GameAssets.Characters.Player
             StartWallJump();
 
             // Set Wall Jump animation, maybe the same jump animation in this case
-            _player.Data.PlayerAnimations.StartWallJump();
+            _player.Data.PlayerAnimations.StartWallJump(_jumpDirection);
 
             //Debug.Log("Enter Wall Jump");
         }
@@ -85,22 +85,17 @@ namespace GameAssets.Characters.Player
         protected override void ExitState(){
 
             // Stop horizontal velocity if it's on idle state
-            if(Mathf.Abs(_inpulseDirection) < MaxDistance){
+            if(Mathf.Abs(_hForce) < _player.Data.MaxDistance){
                 _currentVelocity.x = 0f;
                 _currentVelocity.y = _player.Data.Rigidbody2D.velocity.y;
                 _player.Data.Rigidbody2D.velocity = _currentVelocity;
-            }
-
-            // Reset the Facing Direction
-            if(_player.Data.AxisInput.x != _jumpDirection) {
-                _player.Data.FacingDirection *= -1;
             }
 
             // Turn off the Wall Interaction
             _player.Data.WallSliderInteract = false;
 
             // Finish the Wall Jump animation
-            _player.Data.PlayerAnimations.EndWallJump();
+            _player.Data.PlayerAnimations.EndWallJump(_jumpDirection);
         }
 #endregion
 
@@ -140,20 +135,16 @@ namespace GameAssets.Characters.Player
                 _jumpDirection = 1;
             }
 
-            if(_player.Data.FacingDirection != _jumpDirection) {
-                _player.Data.FacingDirection *= -1;
-            }
-
             // If start a new jump without a order of cancel the jump active the possible hold input bonus 
             if(!_cancelJumpOrder){
                 _holdingJumpBonus = true;
             }
             
-            _inpulseDirection = _player.Data.FacingDirection * (_player.Data.AxisInput.x != 0 ? MaxDistance : MaxDistance / 2);
-            _currentVelocity.x = _inpulseDirection;
-            _currentVelocity.y = JumpSpeed;
-            _currentReduce = ReduceMultiplier;
-            _minStayTimer = MinStayTime;
+            _hForce = _jumpDirection * (_player.Data.AxisInput.x != 0 ? _player.Data.MaxDistance : _player.Data.MaxDistance / 2);
+            _currentVelocity.x = _hForce;
+            _currentVelocity.y = _player.Data.WallJumpSpeed;
+            _currentReduce = _player.Data.ReduceWallJumpMultiplier;
+            _minStayTimer = _player.Data.MinWallJumpStayTime;
         }
 
         // Execute a new jump
@@ -176,7 +167,7 @@ namespace GameAssets.Characters.Player
 
         void CancelWallJump(){
             _cancelJumpOrder = false;
-            _currentReduce = ReleaseReduceMult;
+            _currentReduce = _player.Data.ReleaseWallJumpReduceMult;
         }
 
 #endregion
