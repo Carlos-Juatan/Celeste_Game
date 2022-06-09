@@ -1235,8 +1235,8 @@ MonoBehaviour:
   _inpactDust_PS: {fileID: 6198199283847602742}
   _wallSliderDust_PS: {fileID: 2179435636352377041}
   _upWallSliderDust_PS: {fileID: 6289557268602377375}
-  _timeToJumpSqueeze: 0.05
-  _timeToFallSqueeze: 0.05
+  _timeToJumpSqueeze: 0.1
+  _timeToFallSqueeze: 0.08
   _timeToNextIdle: 6
   _IdleAChance: 5
   _IdleBChance: 3

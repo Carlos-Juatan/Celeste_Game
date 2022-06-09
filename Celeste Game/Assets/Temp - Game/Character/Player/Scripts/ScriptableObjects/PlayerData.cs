@@ -80,19 +80,19 @@ namespace GameAssets.Characters.Player
         [SerializeField] float _airMult = .65f;
 
         [Header("Jump")]
-        [SerializeField] float _jumpTime = 0.35f;
-        [SerializeField] float _jumpForce = 12f;
-        [SerializeField] float _holdJumpTime = 0.05f;
-        [SerializeField] float _curtInertiaHightJump = 2f;
-        [SerializeField] float _curtInertiaLowJump = 3f;
-        [SerializeField] float _resetJumpInertia = 3f;
+        [SerializeField] float _jumpSpeed = 26f; // 12 frames = 28f | 10 frames = 26f
+        [SerializeField] float _reduceMultiplier = 1.8f; // 12 frames = 2f | 10 frames = 1.8f
+        [SerializeField] float _releaseReduceMult = 8f; // 12 frames = 8f | 10 frames = 26f
+        [SerializeField] float _maxReduceSpeed = 26f; // 12 frames = 28f | 10 frames = 26f
+        [SerializeField] float _minStayTime = 0.05f;
         [SerializeField] float _coyoteTime = 0.2f;
         [SerializeField] float _jumpInputBuffer = 0.2f;
         [SerializeField] int _jumpCount = 1;
 
         [Header("Fall")]
-        [SerializeField, Range(0, .5f)] float _fallMultiplier = 0.08f;
-        [SerializeField] float _jumpVelocityFalloff = 2f;
+        [SerializeField] float _holdingBonusTime = 0.1f;
+        [SerializeField] float _fallMultiplier = 3f; // 12 frames = 3f | 10 frames = 2f
+        [SerializeField] float _maxFallSpeed = 20f; // 12 frames = 20f | 10 frames = 14f
 
         [Header("Wall Slider")]
         [SerializeField] float _wallSliderVelocity;
@@ -207,20 +207,20 @@ namespace GameAssets.Characters.Player
         public int FacingDirection    { get { return _facingDirection; } set { _facingDirection = value; } }
 
         // Jump
-        public float JumpTime             { get { return _jumpTime; } }
-        public float JumpForce            { get { return _jumpForce; } }
-        public float HoldJumpTime         { get { return _holdJumpTime; } }
-        public float CurtInertiaHightJump { get { return _curtInertiaHightJump; } }
-        public float CurtInertiaLowJump   { get { return _curtInertiaLowJump; } }
-        public float ResetJumpInertia     { get { return _resetJumpInertia; } }
-        public float CoyoteTime           { get { return _coyoteTime; } }
-        public float JumpInputBuffer      { get { return _jumpInputBuffer; } }
-        public int JumpCount              { get { return _jumpCount; } }
-        public int CurrentJumpCount       { get { return _currentJumpCount; } set { _currentJumpCount = value; } }
+        public float JumpSpeed         { get { return _jumpSpeed; } }
+        public float ReduceMultiplier  { get { return _reduceMultiplier; } }
+        public float ReleaseReduceMult { get { return _releaseReduceMult; } }
+        public float MaxReduceSpeed    { get { return _maxReduceSpeed; } }
+        public float MinStayTime       { get { return _minStayTime; } }
+        public float CoyoteTime        { get { return _coyoteTime; } }
+        public float JumpInputBuffer   { get { return _jumpInputBuffer; } }
+        public int JumpCount           { get { return _jumpCount; } }
+        public int CurrentJumpCount    { get { return _currentJumpCount; } set { _currentJumpCount = value; } }
         
         // Fall
-        public float FallMultiplier      { get { return _fallMultiplier; } }
-        public float JumpVelocityFalloff { get { return _jumpVelocityFalloff; } }
+        public float HoldingBonusTime { get { return _holdingBonusTime; } }
+        public float FallMultiplier   { get { return _fallMultiplier; } }
+        public float MaxFallSpeed     { get { return _maxFallSpeed; } }
 
         // Components
         public PlayerBaseState CurrentState      { get { return _currentState; } set { _currentState = value; } }

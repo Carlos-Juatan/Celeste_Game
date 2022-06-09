@@ -6,24 +6,15 @@ namespace GameAssets.Characters.Player
     {
 
 #region Var
-        [Header("Jump Up")]
-        [SerializeField] float _jumpSpeed = 26f; // 12 frames = 28f | 10 frames = 26f
-
-        [Header("Jump Reduce")]
-        [SerializeField] float _reduceMultiplier = 1.8f; // 12 frames = 2f | 10 frames = 1.8f
-        [SerializeField] float _releaseReduceMult = 8f; // 12 frames = 8f | 10 frames = 26f
-        [SerializeField] float _maxReduceSpeed = 26f; // 12 frames = 28f | 10 frames = 26f
-        [SerializeField] float _minStayTime = 0.05f;
-
         Vector2 _currentVelocity;
         float _currentReduce;
         float _minStayTimer;
-        //bool _resetJumpTimer = false;
+        bool _resetJumpTimer = false;
         bool _holdingJumpBonus;
 #endregion
 
 #region Getters and Setters
-        //public bool ResetJumpTimer { get { return _resetJumpTimer; } set { _resetJumpTimer = value; } }
+        public bool ResetJumpTimer { get { return _resetJumpTimer; } set { _resetJumpTimer = value; } }
 #endregion
 
 #region Constructor.
@@ -73,6 +64,15 @@ namespace GameAssets.Characters.Player
 
 #region Physics Calculating States
         protected override void FisicsCalculateState(){
+
+            // If collider with a roof, and can't make the corner correction, cancel the jump
+            if((_resetJumpTimer && _minStayTimer <= 0f) || !_player.Data.PlayerPhysics.RoofEdgeDetection()){
+                CancelJump();
+
+                // Se Bateu a cabeça, talvez corrija a coroutine de modificação da queda, pra nn atravessar o chao.
+            }
+
+            // Run Jump
             ExecuteJump();
         }
 #endregion
@@ -115,9 +115,10 @@ namespace GameAssets.Characters.Player
 #region Jump
         // Execute a new jump
         void StatJump(){
-            _currentVelocity.y = _jumpSpeed;
-            _currentReduce = _reduceMultiplier;
-            _minStayTimer = _minStayTime;
+            _player.Data.CurrentJumpCount--;
+            _currentVelocity.y = _player.Data.JumpSpeed;
+            _currentReduce = _player.Data.ReduceMultiplier;
+            _minStayTimer = _player.Data.MinStayTime;
         }
 
         void ExecuteJump(){
@@ -134,11 +135,13 @@ namespace GameAssets.Characters.Player
         void HundleGravity(){
             // If vertical velocity more than max fall velocity add volocity
             _currentVelocity.y -= _currentReduce;
-            _currentVelocity.y = Mathf.Max(_currentVelocity.y, -_maxReduceSpeed);
+            _currentVelocity.y = Mathf.Max(_currentVelocity.y, -_player.Data.MaxReduceSpeed);
         }
 
         void CancelJump(){
-            _currentReduce = _releaseReduceMult;
+            _resetJumpTimer = false;
+            _holdingJumpBonus = false;
+            _currentReduce = _player.Data.ReleaseReduceMult;
         }
 
 #endregion

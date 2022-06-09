@@ -47,17 +47,17 @@ MonoBehaviour:
   _moveAcceleration: 2
   _moveReduce: 4
   _airMult: 0.65
-  _jumpTime: 0.35
-  _jumpForce: 12
-  _holdJumpTime: 0.05
-  _curtInertiaHightJump: 2
-  _curtInertiaLowJump: 3
-  _resetJumpInertia: 2.2
+  _jumpSpeed: 26
+  _reduceMultiplier: 1.8
+  _releaseReduceMult: 8
+  _maxReduceSpeed: 26
+  _minStayTime: 0.05
   _coyoteTime: 0.2
   _jumpInputBuffer: 0.2
   _jumpCount: 1
-  _fallMultiplier: 0.08
-  _jumpVelocityFalloff: 2
+  _holdingBonusTime: 0.1
+  _fallMultiplier: 3
+  _maxFallSpeed: 20
   _wallSliderVelocity: 4
   _wallJumpForce: 10
   _wallJumpTime: 0.3

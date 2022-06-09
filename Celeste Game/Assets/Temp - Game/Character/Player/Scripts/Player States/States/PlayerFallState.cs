@@ -1,15 +1,22 @@
 using UnityEngine;
 
-namespace GameAssets.Characters.Player.Old
+namespace GameAssets.Characters.Player
 {
     public class PlayerFallState : PlayerBaseState, IRootState
     {
 #region Var
-        float _vertVelocity;
+        Vector2 _currentVelocity;
         float _coyoteTimer;
+        float _currentFallMult;
+        float _holdingBonusTimer;
         float _jumpInputBuffer;
-        bool _jumpInputHolding;
+        bool _holdingJumpBonus;
         bool _fallingByPlatform;
+        bool _jumpInputHolding;
+#endregion
+
+#region Getters and Setters
+        public bool HoldingJumpBonus { get { return _holdingJumpBonus; } set { _holdingJumpBonus = value; } }
 #endregion
 
 #region Constructor
@@ -21,16 +28,24 @@ namespace GameAssets.Characters.Player.Old
 #region Stating
         protected override void EnterState(){
 
+            // Starting Current Velocity
+            _currentVelocity = Vector2.zero;
+
             // Verify if in the last frame was on the ground
             _fallingByPlatform = _player.Data.WasGrounded;
             if(_fallingByPlatform){
                 _coyoteTimer = _player.Data.CoyoteTime;
             }
 
+            if(_holdingJumpBonus){
+                _holdingBonusTimer = _player.Data.HoldingBonusTime;
+            
+            }else{
+                _holdingBonusTimer = 0f;
+            }
+
             // Run the player Fall animation and effects
             _player.Data.PlayerAnimations.StartFall();
-
-            //Debug.Log("_player Fall");
         }
 
         protected override void InitializeSubState(){
@@ -46,12 +61,12 @@ namespace GameAssets.Characters.Player.Old
 
 #region Updating
         protected override void UpdateState(){
+            _holdingBonusTimer -= Time.deltaTime;
             _coyoteTimer -= Time.deltaTime;
             _jumpInputBuffer -= Time.deltaTime;
 
-            if(_coyoteTimer < 0f && _fallingByPlatform){
-                _fallingByPlatform = false;
-                _player.Data.CurrentJumpCount--;
+            if(_holdingBonusTimer <= 0f){
+                _holdingJumpBonus = false;
             }
         }
 
@@ -69,10 +84,12 @@ namespace GameAssets.Characters.Player.Old
                     PlayerJumpState jumpState = _player.Data.Factory.SelectState(PlayerStates.Jump) as PlayerJumpState;
                     jumpState.ResetJumpTimer = !_jumpInputHolding;
                     SwitchState(jumpState);
-                }
-                else{
+
+                }else{
                     SwitchState(_player.Data.Factory.SelectState(PlayerStates.Grounded));
                 }
+
+            // Else If interact with a wall
             }else{
                 // Wall Slider
                 if(_player.Data.WallSliderInteratc){
@@ -85,11 +102,21 @@ namespace GameAssets.Characters.Player.Old
 #region Physics Calculating States
         protected override void FisicsCalculateState(){
 
-            // Fall faster and allow small jumps. _jumpVelocityFalloff is the point at which we start adding extra gravity. Using 0 causes floating
-            if (_player.Data.Rigidbody2D.velocity.y < _player.Data.JumpVelocityFalloff){
-                _vertVelocity = _player.Data.Rigidbody2D.velocity.y + (_player.Data.FallMultiplier * Physics.gravity.y);
-                _player.Data.Rigidbody2D.velocity = new Vector2(_player.Data.Rigidbody2D.velocity.x, _vertVelocity);
+            // Calculate Horizontal velocity;
+            _currentVelocity.x = _player.Data.Rigidbody2D.velocity.x;
+
+            // If vertical velocity more than max fall velocity add volocity
+            _currentVelocity.y -= _player.Data.FallMultiplier;
+            _currentVelocity.y = Mathf.Max(_currentVelocity.y, -_player.Data.MaxFallSpeed);
+
+            // Applying the Holding jump bonus on higher of the jump for some time
+            Vector2 jumpHalfGravityBonus = _currentVelocity;
+            if(_holdingJumpBonus){
+                jumpHalfGravityBonus.y /= 2f;
             }
+
+            // Applying Final Velocity
+            _player.Data.Rigidbody2D.velocity = jumpHalfGravityBonus;
         }
 #endregion
 
@@ -110,7 +137,7 @@ namespace GameAssets.Characters.Player.Old
 
             _jumpInputHolding = hasPressed;
 
-            // if jump is pressed
+            // If Input jump has pressed
             if(hasPressed){
 
                 // If can wall jump switch to wall jump
@@ -126,9 +153,14 @@ namespace GameAssets.Characters.Player.Old
                     SwitchState(_player.Data.Factory.SelectState(PlayerStates.Jump));
 
                 }else{
-                    // Update Jump Input buffer
+                    // Update Jump Input buffer on falling to the ground
                     _jumpInputBuffer = _player.Data.JumpInputBuffer;
                 }
+
+            // Else if jump input is release
+            }else{
+                // If jump input release cancel the jump half gravity bonus
+                _holdingJumpBonus = false;
             }
         }
 #endregion

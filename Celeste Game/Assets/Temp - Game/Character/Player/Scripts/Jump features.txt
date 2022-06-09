@@ -13,8 +13,10 @@ JUMP FEATURES CREATED
 11 - Edge animations
 12 - Look Up and down animations
 13 - Squeeze Sprites animations
+14 - Ledge detection
 
 TO MAKE.
-1 - Ledge detection
+1 - Fixes Delay with Idles, ledge, look up and duck animations when turn to left or rigth
+2 - Fixe the land squeeze cross the ground when colider with a lower roof.
 2 - Mabe change the squeeze time to some constante time undo a crescent time like the sample print
 3 - See if have a durt run particle when player is walk
