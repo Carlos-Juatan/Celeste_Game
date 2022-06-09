@@ -194,7 +194,7 @@ namespace GameAssets.Characters.Player
 
             if(_player.Data.IsGrounded && _player.Data.WasGrounded && _player.Data.AxisInput.x != 0f && !_waitingAnimationEnd){
 
-                if(_isWalkToWall != _player.Data.WallSliderInteratc){
+                if(_isWalkToWall != _player.Data.WallSliderInteract){
                     _isWalkToWall = !_isWalkToWall;
                     _canChangeWalk = true;
                 }
@@ -202,7 +202,7 @@ namespace GameAssets.Characters.Player
                 if(_canChangeWalk){
                     _canChangeWalk = false;
 
-                    if(!_player.Data.WallSliderInteratc){
+                    if(!_player.Data.WallSliderInteract){
                         _animator.Play(_hash_Move);
 
                     }else{
@@ -305,7 +305,7 @@ namespace GameAssets.Characters.Player
         public void StartMove(){
             if(_player.Data.IsGrounded){
                 if(_player.Data.FacingDirection == _player.Data.AxisInput.x){
-                    if(!_player.Data.WallSliderInteratc){
+                    if(!_player.Data.WallSliderInteract){
                             _animator.Play(_hash_Move);
 
                         }else{

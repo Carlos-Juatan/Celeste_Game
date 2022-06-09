@@ -35,7 +35,7 @@ namespace GameAssets.Characters.Player
         protected override void FisicsCalculateState(){
 
             // Detect Wall
-            _player.Data.WallSliderInteratc = _player.Data.PlayerPhysics.WallSliderCheckDetection();
+            _player.Data.WallSliderInteract = _player.Data.PlayerPhysics.WallSliderCheckDetection();
 
             //Running and with acceleration and friction
             float mult = _player.Data.IsGrounded ? 1 : _player.Data.AirMult;
@@ -43,7 +43,7 @@ namespace GameAssets.Characters.Player
 
             if(moveDir != 0){
                 // Set horizontal move speed
-                _horVelocity += moveDir * _player.Data.MoveAcceleration * mult;
+                _horVelocity = _player.Data.Rigidbody2D.velocity.x + (moveDir * _player.Data.MoveAcceleration * mult);
 
                 // clamped by max frame movement
                 _horVelocity = Mathf.Clamp(_horVelocity, -_player.Data.MaxMoveSpeed, _player.Data.MaxMoveSpeed);
@@ -67,7 +67,7 @@ namespace GameAssets.Characters.Player
         protected override void ExitState(){
 
             // Set Wall slide false because have no horizontal inputs any more
-            _player.Data.WallSliderInteratc = false;
+            _player.Data.WallSliderInteract = false;
 
             // Ending the player Move animation and effects
             _player.Data.PlayerAnimations.EndMove();

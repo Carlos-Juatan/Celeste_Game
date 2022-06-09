@@ -92,7 +92,7 @@ namespace GameAssets.Characters.Player
             // Else If interact with a wall
             }else{
                 // Wall Slider
-                if(_player.Data.WallSliderInteratc){
+                if(_player.Data.WallSliderInteract){
                     SwitchState(_player.Data.Factory.SelectState(PlayerStates.WallSlider));
                 }
             }
@@ -123,7 +123,7 @@ namespace GameAssets.Characters.Player
 #region Exiting States
         protected override void ExitState(){
 
-            if(!_player.Data.WallSliderInteratc){
+            if(!_player.Data.WallSliderInteract){
                 // Ending the player Fall animation and effects if don't start wall slider.
                 _player.Data.PlayerAnimations.EndFall();
             }

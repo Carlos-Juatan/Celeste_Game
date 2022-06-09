@@ -6,10 +6,19 @@ namespace GameAssets.Characters.Player
     {
 
 #region Var
-        //Vector2 _currentVelocity;
-        //float _currentReduce;
+        [Header("Wall Jump")]
+        [SerializeField] float JumpSpeed = 26f;
+        [SerializeField] float MaxDistance = 10f;
+        [SerializeField] float ReduceMultiplier = 1.8f;
+        [SerializeField] float ReleaseReduceMult = 4f;
+        [SerializeField] float MinStayTime = 0.1f;
+
+        Vector2 _currentVelocity;
+        float _currentReduce;
         float _minStayTimer;
-        //bool _cancelJumpOrder = false;
+        float _inpulseDirection;
+        int _jumpDirection;
+        bool _cancelJumpOrder = false;
         bool _holdingJumpBonus;
 #endregion
 
@@ -29,6 +38,8 @@ namespace GameAssets.Characters.Player
 
             // Set Wall Jump animation, maybe the same jump animation in this case
             _player.Data.PlayerAnimations.StartWallJump();
+
+            //Debug.Log("Enter Wall Jump");
         }
 
         // Don't Starts with a sub-state because, the player can't control the movement of the wall jump for a little time.
@@ -48,6 +59,7 @@ namespace GameAssets.Characters.Player
                 // Verify if jump input stay pressed on switch to jump state
                 PlayerFallState fallState = _player.Data.Factory.SelectState(PlayerStates.Fall) as PlayerFallState;
                 fallState.HoldingJumpBonus = _holdingJumpBonus;
+                //fallState.SetSubState = false;
                 SwitchState(fallState);
             }
         }
@@ -57,7 +69,10 @@ namespace GameAssets.Characters.Player
         protected override void FisicsCalculateState(){
 
             // If collider with a roof, and can't make the corner correction, cancel the jump
-            if((/*_cancelJumpOrder &&*/ _minStayTimer <= 0f) || !_player.Data.PlayerPhysics.RoofEdgeDetection()){
+            bool collideWithRoof = _player.Data.PlayerPhysics.RoofEdgeDetection();
+
+            // Cancel the jump if have a orer to cancel and have pass the min time to stay on jump or if collider with a roof
+            if((_cancelJumpOrder && _minStayTimer <= 0f) || !collideWithRoof){
                 CancelWallJump();
             }
 
@@ -68,6 +83,22 @@ namespace GameAssets.Characters.Player
 
 #region Exiting States
         protected override void ExitState(){
+
+            // Stop horizontal velocity if it's on idle state
+            if(Mathf.Abs(_inpulseDirection) < MaxDistance){
+                _currentVelocity.x = 0f;
+                _currentVelocity.y = _player.Data.Rigidbody2D.velocity.y;
+                _player.Data.Rigidbody2D.velocity = _currentVelocity;
+            }
+
+            // Reset the Facing Direction
+            if(_player.Data.AxisInput.x != _jumpDirection) {
+                _player.Data.FacingDirection *= -1;
+            }
+
+            // Turn off the Wall Interaction
+            _player.Data.WallSliderInteract = false;
+
             // Finish the Wall Jump animation
             _player.Data.PlayerAnimations.EndWallJump();
         }
@@ -92,23 +123,60 @@ namespace GameAssets.Characters.Player
 
             }else{
                 // If jump input release cancel the jump.
-                CancelWallJump();
+                _holdingJumpBonus = false;
+                _cancelJumpOrder = true;
             }
         }
 #endregion
 
 #region Jump
         void StartWallJump(){
+            
+            // Set Jump Direction
+            if(_player.Data.RightWallJump){
+                _jumpDirection = -1;
 
+            }else if(_player.Data.LeftWallJump){
+                _jumpDirection = 1;
+            }
+
+            if(_player.Data.FacingDirection != _jumpDirection) {
+                _player.Data.FacingDirection *= -1;
+            }
+
+            // If start a new jump without a order of cancel the jump active the possible hold input bonus 
+            if(!_cancelJumpOrder){
+                _holdingJumpBonus = true;
+            }
+            
+            _inpulseDirection = _player.Data.FacingDirection * (_player.Data.AxisInput.x != 0 ? MaxDistance : MaxDistance / 2);
+            _currentVelocity.x = _inpulseDirection;
+            _currentVelocity.y = JumpSpeed;
+            _currentReduce = ReduceMultiplier;
+            _minStayTimer = MinStayTime;
         }
 
         // Execute a new jump
         void ExecuteWallJump(){
-        
+            // Calculate Horizontal Velocity =================================================
+            //_currentVelocity.x = _player.Data.Rigidbody2D.velocity.x;
+
+            // Calculate Vertical Velocity
+            HundleGravity();
+
+            // Applying Final Velocity
+            _player.Data.Rigidbody2D.velocity = _currentVelocity;
+        }
+
+        void HundleGravity(){
+            // If vertical velocity more than max fall velocity add volocity
+            _currentVelocity.y -= _currentReduce;
+            _currentVelocity.y = Mathf.Max(_currentVelocity.y, -_player.Data.MaxReduceSpeed);
         }
 
         void CancelWallJump(){
-
+            _cancelJumpOrder = false;
+            _currentReduce = ReleaseReduceMult;
         }
 
 #endregion

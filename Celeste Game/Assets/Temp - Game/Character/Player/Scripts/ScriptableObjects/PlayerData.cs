@@ -125,7 +125,7 @@ namespace GameAssets.Characters.Player
         int _currentJumpCount;
 
         // Wall Slider
-        bool _wallSliderInteratc;
+        bool _wallSliderInteract;
         bool _upSideSlideWall;
         bool _downSideSlideWall;
 
@@ -178,7 +178,7 @@ namespace GameAssets.Characters.Player
         public bool ShowSideSliderPointsOnGizmos { get { return _showSideSliderPointsOnGizmos; } }
         public LayerMask WallSliderLayers        { get { return _wallSliderLayers; } }
         public float WallSliderVelocity          { get { return _wallSliderVelocity; } }
-        public bool WallSliderInteratc           { get { return _wallSliderInteratc; } set { _wallSliderInteratc = value; } }
+        public bool WallSliderInteract           { get { return _wallSliderInteract; } set { _wallSliderInteract = value; } }
         public bool UpSideSlideWall              { get { return _upSideSlideWall; } set { _upSideSlideWall = value; } }
         public bool DownSideSlideWall            { get { return _downSideSlideWall; } set { _downSideSlideWall = value; } }
 
