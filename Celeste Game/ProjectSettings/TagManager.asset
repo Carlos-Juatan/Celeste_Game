@@ -8,6 +8,7 @@ TagManager:
   - Danger
   - Invisible Danger
   - Scene Limiters Borders
+  - Jump_Thru
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - Danger
   - Invisible Danger
   - Scene Limiters Borders
-  - 
-  - 
+  - Player
+  - Jump_Thru
   - 
   - 
   - 

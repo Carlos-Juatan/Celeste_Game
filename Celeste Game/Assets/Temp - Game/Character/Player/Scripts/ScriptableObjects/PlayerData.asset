@@ -18,7 +18,7 @@ MonoBehaviour:
   _showGroundPointsOnGizmos: 0
   _groundLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 1032
   _roofPointsSize: {x: 0.46, y: 0.2}
   _roofPointsOffset: {x: 0.26, y: -0.15}
   _distanceForFrame: 0.125
