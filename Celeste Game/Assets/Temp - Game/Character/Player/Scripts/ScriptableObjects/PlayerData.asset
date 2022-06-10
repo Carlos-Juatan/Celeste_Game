@@ -42,6 +42,14 @@ MonoBehaviour:
   _walJumplLayers:
     serializedVersion: 2
     m_Bits: 8
+  _deathBoxSize: {x: 1, y: 1.53}
+  _deathBoxOffset: {x: 0, y: -1.23}
+  _deathBoxColor: {r: 1, g: 0, b: 0, a: 1}
+  _showDeathBoxOnGizmos: 0
+  _dangerLayers:
+    serializedVersion: 2
+    m_Bits: 192
+  _deathDelayTime: 0.1
   _simulateOutsideForce: {x: 0, y: 0}
   _maxMoveSpeed: 12
   _moveAcceleration: 2
@@ -59,5 +67,8 @@ MonoBehaviour:
   _fallMultiplier: 3
   _maxFallSpeed: 20
   _wallSliderVelocity: 4
-  _wallJumpForce: 10
-  _wallJumpTime: 0.3
+  _wallJumpSpeed: 26
+  _maxDistance: 14
+  _reduceWallJumpMultiplier: 1.8
+  _releaseWallJumpReduceMult: 4
+  _minWallJumpStayTime: 0.1

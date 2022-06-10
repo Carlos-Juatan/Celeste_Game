@@ -1,4 +1,5 @@
 using UnityEngine;
+using SystemManager.GameManagement;
 
 namespace GameAssets.Characters.Player
 {
@@ -85,11 +86,26 @@ namespace GameAssets.Characters.Player
             return value;
         }}
     #endregion
+
+    #region Death Check
+        Vector2 _deathBoxOffset { get{
+            Vector2 value = _player.Data.DeathBoxOffset;
+            value.x += transform.position.x;
+            value.y += transform.position.y;
+            return value;
+        }}
+
+        float _deathDelayTimer;
+    #endregion
+
 #endregion
 
 #region Updating
         // Called every frame by PlayerController On Update after all updates before that
         public void UpdatePhysicsAfterAll(){
+
+            // A small delay to confirm the death;
+            _deathDelayTimer -= Time.deltaTime;
 
             // Update the WasGrounded in the same frame that IsGrounded, but with a little delay after the states.
             _player.Data.WasGrounded = _player.Data.IsGrounded;
@@ -100,6 +116,7 @@ namespace GameAssets.Characters.Player
         // Called by the PlayerController FixedUpdate
         public void PhysicsCalculatings(){
             GroundCheck();
+            DeathCheck();
         }
 
     #region Ground Check
@@ -231,6 +248,31 @@ namespace GameAssets.Characters.Player
         }
     #endregion
 
+    #region Death Check
+        void DeathCheck(){
+
+            // Death Box Check
+            Collider2D deathBox = Physics2D.OverlapBox(_deathBoxOffset, _player.Data.DeathBoxSize, 0, _player.Data.DangerLayers);
+
+            bool inDanger = deathBox != null ? true : false;
+            
+            // If player is in danger start a small delay to confirm the death
+            if(inDanger){
+                if(_deathDelayTimer <= 0f && !_player.Data.HasDeath){
+                    // Player Death
+                    _player.Data.HasDeath = true;
+                    _player.Data.PlayerAnimations.HasDead();
+                    _player.Data.Rigidbody2D.simulated = false;
+                    GameManager.instance.SwitchState(GameManager.instance.PlayerIsDeadState);
+                }
+
+            }else{
+                _deathDelayTimer = _player.Data.DeathDelayTime;
+            }
+
+        }
+    #endregion
+
 #endregion
 
 #region On Draw Gizmos
@@ -281,6 +323,16 @@ namespace GameAssets.Characters.Player
                 Gizmos.DrawCube(_leftUpSliderPos, _player.Data.SideSliderPointSize);
                 Gizmos.DrawCube(_rightDownSliderPos, _player.Data.SideSliderPointSize);
                 Gizmos.DrawCube(_leftDownSliderPos, _player.Data.SideSliderPointSize);
+            }
+
+            // Draw the Death Box
+            if(_player.Data.ShowDeathBoxOnGizmos){
+
+                // Death Box Color
+                Gizmos.color = _player.Data.DeathBoxColor;
+
+                // Draw the death bos
+                Gizmos.DrawCube(_deathBoxOffset, _player.Data.DeathBoxSize);
             }
         }
 #endif

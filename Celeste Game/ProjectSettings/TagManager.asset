@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Danger
+  - Invisible Danger
+  - Scene Limiters Borders
   layers:
   - Default
   - TransparentFX
@@ -12,9 +15,9 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Danger
+  - Invisible Danger
+  - Scene Limiters Borders
   - 
   - 
   - 

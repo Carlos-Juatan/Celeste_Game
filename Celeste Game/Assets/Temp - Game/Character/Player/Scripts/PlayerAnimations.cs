@@ -66,9 +66,11 @@ namespace GameAssets.Characters.Player
         readonly int _hash_FallJump = Animator.StringToHash("FallJump");
         readonly int _hash_FallLand_Start = Animator.StringToHash("FallLand_Start");
         readonly int _hash_FallLand_Loop = Animator.StringToHash("FallLand_Loop");
+        readonly int _hash_Death = Animator.StringToHash("Death");
 
         readonly int _hash_Push = Animator.StringToHash("Push");
         readonly int _hash_WallSlider = Animator.StringToHash("WallSlider");
+
         readonly int _hash_Dangling = Animator.StringToHash("Dangling");
         readonly int _hash_Climb_Move = Animator.StringToHash("Climb_Move");
 #endregion
@@ -383,6 +385,12 @@ namespace GameAssets.Characters.Player
                 FlipParticles();
             }
             _onWallJump = false;
+        }
+    #endregion
+
+    #region Has Dead
+        public void HasDead(){
+            _animator.Play(_hash_Death);
         }
     #endregion
 

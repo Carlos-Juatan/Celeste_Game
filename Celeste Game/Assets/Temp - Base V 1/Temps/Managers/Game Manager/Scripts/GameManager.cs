@@ -18,6 +18,7 @@ namespace SystemManager.GameManagement
 		public PauseState PauseState { get; private set; }
 		public LoseState LoseState { get; private set; }
 		public WinState WinState { get; private set; }
+		public PlayerIsDeadState PlayerIsDeadState { get; private set; }
 		
         [Header("Visual Effects")]
         [SerializeField] GameObject _gameplaySnowParticle;
@@ -47,6 +48,7 @@ namespace SystemManager.GameManagement
 			PauseState = new PauseState();
 			LoseState = new LoseState();
 			WinState = new WinState();
+			PlayerIsDeadState = new PlayerIsDeadState();
 			_currentState = LogoState;
 
 			// Finding components.

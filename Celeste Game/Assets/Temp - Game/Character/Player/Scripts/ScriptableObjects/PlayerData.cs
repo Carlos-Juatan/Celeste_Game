@@ -70,6 +70,14 @@ namespace GameAssets.Characters.Player
         [SerializeField] bool _showSideJumpPointsOnGizmos;
         [SerializeField] LayerMask _walJumplLayers;
 
+        [Header("Death Check")]
+        [SerializeField] Vector2 _deathBoxSize;
+        [SerializeField] Vector2 _deathBoxOffset;
+        [SerializeField] Color _deathBoxColor = Color.red;
+        [SerializeField] bool _showDeathBoxOnGizmos;
+        [SerializeField] LayerMask _dangerLayers;
+        [SerializeField] float _deathDelayTime = 0.1f;
+
         [Header("Simulate Outside Forces")]
         [SerializeField] Vector2 _simulateOutsideForce;
 
@@ -109,6 +117,7 @@ namespace GameAssets.Characters.Player
 
         // Logics
         bool _hasSpawned = true;
+        bool _hasDeath = false;
         
         // Ground Check
         bool _isGrounded;
@@ -151,6 +160,7 @@ namespace GameAssets.Characters.Player
 
         // Logics
         public bool HasSpawned { get { return _hasSpawned; } set { _hasSpawned = value; } }
+        public bool HasDeath { get { return _hasDeath; } set { _hasDeath = value; } }
 
         // Ground Check
         public float GroundPointsRadius      { get { return _groundPointsRadius; } }
@@ -197,6 +207,14 @@ namespace GameAssets.Characters.Player
         public float ReleaseWallJumpReduceMult { get { return _releaseWallJumpReduceMult; } }
         public float MinWallJumpStayTime       { get { return _minWallJumpStayTime; } }
 
+        // Death Check
+        public Vector2 DeathBoxSize      { get { return _deathBoxSize; } }
+        public Vector2 DeathBoxOffset    { get { return _deathBoxOffset; } }
+        public Color DeathBoxColor       { get { return _deathBoxColor; } }
+        public bool ShowDeathBoxOnGizmos { get { return _showDeathBoxOnGizmos; } }
+        public LayerMask DangerLayers    { get { return _dangerLayers; } }
+        public float DeathDelayTime      { get { return _deathDelayTime; } }
+
         // Simulate Forces
         public Vector2 SimulateOutsideForce { get { return _simulateOutsideForce; } set { _simulateOutsideForce = value; } }
 
@@ -239,6 +257,7 @@ namespace GameAssets.Characters.Player
             _factory = new PlayerStateFactory(currentPlayer);
             _facingDirection = 1;
             _hasSpawned = true;
+            _hasDeath = false;
 
             FindComponents(currentPlayer);
         }
