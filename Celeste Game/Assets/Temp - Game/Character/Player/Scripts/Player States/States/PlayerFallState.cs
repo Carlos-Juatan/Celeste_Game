@@ -10,6 +10,7 @@ namespace GameAssets.Characters.Player
         float _currentFallMult;
         float _holdingBonusTimer;
         float _jumpInputBuffer;
+        bool _canUseCoyoteTime;
         bool _holdingJumpBonus;
         bool _fallingByPlatform;
         bool _jumpInputHolding;
@@ -35,6 +36,7 @@ namespace GameAssets.Characters.Player
             _fallingByPlatform = _player.Data.WasGrounded;
             if(_fallingByPlatform){
                 _coyoteTimer = _player.Data.CoyoteTime;
+                _canUseCoyoteTime = true;
             }
 
             if(_holdingJumpBonus){
@@ -64,6 +66,11 @@ namespace GameAssets.Characters.Player
             _holdingBonusTimer -= Time.deltaTime;
             _coyoteTimer -= Time.deltaTime;
             _jumpInputBuffer -= Time.deltaTime;
+
+            if(_coyoteTimer <= 0f && _canUseCoyoteTime){
+                _canUseCoyoteTime = false;
+                _player.Data.CurrentJumpCount--;
+            }
 
             if(_holdingBonusTimer <= 0f){
                 _holdingJumpBonus = false;
@@ -149,6 +156,7 @@ namespace GameAssets.Characters.Player
                     // Reset Input buffer and coyote time if Coyote time has used
                     _jumpInputBuffer = 0f;
                     _coyoteTimer = 0f;
+                    _canUseCoyoteTime = false;
                     // Jump has pressed and can jump. Jump again.
                     SwitchState(_player.Data.Factory.SelectState(PlayerStates.Jump));
 
