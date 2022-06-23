@@ -69,18 +69,6 @@ namespace GameSystems.Tilemaps.Tiles
         [SerializeField] Sprite[] _soloLeft_Right_Up;
         [SerializeField] Sprite[] _soloLeft_Right_Down;
 
-// mUDEI O NOME É PRA APAGAR DEPOIS DE VER QUAIS IMAGENS ERAM QUE ESTAVAM ALI
-[Header("mUDEI O NOME")]
-[SerializeField] Sprite[] _tInsideCornerUpLeft_up;
-[SerializeField] Sprite[] _tInsideCornerUpLeft_left;
-[SerializeField] Sprite[] _tInsideCornerUpRight_up;
-[SerializeField] Sprite[] _tInsideCornerUpRight_right;
-[SerializeField] Sprite[] _tInsideCornerDownLeft_down;
-[SerializeField] Sprite[] _tInsideCornerDownLeft_left;
-[SerializeField] Sprite[] _tInsideCornerDownRight_down;
-[SerializeField] Sprite[] _tInsideCornerDownRight_right;
-// APAGAR O BLOCO DE CIMA AI
-
         [Header("Inside T Solo Corners Block")]
         [SerializeField] Sprite[] _tInsideCornerUpLeft_up;
         [SerializeField] Sprite[] _tInsideCornerUpLeft_left;
@@ -91,11 +79,11 @@ namespace GameSystems.Tilemaps.Tiles
         [SerializeField] Sprite[] _tInsideCornerDownRight_down;
         [SerializeField] Sprite[] _tInsideCornerDownRight_right;
         
-        [Header("Inside T Solo Cross Block")]
-        [SerializeField] Sprite[] _tInsideCrossUp_Up;
-        [SerializeField] Sprite[] _tInsideCrossDown_Down;
-        [SerializeField] Sprite[] _tInsideCrossLeft_Left;
-        [SerializeField] Sprite[] _tInsideCrossRight_Right;
+        //[Header("Inside T Solo Cross Block")]
+        //[SerializeField] Sprite[] _tInsideCrossUp_Up;
+        //[SerializeField] Sprite[] _tInsideCrossDown_Down;
+        //[SerializeField] Sprite[] _tInsideCrossLeft_Left;
+        //[SerializeField] Sprite[] _tInsideCrossRight_Right;
 
 #endregion
 
@@ -224,28 +212,28 @@ namespace GameSystems.Tilemaps.Tiles
 
     #region T Solo Corners Block ()
 
-            // "T Solo Corners Up_Left ( 82 = 64 + 16 + 2 )
+            // "T Solo Corners SoloUp_Down_Left ( 82 = 64 + 16 + 2 )
                 case  83: // 82 + 1
                 case 114: // 82 + 32
                 case 115: // 82 + 32 + 1
                 case 82: return CheckExistence(_soloUp_Down_Left);
 
-            // "T Solo Corners Up_Right ( 74 = 64 + 8 + 2 )
+            // "T Solo Corners SoloUp_Down_Right ( 74 = 64 + 8 + 2 )
                 case  78: // 74 + 4
                 case 202: // 74 + 128
                 case 206: // 74 + 128 + 4
                 case 74: return CheckExistence(_soloUp_Down_Right);
 
-            // "T Solo Corners Down_Left ( 26 = 16 + 8 + 2 )
-                case  27: // 26 + 1
-                case  30: // 26 + 4
-                case  31: // 26 + 4 + 1
+            // "T Solo Corners SoloLeft_Right_Up ( 26 = 16 + 8 + 2 )
+                case  58: // 26 + 32
+                case 154: // 26 + 128
+                case 186: // 26 + 128 + 32
                 case 26: return CheckExistence(_soloLeft_Right_Up);
 
-            // "T Solo Corners Down_Right ( 88 = 64 + 16 + 8 )
-                case 120: // 88 + 32
-                case 216: // 88 + 128
-                case 248: // 88 + 128 + 32
+            // "T Solo Corners SoloLeft_Right_Down ( 88 = 64 + 16 + 8 )
+                case  89: // 88 + 1
+                case  92: // 88 + 4
+                case  93: // 88 + 4 + 1
                 case 88: return CheckExistence(_soloLeft_Right_Down);
     #endregion
 
@@ -306,8 +294,8 @@ namespace GameSystems.Tilemaps.Tiles
                 case   9: // 8 + 1
                 case  12: // 8 + 4
                 case  13: // 8 + 4 + 1
-                case  41: // 8 + 32
-                case  42: // 8 + 32 + 1
+                case  40: // 8 + 32
+                case  41: // 8 + 32 + 1
                 case  44: // 8 + 32 + 4
                 case  45: // 8 + 32 + 4 + 1
                 case 136: // 8 + 128
@@ -417,16 +405,16 @@ namespace GameSystems.Tilemaps.Tiles
     #region Inside T Solo Cross Block ()
 
             // "Inside T Solo Cross Up_Left ( 250 = ( 248 = 128 + 64 + 32 + 16 + 8 ) +2 )
-                case 250: return CheckExistence(_tInsideCrossUp_Up);
+                //case 250: return CheckExistence(_tInsideCrossUp_Up);
 
             // "Inside T Solo Cross Up_Right ( 95 = ( 31 = 16 + 8 + 4 + 2 + 1 ) + 64 )
-                case 95: return CheckExistence(_tInsideCrossDown_Down);
+                //case 95: return CheckExistence(_tInsideCrossDown_Down);
 
             // "Inside T Solo Cross Down_Left ( 222 = ( 214 = 128 + 64 + 16 + 4 + 2 ) + 8 )
-                case 222: return CheckExistence(_tInsideCrossLeft_Left);
+                //case 222: return CheckExistence(_tInsideCrossLeft_Left);
 
             // "Inside T Solo Cross Down_Right ( 123 = ( 107 = 64 + 32 + 8 + 2 + 1 ) + 16 )
-                case 123: return CheckExistence(_tInsideCrossRight_Right);
+                //case 123: return CheckExistence(_tInsideCrossRight_Right);
     #endregion
 
     #region Inside Corners Block (Up_Left, Up_Right, Down_Left and Down_Right)

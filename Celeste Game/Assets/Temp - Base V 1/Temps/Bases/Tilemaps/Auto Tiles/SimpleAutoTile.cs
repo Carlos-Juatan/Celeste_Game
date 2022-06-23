@@ -10,7 +10,10 @@ namespace GameSystems.Tilemaps.Tiles
     {
 #region Var
         public Sprite m_Preview;
+
         public SimpleTilesList _customTiles;
+        public Tile[] _allValidTile;
+
 #endregion
 
 #region Refreshing
@@ -44,6 +47,14 @@ namespace GameSystems.Tilemaps.Tiles
         bool CheckTile(ITilemap tilemap, Vector3Int position){
 
             bool hasSameTile = tilemap.GetTile(position) == this;
+
+            if(_allValidTile != null && !hasSameTile){
+                
+                foreach (Tile valibleTile in _allValidTile){
+
+                    if(tilemap.GetTile(position) == valibleTile){
+                        hasSameTile = true;
+            }}}
 
             return hasSameTile;
         }
