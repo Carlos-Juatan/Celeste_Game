@@ -9,6 +9,7 @@ TagManager:
   - Invisible Danger
   - Scene Limiters Borders
   - Jump_Thru
+  - Spawn Point
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Scene Limiters Borders
   - Player
   - Jump_Thru
-  - 
+  - Spawn Point
   - 
   - 
   - 
