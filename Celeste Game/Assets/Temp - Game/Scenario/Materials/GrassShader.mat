@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GrassShader
+  m_Shader: {fileID: -6465566751694194690, guid: dce1582f293a1ee41a560f85a0a3d2ff, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - Texture2D_26d2423ed9d44d9ab2cd64c125b5e634:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_461bf54d8cc9464ab81af70388b6e980:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_b5b21f4f67ec47ecaf21a30cae142a9c:
+        m_Texture: {fileID: 2800000, guid: c622e42f88a162841b28680c4b18e18c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: c622e42f88a162841b28680c4b18e18c, type: 3}
+        m_Scale: {x: 0.31, y: 0.16}
+        m_Offset: {x: 0, y: 0}
+    - _RampTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WindTex:
+        m_Texture: {fileID: 2800000, guid: c622e42f88a162841b28680c4b18e18c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - PixelSnap: 0
+    - Vector1_0d723c6f529f4c9b9653fcb0cbdaaf29: 0
+    - Vector1_2d61041f8dfd46289cb8aafd27290417: 0.5
+    - Vector1_620eb0a4fc1a48c79d9daecb584075d4: 0.4
+    - Vector1_d848bf56beab4b44aa5b36e3063efa8b: 0
+    - Vector1_e19a6f73e9824493998ba7bebae9c03c: 1.5
+    - Vector1_ffb4bf87533546a68f5084d6d85afe99: 0
+    - _BendAmount: 0.824
+    - _BendFactor: 0.5
+    - _EdgeThickness: 1
+    - _EnableExternalAlpha: 0
+    - _HeightCutoff: 1.2
+    - _HeightFactor: 1
+    - _LimitFloat: 0
+    - _Speed: 1
+    - _WaveAmp: 1
+    - _WaveSpeed: 1
+    - _WindDirection: 5
+    - _WindSpeed: 4
+    - _WindStrength: 1
+    m_Colors:
+    - Vector2_2ad9dffd23234809bbb6d55338af2214: {r: -2, g: 0, b: 0, a: 0}
+    - Vector2_ef569f02d371428688d12b39986d5e2b: {r: 0, g: 0, b: 0, a: 0}
+    - Vector4_587c4da3f3a7466ea106c3dde3070e5c: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EdgeColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
+    - _WindDirection: {r: -3.21, g: 0.73, b: 0, a: 0}
+    - _WindSpeed: {r: 1, g: 1, b: 1, a: 1}
+    - _WorldSize: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
