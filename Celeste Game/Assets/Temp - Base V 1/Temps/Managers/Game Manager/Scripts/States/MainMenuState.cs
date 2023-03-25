@@ -12,6 +12,7 @@ namespace SystemManager.GameManagement
             GameManager.instance.Data.FindMainMenuComponents();
             InputManager inputManager = GameManager.instance.Data.InputManager;
             inputManager.SwitchState(inputManager._InputMainMenuState);
+
         }
         
 		public override void ExitState()

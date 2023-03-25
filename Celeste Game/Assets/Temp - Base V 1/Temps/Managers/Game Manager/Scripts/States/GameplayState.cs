@@ -8,11 +8,11 @@ namespace SystemManager.GameManagement
         //Timer _timer;
         public override void EnterState()
         {
-            // Enable Snow particles
-            GameManager.instance.GameplaySnowParticle.SetActive(true);
-
             // Find gameplay objects
             GameManager.instance.Data.FindGameplayComponents();
+			
+            // Enable Snow particles
+            GameManager.instance.GameplaySnowParticle.SetActive(true);
 
             // Link input Manager
             InputManager inputManager = GameManager.instance.Data.InputManager;
@@ -21,10 +21,6 @@ namespace SystemManager.GameManagement
             // Link Player
             updateBase += GameManager.instance.Data.PlayerController.UpdatePlayer;
             fixedUpdateBase += GameManager.instance.Data.PlayerController.FixedUpdatePlayer;
-
-            // Link Follow Camera
-            GameManager.instance.Data.FollowCamera.GameplayStart();
-            fixedUpdateBase += GameManager.instance.Data.FollowCamera.GameplayFixedUpdate;
         }
 
 		public override void ExitState()
@@ -39,9 +35,6 @@ namespace SystemManager.GameManagement
             // Unlink player
             updateBase -= GameManager.instance.Data.PlayerController.UpdatePlayer;
             fixedUpdateBase -= GameManager.instance.Data.PlayerController.FixedUpdatePlayer;
-
-            // Unlink follow camera
-            fixedUpdateBase += GameManager.instance.Data.FollowCamera.GameplayFixedUpdate;
         }
     }
 }

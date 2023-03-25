@@ -3,7 +3,6 @@ using UnityEngine;
 using SystemManager.SoundManagement;
 using SystemManager.InputManagement;
 using SystemManager.LevelLoader;
-using SystemManager.CameraManagement;
 
 using GameSystems.SimpleUI.GameplayUI;
 using GameSystems.SimpleUI.MainMenu;
@@ -30,8 +29,6 @@ namespace SystemManager.GameManagement
         SoundsManager _soundsManager;
         LoadLevel _loadLevel;
         InputManager _inputSystem;
-        Camera _mainCamera;
-        Platform2DCameraFollow _followCamera;
         GameplayUIController _gameplayUIController;
         SimpleMainMenu _simpleMainMenu;
         PlayerController _playerController;
@@ -47,8 +44,6 @@ namespace SystemManager.GameManagement
         public SoundsManager SoundsManager  { get { return _soundsManager; } }
         public LoadLevel LoadLevel          { get { return _loadLevel; } }
         public InputManager InputManager    { get { return _inputSystem; } }
-        public Camera MainCamera            { get { return _mainCamera; } }
-        public Platform2DCameraFollow FollowCamera       { get { return _followCamera; } }
         public GameplayUIController GameplayUIController { get { return _gameplayUIController; } }
         public SimpleMainMenu SimpleMainMenu             { get { return _simpleMainMenu; } }
         public PlayerController PlayerController         { get { return _playerController; } }
@@ -58,8 +53,6 @@ namespace SystemManager.GameManagement
         // Responsable to find components on Consistent scene start
         public void FindConsistentComponents()
         {
-            _mainCamera = Camera.main;
-            _followCamera = _mainCamera.gameObject.GetComponent<Platform2DCameraFollow>();
             _soundsManager = FindObjectOfType<SoundsManager>();
 			_loadLevel = FindObjectOfType<LoadLevel>();
 			_inputSystem = FindObjectOfType<InputManager>();
